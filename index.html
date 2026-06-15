@@ -554,7 +554,7 @@ function renderList() {
   if (query) {
     list = recipes.filter(r => !r.excluded && (
       r.name.toLowerCase().includes(query) ||
-      r.category.includes(query) ||
+      r.category.toLowerCase().includes(query) ||
       (r.tags || []).some(t => t.toLowerCase().includes(query)) ||
       (r.ingredients || []).some(ig => ig.name.toLowerCase().includes(query))
     ));
@@ -564,7 +564,7 @@ function renderList() {
     return;
   }
   container.innerHTML = list.map(r => `
-    <div class="recipe-card${r.excluded ? ' excluded' : ''}" onclick="showDetail(recipes.find(x=>x.id===' + r.id + '))">
+    <div class="recipe-card${r.excluded ? ' excluded' : ''}" data-id="${r.id}">
       <div class="name">${esc(r.name)}</div>
       <div class="meta">
         <span class="info">${r.category} · ${r.difficulty} · ${r.cook_time}分钟</span>
@@ -572,6 +572,15 @@ function renderList() {
       </div>
     </div>
   `).join('');
+
+  // 事件委托：兼容移动端
+  container.onclick = function(e) {
+    const card = e.target.closest('.recipe-card');
+    if (!card) return;
+    const id = Number(card.dataset.id);
+    const r = recipes.find(x => x.id === id);
+    if (r) showDetail(r);
+  };
 }
 
 // ===== 详情 =====
