@@ -296,7 +296,8 @@ body{
     <h2 style="margin-bottom:16px;font-size:1.1rem">鈿欙笍 璁剧疆</h2>
     <div class="demo-note">
       馃搶 褰撳墠涓?strong>鏈湴瀛樺偍妯″紡</strong>锛屾暟鎹繚瀛樺湪鏈満娴忚鍣ㄣ€?br>
-      濡傞渶鍙屼汉鑱旂綉鍚屾锛岃閰嶇疆 Supabase锛堜笅鏂瑰～鍐欏湴鍧€鍜孠ey锛夈€?    </div>
+      濡傞渶鍙屼汉鑱旂綉鍚屾锛岃閰嶇疆 Supabase锛堜笅鏂瑰～鍐欏湴鍧€鍜孠ey锛夈€?
+    </div>
     <div class="config-section">
       <h3>Supabase 鑱旂綉鍚屾锛堝彲閫夛級</h3>
       <div class="form-group">
@@ -507,7 +508,8 @@ function setRandomCategory(cat, btn) {
 function pickRandom() {
   let items = recipes.filter(r => !r.excluded);
   
-  // 鎸夊垎绫荤瓫閫?  if (randomCategory !== 'all') {
+  // 鎸夊垎绫荤瓫閫?
+  if (randomCategory !== 'all') {
     items = items.filter(r => r.category === randomCategory);
   }
   
@@ -849,7 +851,8 @@ const RECIPE_DATABASE = {
   '鍥為攨鑲?: {category:'鏅氶',difficulty:'涓瓑',cook_time:25,ingredients:[{name:'浜旇姳鑲?,amount:'300g'},{name:'闈掕挏鑻?,amount:'150g'},{name:'璞嗙摚閰?,amount:'1.5姹ゅ寵'},{name:'璞嗚眽',amount:'1姹ゅ寵'},{name:'濮?,amount:'2鐗?},{name:'鐢熸娊',amount:'1姹ゅ寵'},{name:'鐢滈潰閰?,amount:'1姹ゅ寵'},{name:'椋熺敤娌?,amount:'閫傞噺'}],steps:['浜旇姳鑲夋暣鍧楀喎姘翠笅閿咃紝鍔犲鐗囩叜鑷冲叓鎴愮啛鎹炲嚭鏀惧噳','鍒囨垚钖勭墖锛堢害3mm鍘氾級','閿呬腑灏戣娌癸紝鏀惧叆鑲夌墖涓伀鐓哥倰鑷冲井鍗峰嚭娌?,'鎺ㄥ埌涓€杈癸紝鏀惧叆璞嗙摚閰便€佽眴璞夌倰鍑虹孩娌?,'鍔犵敎闈㈤叡鍜岀敓鎶界炕鐐掍笂鑹?,'鏀惧叆钂滆嫍娈靛ぇ鐏炕鐐掓柇鐢熷嵆鍙?],tags:['宸濊彍','涓嬮キ','鑽よ彍']},
 };
 
-// 鍚嶇О鐩镐技搴﹀尮閰?function findSimilarRecipe(name) {
+// 鍚嶇О鐩镐技搴﹀尮閰?
+function findSimilarRecipe(name) {
   const n = name.replace(/[锛?].*[锛?]/g,'').trim();
   for (const key in RECIPE_DATABASE) {
     if (key.includes(n) || n.includes(key) || key === n) {
@@ -895,7 +898,8 @@ function aiGenerateRecipe() {
   // 鏈壘鍒帮紝鑷姩濉厖琛ㄥ崟锛屽府鐢ㄦ埛鐪佷簨
   document.getElementById('f_name').value = input;
   showToast('馃挕 鏆傛棤姝よ彍璋辨暟鎹紝宸插～鍏ヨ彍鍚嶏紝璇锋墜鍔ㄨˉ鍏呰鎯?);
-  // 婊氬姩鍒版墜鍔ㄥ～鍐欏尯鍩?  document.getElementById('f_name').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  // 婊氬姩鍒版墜鍔ㄥ～鍐欏尯鍩?
+  document.getElementById('f_name').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 // 鍚姩
