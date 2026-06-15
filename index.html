@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今天吃什么？</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#1a1a2e;--card:#16213e;--accent:#e94560;--accent2:#0f3460;
+  --text:#eee;--text2:#aaa;--radius:12px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:90px}
+.header{background:var(--accent2);padding:16px 12px 12px;text-align:center;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.05)}
+.header h1{font-size:1.3rem;color:#fff}
+.tabs{display:flex;justify-content:center;gap:6px;margin-top:10px;flex-wrap:wrap}
+.tab-btn{background:rgba(255,255,255,.08);border:none;color:#fff;padding:6px 12px;border-radius:16px;cursor:pointer;font-size:.78rem;transition:.2s}
+.tab-btn:hover,.tab-btn.active{background:var(--accent)}
+.container{max-width:480px;margin:0 auto;padding:14px}
+.page{display:none}.page.active{display:block}
+
+/* 转盘 */
+.wheel-section{text-align:center;padding:20px 0}
+.wheel-wrap{position:relative;width:280px;height:280px;margin:16px auto}
+.wheel-canvas{width:280px;height:280px;border-radius:50%;border:3px solid var(--accent);cursor:pointer;transition:transform 3.2s cubic-bezier(.17,.67,.12,.99)}
+.wheel-pointer{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:1.8rem;z-index:10;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.spin-btn{background:var(--accent);color:#fff;border:none;padding:12px 36px;border-radius:24px;font-size:1rem;cursor:pointer;margin-top:14px;transition:.2s}
+.spin-btn:hover{transform:scale(1.05)}
+.result-box{margin-top:16px;background:var(--card);border-radius:var(--radius);padding:16px;display:none}
+.result-box.show{display:block;animation:fadeUp .4s}
+.result-name{font-size:1.3rem;color:var(--accent);margin-bottom:6px}
+.result-meta{color:var(--text2);font-size:.82rem}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* 搜索 */
+.search-box{display:flex;gap:8px;margin-bottom:12px}
+.search-box input{flex:1;background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:10px 14px;border-radius:var(--radius);font-size:.95rem;outline:none}
+.search-box input::placeholder{color:var(--text2)}
+.search-box button{background:var(--accent);color:#fff;border:none;padding:10px 16px;border-radius:var(--radius);cursor:pointer;font-size:1rem}
+
+/* 列表 */
+.recipe-list{display:flex;flex-direction:column;gap:8px}
+.recipe-card{background:var(--card);border-radius:var(--radius);padding:14px;cursor:pointer;transition:.2s;border-left:3px solid transparent}
+.recipe-card:hover{border-left-color:var(--accent);transform:translateX(3px)}
+.recipe-card .name{font-size:1.05rem;font-weight:600;margin-bottom:4px}
+.recipe-card .meta{display:flex;gap:6px;flex-wrap:wrap}
+.recipe-card .tag{background:rgba(233,69,96,.15);color:var(--accent);padding:2px 7px;border-radius:10px;font-size:.72rem}
+.recipe-card .info{color:var(--text2);font-size:.78rem}
+.empty-state{text-align:center;padding:40px;color:var(--text2)}
+.empty-state .big{font-size:2.5rem;margin-bottom:10px}
+
+/* 详情 */
+.detail-back{background:none;border:none;color:var(--accent);font-size:.95rem;cursor:pointer;padding:6px 0;margin-bottom:10px}
+.detail-title{font-size:1.3rem;margin-bottom:10px}
+.detail-section{margin-bottom:18px}
+.detail-section h3{color:var(--accent);margin-bottom:7px;font-size:.95rem}
+.detail-section ul{list-style:none;padding:0}
+.detail-section li{padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.9rem;line-height:1.5}
+.detail-section ol{padding-left:20px}
+.detail-section ol li{padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);line-height:1.5}
+.detail-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.detail-actions{display:flex;gap:8px;margin-top:14px}
+.btn{padding:9px 18px;border-radius:var(--radius);border:none;cursor:pointer;font-size:.88rem;transition:.2s}
+.btn-accent{background:var(--accent);color:#fff}.btn-accent:hover{opacity:.85}
+.btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:rgba(233,69,96,.1)}
+.btn-gray{background:#2a2a3e;color:#aaa}
+
+/* 表单 */
+.form-group{margin-bottom:14px}
+.form-group label{display:block;margin-bottom:5px;color:var(--text2);font-size:.82rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:9px 12px;border-radius:var(--radius);font-size:.92rem;outline:none;font-family:inherit}
+.form-group textarea{min-height:70px;resize:vertical}
+.ingredient-row{display:flex;gap:6px;margin-bottom:7px;align-items:center}
+.ingredient-row input{flex:1}
+.remove-ig{background:none;border:none;color:var(--accent);cursor:pointer;font-size:1.1rem;padding:4px}
+.add-btn{background:none;border:1px dashed var(--text2);color:var(--text2);padding:7px;border-radius:var(--radius);cursor:pointer;width:100%;margin-top:4px;font-size:.85rem}
+.add-btn:hover{border-color:var(--accent);color:var(--accent)}
+.step-row{display:flex;gap:7px;margin-bottom:7px;align-items:flex-start}
+.step-num{background:var(--accent);color:#fff;min-width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;margin-top:8px}
+.step-row input{flex:1}
+
+/* 导入 */
+.import-hint{color:var(--text2);font-size:.8rem;margin-bottom:7px;line-height:1.5}
+.import-area textarea{min-height:120px;font-size:.82rem}
+
+/* 底部 */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--accent2);display:flex;justify-content:space-around;padding:8px 0 12px;z-index:100;border-top:1px solid rgba(255,255,255,.08)}
+.nav-item{background:none;border:none;color:var(--text2);font-size:.65rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.2s;padding:4px}
+.nav-item.active,.nav-item:hover{color:var(--accent)}
+.nav-icon{font-size:1.3rem}
+.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:9px 22px;border-radius:20px;font-size:.85rem;z-index:999;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* 配置页 */
+.config-section{margin-bottom:20px}
+.config-section h3{color:var(--accent);margin-bottom:10px;font-size:.95rem}
+.config-section p{color:var(--text2);font-size:.82rem;margin-bottom:8px;line-height:1.5}
+.demo-note{background:rgba(233,69,96,.1);border:1px solid rgba(233,69,96,.3);border-radius:var(--radius);padding:12px;margin-bottom:16px;font-size:.82rem;color:var(--text2);line-height:1.6}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🍽️ 今天吃什么？</h1>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="setFilter('all')">全部</button>
+    <button class="tab-btn" onclick="setFilter('早餐')">早餐</button>
+    <button class="tab-btn" onclick="setFilter('午餐')">午餐</button>
+    <button class="tab-btn" onclick="setFilter('晚餐')">晚餐</button>
+    <button class="tab-btn" onclick="setFilter('夜宵')">夜宵</button>
+    <button class="tab-btn" onclick="setFilter('甜品')">甜品</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 随机选菜 -->
+  <div id="page-wheel" class="page active">
+    <div class="wheel-section">
+      <p style="color:var(--text2);margin-bottom:12px">🎲 选择分类，随机选一道</p>
+      
+      <!-- 分类选择 -->
+      <div class="category-tabs" style="display:flex;justify-content:center;gap:6px;margin-bottom:16px;flex-wrap:wrap">
+        <button class="cat-btn active" onclick="setRandomCategory('all',this)" style="background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:18px;cursor:pointer;font-size:.85rem;transition:.2s">全部</button>
+        <button class="cat-btn" onclick="setRandomCategory('早餐',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 16px;border-radius:18px;cursor:pointer;font-size:.85rem;transition:.2s">🌅 早餐</button>
+        <button class="cat-btn" onclick="setRandomCategory('午餐',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 16px;border-radius:18px;cursor:pointer;font-size:.85rem;transition:.2s">☀️ 午餐</button>
+        <button class="cat-btn" onclick="setRandomCategory('晚餐',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 16px;border-radius:18px;cursor:pointer;font-size:.85rem;transition:.2s">🌙 晚餐</button>
+        <button class="cat-btn" onclick="setRandomCategory('夜宵',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 16px;border-radius:18px;cursor:pointer;font-size:.85rem;transition:.2s">🍻 夜宵</button>
+      </div>
+      
+      <div class="random-card" id="randomCard" style="background:var(--card);border-radius:var(--radius);padding:24px;text-align:center;min-height:120px;display:flex;flex-direction:column;justify-content:center;align-items:center;border:1px solid rgba(255,255,255,.1)">
+        <div id="randomResult" style="font-size:1.4rem;color:var(--accent);font-weight:600;min-height:2rem">点下方按钮随机选菜</div>
+        <div id="randomMeta" style="color:var(--text2);font-size:.85rem;margin-top:8px"></div>
+      </div>
+      
+      <button class="spin-btn" onclick="pickRandom()" style="width:100%;margin-top:16px">🎲 随机选菜</button>
+      
+      <div class="result-box" id="wheelResult" style="margin-top:16px">
+        <div class="result-name" id="resultName"></div>
+        <div class="result-meta" id="resultMeta"></div>
+        <div class="detail-actions">
+          <button class="btn btn-accent" id="resultViewBtn" onclick="viewResultDetail()">查看做法</button>
+          <button class="btn btn-outline" onclick="pickRandom()" style="margin-left:8px">再抽一次</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 食谱库 -->
+  <div id="page-list" class="page">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="搜索菜名、食材、标签..." oninput="renderList()">
+      <button onclick="renderList()">🔍</button>
+    </div>
+    <div class="recipe-list" id="recipeList"></div>
+  </div>
+
+  <!-- 详情 -->
+  <div id="page-detail" class="page">
+    <button class="detail-back" onclick="goBack()">← 返回</button>
+    <div id="detailContent"></div>
+  </div>
+
+  <!-- 添加 -->
+  <div id="page-add" class="page">
+    <h2 style="margin-bottom:16px;font-size:1.1rem">📝 添加食谱</h2>
+    
+    <div style="margin-bottom:16px;padding:12px;background:rgba(233,69,96,.08);border-radius:var(--radius);border:1px solid rgba(233,69,96,.2)">
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:8px">💡 告诉我菜名，我帮你补全完整食谱</p>
+      <div style="display:flex;gap:8px">
+        <input type="text" id="aiInput" placeholder="输入菜名，如：红烧肉" style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:8px 12px;border-radius:8px;font-size:.9rem;outline:none">
+        <button onclick="aiGenerateRecipe()" class="btn btn-accent" style="padding:8px 14px;font-size:.85rem">生成</button>
+      </div>
+      <p style="font-size:.75rem;color:var(--text2);margin-top:6px">示例：红烧肉、清蒸鱼、蒜蓉粉丝扇贝...</p>
+    </div>
+    
+    <div style="margin-bottom:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)">
+      <p style="font-size:.82rem;color:var(--text2)">或手动填写：</p>
+    </div>
+    <div class="form-group">
+      <label>菜名 *</label>
+      <input type="text" id="f_name" placeholder="例如：番茄炒蛋">
+    </div>
+    <div style="display:flex;gap:8px">
+      <div class="form-group" style="flex:1">
+        <label>分类</label>
+        <select id="f_category">
+          <option value="早餐">早餐</option>
+          <option value="午餐" selected>午餐</option>
+          <option value="晚餐">晚餐</option>
+          <option value="夜宵">夜宵</option>
+          <option value="甜品">甜品</option>
+          <option value="饮品">饮品</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:1">
+        <label>难度</label>
+        <select id="f_difficulty">
+          <option value="简单">简单</option>
+          <option value="中等">中等</option>
+          <option value="困难">困难</option>
+        </select>
+      </div>
+      <div class="form-group" style="flex:1">
+        <label>用时（分钟）</label>
+        <input type="number" id="f_time" value="30">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>食材（2人份）</label>
+      <div id="ingredientsList"></div>
+      <button class="add-btn" onclick="addIngredientRow()">+ 添加食材</button>
+    </div>
+    <div class="form-group">
+      <label>做法步骤</label>
+      <div id="stepsList"></div>
+      <button class="add-btn" onclick="addStepRow()">+ 添加步骤</button>
+    </div>
+    <div class="form-group">
+      <label>标签（逗号分隔，例如：快手菜,家常,辣）</label>
+      <input type="text" id="f_tags" placeholder="快手菜, 家常">
+    </div>
+    <div class="detail-actions">
+      <button class="btn btn-accent" onclick="saveRecipe()">保存食谱</button>
+      <button class="btn btn-gray" onclick="switchPage('list')">取消</button>
+    </div>
+
+    <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08)">
+      <h3 style="margin-bottom:8px;font-size:.95rem;color:var(--accent)">📥 批量导入</h3>
+      <p class="import-hint">每行一道，格式：菜名 | 分类 | 难度 | 用时(分钟) | 食材(分号分隔) | 标签(逗号分隔)</p>
+      <textarea id="importText" class="form-group" placeholder="番茄炒蛋 | 午餐 | 简单 | 15 | 番茄2个;鸡蛋3个;盐;糖;油 | 快手菜,家常"></textarea>
+      <button class="btn btn-outline" style="width:100%" onclick="batchImport()">批量导入</button>
+    </div>
+  </div>
+
+  <!-- 设置 -->
+  <div id="page-config" class="page">
+    <h2 style="margin-bottom:16px;font-size:1.1rem">⚙️ 设置</h2>
+    <div class="demo-note">
+      📌 当前为<strong>本地存储模式</strong>，数据保存在本机浏览器。<br>
+      如需双人联网同步，请配置 Supabase（下方填写地址和Key）。
+    </div>
+    <div class="config-section">
+      <h3>Supabase 联网同步（可选）</h3>
+      <div class="form-group">
+        <label>Supabase URL</label>
+        <input type="text" id="cfg_url" placeholder="https://xxx.supabase.co">
+      </div>
+      <div class="form-group">
+        <label>Anon Key</label>
+        <input type="text" id="cfg_key" placeholder="eyJ...">
+      </div>
+      <button class="btn btn-accent" style="width:100%;margin-bottom:8px" onclick="saveConfig()">保存并连接</button>
+      <p style="color:var(--text2);font-size:.78rem;margin-top:6px">在 Supabase SQL 编辑器执行建表 SQL 后再连接，连接成功后数据自动同步。</p>
+    </div>
+    <div class="config-section">
+      <h3>数据管理</h3>
+      <button class="btn btn-outline" style="width:100%;margin-bottom:8px" onclick="loadRecipesFromStorage()">🔄 刷新数据</button>
+      <button class="btn btn-gray" style="width:100%;margin-bottom:8px" onclick="clearExcluded()">✅ 清除所有排除标记</button>
+    </div>
+    <div class="config-section">
+      <h3>快速体验</h3>
+      <p style="color:var(--text2);font-size:.82rem;margin-bottom:8px">一键导入10道家常菜示例食谱，立即体验完整功能。</p>
+      <button class="btn btn-outline" style="width:100%" onclick="loadSampleRecipes()">📥 导入示例食谱</button>
+    </div>
+    <div class="config-section">
+      <h3>重置食谱库</h3>
+      <p style="color:var(--text2);font-size:.82rem;margin-bottom:8px">恢复为默认的30道清淡素食家常菜食谱（会覆盖当前数据）。</p>
+      <button class="btn btn-gray" style="width:100%;color:#e94560;border-color:#e94560" onclick="resetToDefaultRecipes()">🔄 重置为默认食谱</button>
+    </div>
+    <div class="config-section">
+      <h3>Supabase 建表 SQL</h3>
+      <textarea readonly style="width:100%;min-height:120px;font-size:.75rem;background:#0d1b3e;border:1px solid rgba(255,255,255,.1);color:var(--text2);padding:10px;border-radius:12px;font-family:monospace;resize:vertical;line-height:1.5">CREATE TABLE IF NOT EXISTS recipes (
+  id BIGSERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT '午餐',
+  difficulty TEXT NOT NULL DEFAULT '简单',
+  cook_time INTEGER NOT NULL DEFAULT 30,
+  servings INTEGER NOT NULL DEFAULT 2,
+  ingredients JSONB NOT NULL DEFAULT '[]',
+  steps JSONB NOT NULL DEFAULT '[]',
+  tags TEXT[] NOT NULL DEFAULT '{}',
+  excluded BOOLEAN NOT NULL DEFAULT false,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE recipes ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow all" ON recipes
+  FOR ALL USING (true) WITH CHECK (true);</textarea>
+    </div>
+  </div>
+
+</div>
+
+<!-- 底部导航 -->
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="switchPage('wheel',this)">
+    <span class="nav-icon">🎲</span><span>随机</span>
+  </button>
+  <button class="nav-item" onclick="switchPage('list',this)">
+    <span class="nav-icon">📖</span><span>食谱库</span>
+  </button>
+  <button class="nav-item" onclick="switchPage('add',this)">
+    <span class="nav-icon">➕</span><span>添加</span>
+  </button>
+  <button class="nav-item" onclick="switchPage('config',this)">
+    <span class="nav-icon">⚙️</span><span>设置</span>
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== 全局状态 =====
+let recipes = [];
+let currentFilter = 'all';
+let currentDetail = null;
+let spinning = false;
+let wheelResultId = null;
+
+// ===== 内置食谱（清淡素食家常菜）=====
+const BUILTIN_RECIPES = [
+// 早餐（10道）
+{id:1,name:'小米粥',category:'早餐',difficulty:'简单',cook_time:45,servings:2,tags:['粥','养生','清淡','素'],excluded:false,ingredients:[{name:'小米',amount:'80g'},{name:'清水',amount:'1000ml'},{name:'枸杞',amount:'8粒(可选)'}],steps:['小米洗净，加清水大火烧开','转小火熬30分钟，中途搅动2-3次防止粘底','熬至粥变稠即可，可加枸杞']},
+{id:2,name:'白粥配酱菜',category:'早餐',difficulty:'简单',cook_time:40,servings:2,tags:['粥','清淡','素'],excluded:false,ingredients:[{name:'大米',amount:'80g'},{name:'清水',amount:'1200ml'},{name:'榨菜丝',amount:'适量(配粥)'}],steps:['大米洗净，加水大火烧开','转小火慢熬40分钟至米开花','配榨菜或酱瓜食用']},
+{id:3,name:'豆浆',category:'早餐',difficulty:'简单',cook_time:25,servings:2,tags:['饮品','素','养生'],excluded:false,ingredients:[{name:'黄豆',amount:'80g'},{name:'清水',amount:'800ml'},{name:'白糖',amount:'适量(可选)'}],steps:['黄豆提前浸泡6-8小时或一夜','将黄豆加清水放入豆浆机/破壁机','按豆浆功能打好后过滤','加白糖调味即可']},
+{id:4,name:'番茄鸡蛋面',category:'早餐',difficulty:'简单',cook_time:15,servings:2,tags:['面食','快手','家常'],excluded:false,ingredients:[{name:'挂面',amount:'100g/人'},{name:'番茄',amount:'1个'},{name:'鸡蛋',amount:'1个'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'}],steps:['番茄切块，鸡蛋打散','锅中倒油炒鸡蛋至凝固盛出','锅中再加少许油，炒番茄至出汁','加清水烧开下面条','面条煮软后倒入鸡蛋，加盐调味，撒葱花']},
+{id:5,name:'葱花蛋饼',category:'早餐',difficulty:'简单',cook_time:10,servings:2,tags:['饼','快手','家常'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'面粉',amount:'50g'},{name:'水',amount:'80ml'},{name:'小葱',amount:'2根'},{name:'盐',amount:'少许'}],steps:['鸡蛋打散，加面粉、水、盐搅成稀糊','加入葱花搅匀','平底锅刷薄油，倒入面糊摊薄','小火煎至两面金黄即可']},
+{id:6,name:'素包子',category:'早餐',difficulty:'中等',cook_time:60,servings:4,tags:['面食','素','家常'],excluded:false,ingredients:[{name:'自发面粉',amount:'300g'},{name:'温水',amount:'160ml'},{name:'菠菜',amount:'200g'},{name:'粉丝',amount:'50g'},{name:'鸡蛋',amount:'2个'},{name:'盐',amount:'适量'},{name:'香油',amount:'1茶匙'}],steps:['面粉加温水揉成面团，醒发30分钟','菠菜焯水挤干切碎，粉丝泡软切短，鸡蛋炒散切碎','将三样混合，加盐、香油拌匀成馅','面团分成剂子，擀皮包馅','冷水上锅，水开后蒸12分钟即可']},
+{id:7,name:'蒸红薯',category:'早餐',difficulty:'简单',cook_time:40,servings:1,tags:['粗粮','清淡','素','健康'],excluded:false,ingredients:[{name:'红薯',amount:'2个(约300g)'}],steps:['红薯洗净，不去皮','冷水上锅，水开后中火蒸35-40分钟','用筷子能轻松戳透即熟']},
+{id:8,name:'玉米糊',category:'早餐',difficulty:'简单',cook_time:15,servings:2,tags:['粥','清淡','素','快手'],excluded:false,ingredients:[{name:'玉米面',amount:'50g'},{name:'清水',amount:'600ml'},{name:'白糖',amount:'适量(可选)'}],steps:['玉米面加少量清水调成糊状','锅中加清水烧开','缓缓倒入玉米糊，边倒边搅','小火煮5分钟至浓稠，加白糖调味']},
+{id:9,name:'蔬菜鸡蛋卷',category:'早餐',difficulty:'简单',cook_time:10,servings:2,tags:['蛋','快手','家常'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'胡萝卜',amount:'半根'},{name:'黄瓜',amount:'半根'},{name:'盐',amount:'少许'},{name:'食用油',amount:'少许'}],steps:['胡萝卜、黄瓜切细丝焯水沥干','鸡蛋打散加少许盐','平底锅摊薄蛋皮','蛋皮上放蔬菜丝卷起切段']},
+{id:10,name:'八宝粥',category:'早餐',difficulty:'简单',cook_time:90,servings:3,tags:['粥','养生','素'],excluded:false,ingredients:[{name:'红豆',amount:'20g'},{name:'薏米',amount:'20g'},{name:'花生',amount:'20g'},{name:'莲子',amount:'15g'},{name:'糯米',amount:'30g'},{name:'红枣',amount:'5颗'},{name:'清水',amount:'1500ml'},{name:'冰糖',amount:'适量'}],steps:['红豆、薏米、花生、莲子提前浸泡2小时','所有食材洗净放入锅中','加清水大火烧开','转小火慢熬60分钟至软烂','加冰糖调味']},
+// 午餐（10道）
+{id:11,name:'番茄炒蛋',category:'午餐',difficulty:'简单',cook_time:12,servings:2,tags:['家常','快手','素','清淡'],excluded:false,ingredients:[{name:'番茄',amount:'2个(约300g)'},{name:'鸡蛋',amount:'3个'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'},{name:'葱花',amount:'适量'}],steps:['番茄切块，鸡蛋打散加少许盐','锅中倒油炒鸡蛋至凝固盛出','锅中再加少许油炒番茄至出汁','倒回鸡蛋翻炒，加盐调味，撒葱花出锅']},
+{id:12,name:'清炒时蔬',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','清淡','快手'],excluded:false,ingredients:[{name:'时令青菜',amount:'300g(如油菜/小白菜/菠菜)'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['青菜洗净，蒜切片','锅中倒油爆香蒜片','放入青菜大火快速翻炒','加盐调味，炒至断生即可出锅']},
+{id:13,name:'清炒西兰花',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['素','清淡','健康'],excluded:false,ingredients:[{name:'西兰花',amount:'1颗(约300g)'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['西兰花掰小朵浸泡洗净','焯水1分钟捞出沥干','锅中倒油爆香蒜片','放入西兰花大火翻炒1分钟','加盐调味出锅']},
+{id:14,name:'丝瓜炒蛋',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['家常','清淡','素'],excluded:false,ingredients:[{name:'丝瓜',amount:'1根(约250g)'},{name:'鸡蛋',amount:'2个'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['丝瓜去皮切滚刀块，鸡蛋打散','锅中倒油炒鸡蛋至凝固盛出','锅中再加少许油炒丝瓜至微软','倒回鸡蛋加盐翻炒均匀出锅']},
+{id:15,name:'蒜蓉蒸丝瓜',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['蒸菜','清淡','素','健康'],excluded:false,ingredients:[{name:'丝瓜',amount:'2根(约400g)'},{name:'蒜',amount:'5瓣'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'}],steps:['丝瓜去皮切段，整齐码在盘中','蒜切末铺在丝瓜上','撒少许盐','水开后放入蒸锅大火蒸8分钟','淋生抽和香油即可']},
+{id:16,name:'凉拌黄瓜',category:'午餐',difficulty:'简单',cook_time:5,servings:2,tags:['凉菜','素','清淡','快手'],excluded:false,ingredients:[{name:'黄瓜',amount:'2根(约300g)'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'1.5汤匙'},{name:'陈醋',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'盐',amount:'少许'}],steps:['黄瓜洗净拍碎切段','蒜切末加生抽、醋、香油、盐调汁','将汁淋在黄瓜上拌匀即可']},
+{id:17,name:'土豆番茄汤',category:'午餐',difficulty:'简单',cook_time:20,servings:2,tags:['汤','清淡','素','家常'],excluded:false,ingredients:[{name:'土豆',amount:'1个(约200g)'},{name:'番茄',amount:'2个(约250g)'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'},{name:'食用油',amount:'1汤匙'}],steps:['土豆去皮切小块，番茄切块','锅中少许油炒番茄至出汁','加清水放入土豆块','大火烧开转小火煮15分钟至土豆软','加盐调味撒葱花出锅']},
+{id:18,name:'清炒豆芽',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','快手','清淡'],excluded:false,ingredients:[{name:'黄豆芽',amount:'400g'},{name:'小葱',amount:'1根'},{name:'盐',amount:'少许'},{name:'醋',amount:'几滴'},{name:'食用油',amount:'1.5汤匙'}],steps:['豆芽洗净沥干，葱切段','锅中倒油大火烧热','放入豆芽大火快炒2分钟','加盐和几滴醋调味','撒葱段翻炒均匀出锅']},
+{id:19,name:'素炒三丝',category:'午餐',difficulty:'简单',cook_time:12,servings:2,tags:['素','家常','清淡'],excluded:false,ingredients:[{name:'土豆',amount:'1个'},{name:'胡萝卜',amount:'1根'},{name:'青椒',amount:'1个'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['土豆、胡萝卜、青椒分别切细丝','锅中倒油先炒土豆丝和胡萝卜丝(不易熟)','炒3分钟后放入青椒丝','加盐翻炒1分钟断生出锅']},
+{id:20,name:'腐乳空心菜',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','快手','家常'],excluded:false,ingredients:[{name:'空心菜',amount:'400g'},{name:'腐乳',amount:'2块'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['空心菜洗净切段，腐乳捣碎，蒜切片','锅中倒油爆香蒜片','放入空心菜大火快炒','加入腐乳快速翻炒','加少许盐调味出锅']},
+// 晚餐（10道）
+{id:21,name:'清炒杏鲍菇',category:'晚餐',difficulty:'简单',cook_time:10,servings:2,tags:['素','清淡','家常'],excluded:false,ingredients:[{name:'杏鲍菇',amount:'300g'},{name:'青椒',amount:'1个'},{name:'盐',amount:'少许'},{name:'生抽',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['杏鲍菇切滚刀块，青椒切块','锅中倒油先炒杏鲍菇','炒至微微金黄出水','加青椒翻炒1分钟','加盐和少许生抽调味出锅']},
+{id:22,name:'蒸娃娃菜',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['蒸菜','清淡','素','健康'],excluded:false,ingredients:[{name:'娃娃菜',amount:'2颗(约400g)'},{name:'蒜',amount:'4瓣'},{name:'生抽',amount:'1.5汤匙'},{name:'香油',amount:'几滴'},{name:'盐',amount:'少许'}],steps:['娃娃菜洗净切条，码在盘中','蒜切末铺在娃娃菜上','撒少许盐，水开后蒸8分钟','淋生抽和香油即可']},
+{id:23,name:'番茄豆腐汤',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['汤','清淡','素','家常'],excluded:false,ingredients:[{name:'番茄',amount:'2个(约250g)'},{name:'嫩豆腐',amount:'1块(约200g)'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'},{name:'食用油',amount:'1汤匙'}],steps:['番茄切块，豆腐切小块','锅中少许油炒番茄至出汁','加清水放入豆腐块','煮5分钟','加盐调味撒葱花出锅']},
+{id:24,name:'素炒香菇青菜',category:'晚餐',difficulty:'简单',cook_time:10,servings:2,tags:['素','清淡','家常'],excluded:false,ingredients:[{name:'青菜',amount:'300g'},{name:'香菇',amount:'5朵(约100g)'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['青菜洗净，香菇切片焯水','锅中倒油爆香蒜片','先炒香菇2分钟','加入青菜大火快炒','加盐调味出锅']},
+{id:25,name:'冬瓜排骨汤',category:'晚餐',difficulty:'中等',cook_time:60,servings:3,tags:['汤','清淡','养生'],excluded:false,ingredients:[{name:'冬瓜',amount:'500g'},{name:'排骨',amount:'200g(可不加)'},{name:'姜',amount:'3片'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'}],steps:['排骨焯水洗净，冬瓜去皮切块','锅中加水放入排骨和姜片','大火烧开转小火炖40分钟','加入冬瓜再炖15分钟','加盐调味撒葱花']},
+{id:26,name:'清蒸鱼',category:'晚餐',difficulty:'简单',cook_time:20,servings:2,tags:['鱼','清淡','蒸菜'],excluded:false,ingredients:[{name:'鲈鱼',amount:'1条(约400g)'},{name:'姜',amount:'3片'},{name:'葱',amount:'2根'},{name:'蒸鱼豉油',amount:'2汤匙'},{name:'料酒',amount:'1汤匙'}],steps:['鱼洗净抹料酒，肚子里放姜片','水开后放入蒸锅大火蒸8分钟','倒掉盘中腥水','鱼身铺葱丝，淋蒸鱼豉油','热油泼葱丝滋香']},
+{id:27,name:'凉拌木耳',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['凉菜','素','清淡','养生'],excluded:false,ingredients:[{name:'干木耳',amount:'20g'},{name:'黄瓜',amount:'半根'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'1.5汤匙'},{name:'醋',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'盐',amount:'少许'}],steps:['木耳提前泡发洗净，焯水2分钟捞出','黄瓜切丝，蒜切末','木耳黄瓜放碗中','加生抽、醋、香油、盐拌匀','冰箱冷藏10分钟口感更佳']},
+{id:28,name:'番茄菜花',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['素','清淡','家常'],excluded:false,ingredients:[{name:'菜花',amount:'300g'},{name:'番茄',amount:'1个(约150g)'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['菜花掰小朵焯水2分钟捞出','番茄切块','锅中少许油炒番茄出汁','放入菜花翻炒2分钟','加盐调味出锅']},
+{id:29,name:'清炒南瓜',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['素','清淡','养生','家常'],excluded:false,ingredients:[{name:'南瓜',amount:'400g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['南瓜去皮切薄片，蒜切片','锅中倒油爆香蒜片','放入南瓜片中火翻炒','加少许清水盖盖焖3分钟','至南瓜软糯后加盐调味出锅']},
+{id:30,name:'紫菜蛋花汤',category:'晚餐',difficulty:'简单',cook_time:10,servings:2,tags:['汤','清淡','快手','素'],excluded:false,ingredients:[{name:'紫菜',amount:'5g'},{name:'鸡蛋',amount:'1个'},{name:'盐',amount:'少许'},{name:'香油',amount:'几滴'},{name:'葱花',amount:'适量'}],steps:['锅中加水烧开','紫菜撕小块放入','水再次烧开后淋入蛋液形成蛋花','加盐调味，撒葱花，淋香油出锅']}
+];
+
+// ===== 本周定制食谱（清淡健康餐，2人份）=====
+const WEEKLY_RECIPES = [
+// === 早餐类 ===
+{id:101,name:'无糖浓豆浆',category:'早餐',difficulty:'简单',cook_time:25,servings:2,tags:['饮品','无糖','高蛋白','养生'],excluded:false,ingredients:[{name:'黄豆',amount:'100g'},{name:'清水',amount:'900ml(约4杯)'},{name:'冰糖',amount:'代糖可选'}],steps:['黄豆提前一晚用清水浸泡（夏8冬12小时），沥干','将泡好的黄豆分次放入豆浆机/破壁机，加清水至900ml刻度线','启动「纯豆浆」或「五谷豆浆」功能打好','用筛网或纱布过滤豆渣','趁热饮用，可加少许代糖']},
+{id:102,name:'水煮蛋',category:'早餐',difficulty:'简单',cook_time:12,servings:2,tags:['快手','高蛋白','减脂'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个(每人1个)'},{name:'冷水',amount:'没过鸡蛋约2cm'},{name:'盐',amount:'少许(可选，防裂)'},{name:'白醋',amount:'几滴(可选，方便剥壳)'}],steps:['鸡蛋洗净，冷水下锅，水量没过鸡蛋约2cm','滴几滴白醋可让蛋壳更好剥','中大火烧开，水开后立即计时','煮6分钟溏心蛋 / 煮8分钟全熟蛋 / 煮10分钟老蛋','到时间后捞出放入凉白开或冷水中浸泡1分钟','磕壳后剥开即可']},
+{id:103,name:'预约蒸贝贝南瓜',category:'早餐',difficulty:'简单',cook_time:25,servings:2,tags:['粗粮','清淡','健康','早餐'],excluded:false,ingredients:[{name:'贝贝南瓜',amount:'1个(约300g)'},{name:'水',amount:'蒸锅水适量'}],steps:['贝贝南瓜洗净，从顶部1/3处切开，挖去瓤和籽','（如用蒸烤箱预约，可省去此步，直接整个带皮蒸）','蒸锅大火烧开水，放入南瓜块蒸20-25分钟','用筷子戳最厚处，能轻松戳透即熟','带皮挖出装碗，趁热吃']},
+{id:104,name:'少油煎蛋',category:'早餐',difficulty:'简单',cook_time:5,servings:2,tags:['快手','早餐','高蛋白'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个(每人1个)'},{name:'橄榄油',amount:'约1茶匙(薄薄润锅底)'},{name:'盐',amount:'少许'},{name:'黑胡椒',amount:'少许(可选)'}],steps:['平底不粘锅中小火热锅','倒入约1茶匙橄榄油，轻轻晃动让油均匀铺开','鸡蛋打入碗中备用','油温至微微冒烟，倒入鸡蛋','中火煎，蛋白凝固后可用锅铲轻压边缘','煎至想要的熟度（底部金黄、上面微凝），撒盐和黑胡椒出锅']},
+{id:105,name:'热牛奶冲泡纯燕麦',category:'早餐',difficulty:'简单',cook_time:5,servings:2,tags:['早餐','快手','养生'],excluded:false,ingredients:[{name:'纯燕麦片',amount:'40g(两人约2满勺)'},{name:'纯牛奶',amount:'250ml(约1杯)'},{name:'蜂蜜',amount:'少许(可选)'},{name:'坚果',amount:'少许(可选装饰)'}],steps:['将纯燕麦片放入碗中','牛奶倒入小锅中小火加热至微沸（约70-80°C，不要煮开）','将热牛奶缓缓倒入燕麦中，边倒边搅拌','盖上盖子或覆保鲜膜，焖3分钟','打开后撒少许蜂蜜拌匀，可加坚果点缀']},
+{id:106,name:'现蒸鸡蛋羹',category:'早餐',difficulty:'简单',cook_time:15,servings:2,tags:['早餐','蒸菜','清淡','高蛋白'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'温水',amount:'300ml(鸡蛋液的1.5倍)'},{name:'盐',amount:'少许'},{name:'生抽',amount:'几滴'},{name:'香油',amount:'几滴'},{name:'小葱',amount:'少许切末'}],steps:['鸡蛋打入碗中轻轻打散（不要打出泡沫）','加入300ml温水（约35°C），加少许盐搅匀','用筛网过滤蛋液2遍，去除气泡和蛋筋','倒入陶瓷蒸碗，盖保鲜膜（扎几个小孔）','蒸锅大火烧开水，放入蛋液碗','中火蒸10分钟，关火后再焖2分钟','淋生抽和香油，撒葱花']},
+{id:107,name:'牛油果水煮蛋碎',category:'早餐',difficulty:'简单',cook_time:8,servings:2,tags:['早餐','高蛋白','健康','生酮'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'牛油果',amount:'1个成熟'},{name:'柠檬汁',amount:'几滴(防氧化可选)'},{name:'盐',amount:'少许'},{name:'黑胡椒',amount:'少许'},{name:'全麦吐司',amount:'2片(搭配)'}],steps:['鸡蛋冷水下锅，中大火烧开后煮8分钟全熟','捞出放入凉水浸泡1分钟，剥壳切碎','牛油果对半切开去核，挖出果肉切小块','将鸡蛋碎和牛油果块混合','撒盐、黑胡椒、几滴柠檬汁轻轻拌匀','搭配全麦吐司食用']},
+{id:108,name:'韭菜炒鸡蛋',category:'早餐',difficulty:'简单',cook_time:8,servings:2,tags:['早餐','家常','快手菜'],excluded:false,ingredients:[{name:'韭菜',amount:'150g'},{name:'鸡蛋',amount:'2个'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['韭菜洗净切段（叶和梗分开），鸡蛋打散加少许盐','锅中倒油烧至七成热，倒入蛋液炒成大块盛出','锅中留底油，先放韭菜梗中火翻炒15秒','再放韭菜叶翻炒15秒','倒回鸡蛋加盐，快速翻炒均匀出锅']},
+{id:109,name:'蒸鲜玉米',category:'早餐',difficulty:'简单',cook_time:20,servings:2,tags:['粗粮','清淡','早餐','健康'],excluded:false,ingredients:[{name:'新鲜甜玉米',amount:'1根(约200g)'},{name:'水',amount:'蒸锅水适量'}],steps:['玉米剥去外皮留最后一层薄皮（保留有清香），去须','蒸锅大火烧开水','放入玉米中火蒸15-20分钟','用筷子能轻松戳入即熟','趁热食用']},
+{id:110,name:'无糖酸奶+新鲜黄瓜',category:'早餐',difficulty:'简单',cook_time:3,servings:2,tags:['收尾餐','快手','清淡'],excluded:false,ingredients:[{name:'无糖酸奶',amount:'200g(两人各100g)'},{name:'黄瓜',amount:'1根(约150g)'}],steps:['黄瓜洗净切成小条或薄片','两人分装酸奶，搭配黄瓜条食用','可加入少许奇亚籽或亚麻籽增加口感']},
+// === 午餐类 ===
+{id:111,name:'鲜活鲜虾白灼',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['海鲜','清淡','快手','低脂'],excluded:false,ingredients:[{name:'鲜活基围虾',amount:'250g(约15只2人份)'},{name:'姜',amount:'3片'},{name:'葱',amount:'2根'},{name:'料酒',amount:'1汤匙'},{name:'生抽',amount:'2汤匙'},{name:'香油',amount:'几滴'},{name:'蒜',amount:'1瓣(蘸汁)'}],steps:['鲜活虾洗净，剪去虾须和虾枪，挑去虾线','锅中加水、料酒、姜片、葱段大火烧开','水开后倒入虾，大火煮1-2分钟','虾身弯曲变红即可捞出（不要煮过头）','蘸汁：生抽+香油+蒜末调匀','摆盘趁热吃']},
+{id:112,name:'蒜蓉空心菜',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素菜','快手','清淡','家常'],excluded:false,ingredients:[{name:'空心菜',amount:'400g'},{name:'蒜',amount:'4瓣(约2茶匙蒜蓉)'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'},{name:'蚝油',amount:'1茶匙(可选提鲜)'}],steps:['空心菜去根切段，洗净沥干','蒜切末','锅中倒油烧至冒烟，放入蒜末爆香（5秒）','倒入空心菜大火快炒，先放梗后放叶','加盐和少许蚝油，持续大火翻炒','炒至叶子微微塌陷立刻出锅（约1分钟，不要炒过头）']},
+{id:113,name:'黑椒香煎老豆腐',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['素菜','快手','家常','高蛋白'],excluded:false,ingredients:[{name:'老豆腐/北豆腐',amount:'1块(约300g)'},{name:'黑胡椒粉',amount:'1茶匙'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1汤匙'},{name:'橄榄油',amount:'2汤匙'},{name:'小葱',amount:'1根切末'}],steps:['老豆腐切成1.5cm厚方块，厨房纸吸干表面水分','平底锅中火烧热，倒入橄榄油','将豆腐块均匀放入，中火煎3分钟','翻面再煎3分钟至两面金黄','撒黑胡椒粉和少许盐','淋生抽调味，撒葱花出锅']},
+{id:114,name:'清炒苋菜',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素菜','快手','清淡','家常'],excluded:false,ingredients:[{name:'苋菜',amount:'300g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'},{name:'蒜皮',amount:'几颗(可选，提鲜)'}],steps:['苋菜去根洗净，蒜切片','锅中倒油烧热，爆香蒜片','放入苋菜大火快炒','加盐调味，翻炒至苋菜变软出汁即可出锅']},
+{id:115,name:'鲜活鲈鱼现蒸',category:'午餐',difficulty:'简单',cook_time:20,servings:2,tags:['鱼','清淡','蒸菜','高蛋白'],excluded:false,ingredients:[{name:'鲜活鲈鱼',amount:'1条(约400g)'},{name:'姜',amount:'4片'},{name:'葱',amount:'2根'},{name:'蒸鱼豉油',amount:'2汤匙'},{name:'料酒',amount:'1汤匙'},{name:'热食用油',amount:'2汤匙(泼葱用)'}],steps:['鲈鱼请摊主处理干净，洗净擦干，两面各划3刀','鱼身抹料酒，肚子里和表面各放2片姜','蒸锅大火烧开水，放入鱼盘','大火蒸8分钟（每斤约6分钟，此处约400g蒸8分钟）','倒掉盘中腥水，铺葱丝','淋蒸鱼豉油，泼上热油滋香','趁热享用']},
+{id:116,name:'清炒长豆角',category:'午餐',difficulty:'简单',cook_time:12,servings:2,tags:['素菜','清淡','家常'],excluded:false,ingredients:[{name:'长豆角/豇豆',amount:'300g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'生抽',amount:'少许'},{name:'食用油',amount:'1.5汤匙'},{name:'干辣椒',amount:'1个(可选微辣)'}],steps:['长豆角去头尾，掰成4-5cm段，洗净','沸水加少许盐和油，放入豆角焯水3分钟捞出（去豆腥并确保熟透）','锅中倒油爆香蒜片和干辣椒','放入焯好的豆角大火快炒1分钟','加盐和少许生抽调味，翻炒均匀出锅']},
+{id:117,name:'青椒千张丝',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['素菜','家常','清淡','高蛋白'],excluded:false,ingredients:[{name:'青椒',amount:'2个(约200g)'},{name:'千张/豆腐皮',amount:'100g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1茶匙'},{name:'香油',amount:'几滴'},{name:'食用油',amount:'1.5汤匙'}],steps:['青椒去籽切细丝，千张切细丝（越细越好）','千张丝可焯水1分钟去豆腥并使其变软','锅中倒油爆香蒜末','先放青椒丝中火翻炒1分钟至微微变软','放入千张丝，加少许生抽和盐','大火翻炒1分钟，淋香油出锅']},
+{id:118,name:'蒜蓉丝瓜',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['素菜','清淡','养生','蒸菜'],excluded:false,ingredients:[{name:'丝瓜',amount:'2根(约400g)'},{name:'蒜',amount:'5瓣(约2.5茶匙蒜蓉)'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'枸杞',amount:'几粒(可选装饰)'},{name:'食用油',amount:'1汤匙'}],steps:['丝瓜去皮切滚刀块，均匀码在盘中','蒜切末分成两份，一份铺在丝瓜上','水开后放入蒸锅大火蒸8分钟','取出倒掉盘中蒸出的水','淋生抽，铺上剩余的生蒜蓉','热油泼在蒜蓉上滋香，淋香油即可']},
+{id:119,name:'新鲜番茄炖嫩豆腐',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['素菜','清淡','家常','开胃'],excluded:false,ingredients:[{name:'番茄',amount:'2个(约300g)'},{name:'嫩豆腐',amount:'1盒(约300g)'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'},{name:'香油',amount:'几滴'},{name:'食用油',amount:'1汤匙'}],steps:['番茄顶部划十字，开水烫30秒去皮，切成小块','嫩豆腐切2cm小块','锅中少许油炒番茄至软烂出汁','加清水300ml大火烧开','放入豆腐块，轻轻推动，中火煮5分钟','加盐调味，撒葱花，淋香油出锅']},
+{id:120,name:'凉拌番茄黄瓜',category:'午餐',difficulty:'简单',cook_time:5,servings:2,tags:['凉菜','快手','清淡','素'],excluded:false,ingredients:[{name:'番茄',amount:'2个(约250g)'},{name:'黄瓜',amount:'1根(约150g)'},{name:'蒜',amount:'1瓣(可选)'},{name:'苹果醋',amount:'1汤匙(或柠檬汁)'},{name:'橄榄油',amount:'1茶匙'},{name:'盐',amount:'少许'},{name:'黑胡椒',amount:'少许'}],steps:['番茄顶部划十字，开水烫30秒去皮，切成月牙块','黄瓜洗净，用刀背拍碎后切小块','将番茄和黄瓜块放入碗中','调汁：苹果醋+橄榄油+少许盐和黑胡椒','将酱汁淋入拌匀','冷藏10分钟后食用更佳']},
+// === 晚餐类 ===
+{id:121,name:'鲜虾嫩豆腐煲',category:'晚餐',difficulty:'简单',cook_time:20,servings:2,tags:['海鲜','豆腐','清淡','家常'],excluded:false,ingredients:[{name:'鲜活基围虾',amount:'200g'},{name:'嫩豆腐',amount:'1盒(约300g)'},{name:'姜',amount:'2片'},{name:'葱',amount:'1根'},{name:'盐',amount:'少许'},{name:'白胡椒',amount:'少许'},{name:'香油',amount:'几滴'},{name:'水淀粉',amount:'1汤匙(淀粉+水)'},{name:'高汤或清水',amount:'400ml'}],steps:['虾去壳留尾，开背去虾线，加少许盐和白胡椒腌制5分钟','嫩豆腐切2cm小块','锅中加高汤/清水烧开，放入姜片','轻轻放入豆腐块，中火煮3分钟','放入虾仁煮1分钟至变色','加水淀粉轻轻推动勾薄芡','撒葱花，淋香油出锅']},
+{id:122,name:'茄子瘦肉片快炒',category:'晚餐',difficulty:'中等',cook_time:20,servings:2,tags:['荤菜','家常','下饭'],excluded:false,ingredients:[{name:'茄子',amount:'300g(1个圆茄或2个长茄)'},{name:'瘦肉片/猪里脊',amount:'150g'},{name:'蒜',amount:'3瓣'},{name:'姜',amount:'2片'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'1茶匙'},{name:'料酒',amount:'1汤匙'},{name:'淀粉',amount:'1茶匙'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['茄子切滚刀块，撒少许盐腌10分钟后挤去水分','瘦肉片加料酒和淀粉抓匀腌5分钟','锅中倒油烧至六成热，放入茄子中火煎至软身捞出','锅留底油，滑炒肉片至变色盛出','锅中再加少许油，爆香蒜片姜片','放回茄子，加生抽和老抽翻炒','倒入肉片，加少许盐，大火快炒1分钟出锅']},
+{id:123,name:'蒜蓉生菜',category:'晚餐',difficulty:'简单',cook_time:5,servings:2,tags:['素菜','快手','清淡'],excluded:false,ingredients:[{name:'生菜/球生菜',amount:'300g'},{name:'蒜',amount:'3瓣'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'橄榄油',amount:'1汤匙'}],steps:['生菜叶洗净撕成大块，蒜切末','锅中烧开水，加少许盐和油','放入生菜焯水10秒迅速捞出（保持翠绿和脆感）','将生菜挤去多余水分装盘','锅中倒橄榄油爆香蒜末','淋在生菜上，加生抽和香油拌匀']},
+{id:124,name:'现煮新鲜毛豆',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['快手','健康','素食','小吃'],excluded:false,ingredients:[{name:'新鲜毛豆',amount:'300g(带壳)'},{name:'盐',amount:'约10g(约2茶匙)'},{name:'清水',amount:'适量'},{name:'八角',amount:'1个(可选)'},{name:'花椒',amount:'5粒(可选)'},{name:'干辣椒',amount:'1个(可选微辣)'}],steps:['毛豆用清水冲洗干净，剪去两端尖角（便于入味）','锅中加水、八角、花椒、干辣椒和盐，大火烧开','放入毛豆，大火煮开后转中火煮10-12分钟','不要盖盖煮（盖盖会让毛豆发黄）','捞出沥干水，趁热食用']}
+];
+
+// ===== 初始化 =====
+function init() {
+  // 首次使用自动加载内置食谱 + 本周定制食谱
+  if (!localStorage.getItem('recipes_init')) {
+    recipes = JSON.parse(JSON.stringify([...BUILTIN_RECIPES, ...WEEKLY_RECIPES]));
+    saveToStorage();
+    localStorage.setItem('recipes_init', '1');
+  } else {
+    loadRecipesFromStorage();
+  }
+  addIngredientRow(); addIngredientRow();
+  addStepRow(); addStepRow();
+}
+
+function loadRecipesFromStorage() {
+  const data = localStorage.getItem('recipes');
+  recipes = data ? JSON.parse(data) : [];
+  renderList();
+}
+
+function saveToStorage() {
+  localStorage.setItem('recipes', JSON.stringify(recipes));
+}
+
+// ===== 页面切换 =====
+function switchPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (name === 'list') renderList();
+}
+
+function goBack() {
+  switchPage('list', null);
+  document.querySelectorAll('.nav-item')[1].classList.add('active');
+}
+
+function setFilter(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent === (cat === 'all' ? '全部' : cat));
+  });
+  switchPage('list', document.querySelectorAll('.nav-item')[1]);
+}
+
+// ===== 随机选菜 =====
+let randomResultId = null;
+let randomCategory = 'all';
+
+function setRandomCategory(cat, btn) {
+  randomCategory = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => {
+    b.style.background = 'rgba(255,255,255,.08)';
+    b.classList.remove('active');
+  });
+  btn.style.background = 'var(--accent)';
+  btn.classList.add('active');
+}
+
+function pickRandom() {
+  let items = recipes.filter(r => !r.excluded);
+  
+  // 按分类筛选
+  if (randomCategory !== 'all') {
+    items = items.filter(r => r.category === randomCategory);
+  }
+  
+  if (items.length === 0) {
+    showToast(randomCategory === 'all' ? '食谱库是空的，先添加几道菜吧' : '该分类暂无食谱');
+    return;
+  }
+  
+  const idx = Math.floor(Math.random() * items.length);
+  const r = items[idx];
+  randomResultId = r.id;
+  
+  document.getElementById('randomResult').textContent = r.name;
+  document.getElementById('randomMeta').textContent = r.category + ' · ' + r.difficulty + ' · ' + r.cook_time + '分钟';
+  document.getElementById('resultName').textContent = r.name;
+  document.getElementById('resultMeta').textContent = r.category + ' · ' + r.difficulty + ' · ' + r.cook_time + '分钟';
+  document.getElementById('wheelResult').classList.add('show');
+  
+  // 动画效果
+  const card = document.getElementById('randomCard');
+  card.style.transform = 'scale(0.95)';
+  setTimeout(() => card.style.transform = 'scale(1)', 150);
+}
+
+function viewResultDetail() {
+  if (!randomResultId) return;
+  const r = recipes.find(x => x.id === randomResultId);
+  if (r) showDetail(r);
+}
+
+// ===== 列表 =====
+function getActiveRecipes() {
+  let list = recipes.filter(r => !r.excluded);
+  if (currentFilter !== 'all') list = list.filter(r => r.category === currentFilter);
+  return list;
+}
+
+function renderList() {
+  const container = document.getElementById('recipeList');
+  const query = (document.getElementById('searchInput') && document.getElementById('searchInput').value || '').trim().toLowerCase();
+  let list = getActiveRecipes();
+  if (query) {
+    list = recipes.filter(r => !r.excluded && (
+      r.name.toLowerCase().includes(query) ||
+      r.category.includes(query) ||
+      (r.tags || []).some(t => t.toLowerCase().includes(query)) ||
+      (r.ingredients || []).some(ig => ig.name.toLowerCase().includes(query))
+    ));
+  }
+  if (list.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="big">📭</div><p>暂无食谱<br><span style="font-size:.85rem">去「添加」里新建或批量导入</span></p></div>';
+    return;
+  }
+  container.innerHTML = list.map(r => `
+    <div class="recipe-card${r.excluded ? ' excluded' : ''}" onclick="showDetail(recipes.find(x=>x.id===' + r.id + '))">
+      <div class="name">${esc(r.name)}</div>
+      <div class="meta">
+        <span class="info">${r.category} · ${r.difficulty} · ${r.cook_time}分钟</span>
+        ${(r.tags || []).map(t => '<span class="tag">' + esc(t) + '</span>').join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== 详情 =====
+function showDetail(r) {
+  if (!r) return;
+  currentDetail = r;
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-title">${esc(r.name)}</div>
+    <div class="detail-tags">
+      <span class="tag">${r.category}</span>
+      <span class="tag">${r.difficulty}</span>
+      <span class="tag">⏱ ${r.cook_time}分钟</span>
+      <span class="tag">👥 ${r.servings || 2}人份</span>
+    </div>
+    <div class="detail-section">
+      <h3>🛒 食材（${r.servings || 2}人份）</h3>
+      <ul>${(r.ingredients || []).map(ig => '<li>' + esc(ig.name) + ' <strong>' + esc(ig.amount) + '</strong></li>').join('')}</ul>
+    </div>
+    <div class="detail-section">
+      <h3>👨‍🍳 做法步骤</h3>
+      <ol>${(r.steps || []).map((s, i) => '<li>' + esc(s) + '</li>').join('')}</ol>
+    </div>
+    <div class="detail-actions">
+      <button class="btn btn-outline" onclick="toggleExclude(${r.id}, ${!r.excluded})">${r.excluded ? '✅ 恢复' : '🚫 今天不想吃'}</button>
+      <button class="btn btn-gray" onclick="deleteRecipe(${r.id})">🗑️ 删除</button>
+    </div>
+  `;
+  switchPage('detail', null);
+}
+
+function toggleExclude(id, val) {
+  const r = recipes.find(x => x.id === id);
+  if (r) { r.excluded = val; saveToStorage(); showDetail(r); }
+  renderList(); drawWheel();
+}
+
+function deleteRecipe(id) {
+  if (!confirm('确定删除这道菜？')) return;
+  recipes = recipes.filter(r => r.id !== id);
+  saveToStorage();
+  showToast('已删除');
+  goBack();
+}
+
+function clearExcluded() {
+  recipes.forEach(r => r.excluded = false);
+  saveToStorage();
+  showToast('已清除所有排除标记');
+  renderList(); drawWheel();
+}
+
+// ===== 添加 =====
+let nextId = 1;
+
+function saveRecipe() {
+  const name = document.getElementById('f_name').value.trim();
+  if (!name) { showToast('请输入菜名'); return; }
+  const ingredients = [];
+  document.querySelectorAll('.ingredient-row').forEach(row => {
+    const n = row.querySelector('.ig-name') && row.querySelector('.ig-name').value.trim();
+    const a = row.querySelector('.ig-amount') && row.querySelector('.ig-amount').value.trim();
+    if (n) ingredients.push({ name: n, amount: a || '' });
+  });
+  const steps = [];
+  document.querySelectorAll('.step-row input').forEach(inp => {
+    if (inp.value.trim()) steps.push(inp.value.trim());
+  });
+  const maxId = recipes.reduce((m, r) => Math.max(m, r.id || 0), 0);
+  const recipe = {
+    id: maxId + 1,
+    name,
+    category: document.getElementById('f_category').value,
+    difficulty: document.getElementById('f_difficulty').value,
+    cook_time: parseInt(document.getElementById('f_time').value) || 30,
+    servings: 2,
+    ingredients,
+    steps,
+    tags: document.getElementById('f_tags').value.split(/[,，]/).map(t => t.trim()).filter(Boolean),
+    excluded: false
+  };
+  recipes.unshift(recipe);
+  saveToStorage();
+  showToast('食谱已保存！');
+  renderList(); drawWheel();
+  switchPage('list', document.querySelectorAll('.nav-item')[1]);
+}
+
+function addIngredientRow() {
+  const div = document.createElement('div');
+  div.className = 'ingredient-row';
+  div.innerHTML = '<input type="text" class="ig-name" placeholder="食材名" style="flex:2"> <input type="text" class="ig-amount" placeholder="用量（如：2个、半勺）" style="flex:1"> <button class="remove-ig" onclick="this.parentElement.remove()">✕</button>';
+  document.getElementById('ingredientsList').appendChild(div);
+}
+
+function addStepRow() {
+  const div = document.createElement('div');
+  div.className = 'step-row';
+  const n = document.querySelectorAll('.step-row').length + 1;
+  div.innerHTML = '<div class="step-num">' + n + '</div><input type="text" placeholder="步骤' + n + '...">';
+  document.getElementById('stepsList').appendChild(div);
+  renumberSteps();
+}
+
+function renumberSteps() {
+  document.querySelectorAll('.step-row').forEach((row, i) => {
+    row.querySelector('.step-num').textContent = i + 1;
+    row.querySelector('input').placeholder = '步骤' + (i + 1) + '...';
+  });
+}
+
+// ===== 批量导入 =====
+function batchImport() {
+  const text = document.getElementById('importText').value.trim();
+  if (!text) { showToast('请输入要导入的内容'); return; }
+  const lines = text.split('\n').filter(l => l.trim());
+  let count = 0;
+  const maxId = recipes.reduce((m, r) => Math.max(m, r.id || 0), 0);
+  lines.forEach((line, idx) => {
+    const parts = line.split('|').map(s => s.trim());
+    if (parts.length < 1 || !parts[0]) return;
+    const ingredients = (parts[4] || '').split(';').filter(Boolean).map(s => {
+      const m = s.match(/(.+?)([\d].*)/);
+      return m ? { name: m[1].trim(), amount: m[2].trim() } : { name: s.trim(), amount: '' };
+    });
+    recipes.push({
+      id: maxId + 1 + idx,
+      name: parts[0],
+      category: parts[1] || '午餐',
+      difficulty: parts[2] || '简单',
+      cook_time: parseInt(parts[3]) || 30,
+      servings: 2,
+      ingredients,
+      steps: [],
+      tags: (parts[5] || '').split(/[,，]/).filter(Boolean),
+      excluded: false
+    });
+    count++;
+  });
+  if (count === 0) { showToast('未识别到有效数据'); return; }
+  saveToStorage();
+  showToast('成功导入 ' + count + ' 道食谱！');
+  document.getElementById('importText').value = '';
+  renderList(); drawWheel();
+}
+
+// ===== 重置为默认食谱 =====
+function resetToDefaultRecipes() {
+  if (!confirm('确定要重置食谱库吗？当前所有自定义食谱将被覆盖！')) return;
+  recipes = JSON.parse(JSON.stringify([...BUILTIN_RECIPES, ...WEEKLY_RECIPES]));
+  saveToStorage();
+  renderList();
+  showToast('食谱库已重置为默认30道+本周24道健康餐');
+}
+
+// ===== 工具 =====
+function esc(s) {
+  if (!s) return '';
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ===== Supabase（可选）=====
+function saveConfig() {
+  const url = document.getElementById('cfg_url').value.trim();
+  const key = document.getElementById('cfg_key').value.trim();
+  if (!url || !key) { showToast('请填写URL和Key'); return; }
+  localStorage.setItem('sb_url', url);
+  localStorage.setItem('sb_key', key);
+  showToast('配置已保存（Supabase联网功能开发中）');
+}
+
+// ===== AI生成菜谱（本地数据匹配+扩展）=====
+const RECIPE_DATABASE = {
+  '红烧肉': {category:'晚餐',difficulty:'中等',cook_time:60,ingredients:[{name:'五花肉',amount:'500g'},{name:'冰糖',amount:'30g'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'1汤匙'},{name:'料酒',amount:'2汤匙'},{name:'姜',amount:'4片'},{name:'八角',amount:'2个'},{name:'桂皮',amount:'1小块'},{name:'香叶',amount:'2片'}],steps:['五花肉切3cm方块，冷水下锅焯水5分钟捞出洗净','锅中放少许油，放入冰糖小火炒至焦糖色','放入五花肉翻炒上色，加姜片、八角、桂皮、香叶炒香','加入生抽、老抽、料酒','倒入热水没过肉，大火烧开后转小火炖50分钟','大火收汁至浓稠，汤汁均匀挂在肉上出锅'],tags:['荤菜','家常','下饭']},
+  '清蒸鱼': {category:'晚餐',difficulty:'简单',cook_time:20,ingredients:[{name:'鲈鱼',amount:'1条(约500g)'},{name:'姜',amount:'4片'},{name:'小葱',amount:'3根'},{name:'蒸鱼豉油',amount:'3汤匙'},{name:'料酒',amount:'1汤匙'},{name:'食用油',amount:'2汤匙'}],steps:['鲈鱼去鳞去内脏洗净，两面各划3刀','鱼身抹少许料酒和盐，肚内塞姜片，腌10分钟','蒸锅水烧开，放入鱼盘，大火蒸8分钟','倒掉蒸出的腥水，去掉姜片','鱼身铺葱丝姜丝','淋上蒸鱼豉油','锅中烧热2汤匙油，浇在葱丝上滋香'],tags:['鱼','清淡','蒸菜']},
+  '蒜蓉粉丝扇贝': {category:'晚餐',difficulty:'中等',cook_time:25,ingredients:[{name:'扇贝',amount:'8个'},{name:'粉丝',amount:'1把(约40g)'},{name:'蒜',amount:'1整头(约10瓣)'},{name:'小葱',amount:'2根'},{name:'生抽',amount:'2汤匙'},{name:'食用油',amount:'3汤匙'},{name:'料酒',amount:'1茶匙'}],steps:['粉丝用温水泡软后剪短','扇贝洗净，取下肉去除内脏，壳刷净','蒜切成蒜末，葱切葱花','锅中倒2汤匙油，小火放入蒜末炒至微黄出香（不要炒糊）','粉丝铺在扇贝壳上，放上扇贝肉','淋少许料酒，浇上蒜蓉','蒸锅大火烧开，放入扇贝蒸5分钟','取出淋生抽，撒葱花，再浇1汤匙热油'],tags:['海鲜','蒸菜','宴客']},
+  '红烧肉': null, // 和上面红烧肉是同一道菜，会被匹配到
+};
+
+// 名称相似度匹配
+function findSimilarRecipe(name) {
+  const n = name.replace(/[（(].*[）)]/g,'').trim();
+  for (const key in RECIPE_DATABASE) {
+    if (key.includes(n) || n.includes(key) || key === n) {
+      return {name: key, ...RECIPE_DATABASE[key]};
+    }
+  }
+  return null;
+}
+
+function aiGenerateRecipe() {
+  const input = document.getElementById('aiInput').value.trim();
+  if (!input) { showToast('请输入菜名'); return; }
+  
+  const found = findSimilarRecipe(input);
+  if (found) {
+    const maxId = recipes.reduce((m, r) => Math.max(m, r.id || 0), 0);
+    const recipe = {
+      id: maxId + 1,
+      name: input,
+      category: found.category || '午餐',
+      difficulty: found.difficulty || '中等',
+      cook_time: found.cook_time || 30,
+      servings: 2,
+      ingredients: found.ingredients || [],
+      steps: found.steps || [],
+      tags: found.tags || [],
+      excluded: false
+    };
+    recipes.unshift(recipe);
+    saveToStorage();
+    showToast('已添加「' + input + '」！');
+    document.getElementById('aiInput').value = '';
+    renderList(); drawWheel();
+    return;
+  }
+  
+  showToast('暂无此菜谱，请手动添加或稍后补充');
+}
+
+// 启动
+init();
+</script>
+</body>
+</html>
