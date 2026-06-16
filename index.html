@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>浠婂ぉ鍚冧粈涔堬紵</title>
+<title>今天吃什么？</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -54,7 +54,7 @@ body{
 .container{max-width:480px;margin:0 auto;padding:clamp(10px, 3vw, 16px)}
 .page{display:none}.page.active{display:block}
 
-/* 杞洏 */
+/* 转盘 */
 .wheel-section{text-align:center;padding:clamp(14px, 3vw, 20px) 0}
 .wheel-wrap{position:relative;width:var(--wheel-size);height:var(--wheel-size);margin:12px auto}
 .wheel-canvas{width:var(--wheel-size);height:var(--wheel-size);border-radius:50%;border:3px solid var(--accent);cursor:pointer;transition:transform 3.2s cubic-bezier(.17,.67,.12,.99)}
@@ -67,13 +67,13 @@ body{
 .result-meta{color:var(--text2);font-size:.8rem}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* 鎼滅储 */
+/* 搜索 */
 .search-box{display:flex;gap:8px;margin-bottom:12px}
 .search-box input{flex:1;background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:10px 14px;border-radius:var(--radius);font-size:1rem;outline:none;min-height:var(--tap-min)}
 .search-box input::placeholder{color:var(--text2)}
 .search-box button{background:var(--accent);color:#fff;border:none;padding:10px 16px;border-radius:var(--radius);cursor:pointer;font-size:1rem;min-height:var(--tap-min)}
 
-/* 鍒楄〃 */
+/* 列表 */
 .recipe-list{display:flex;flex-direction:column;gap:8px}
 .recipe-card{background:var(--card);border-radius:var(--radius);padding:clamp(12px, 3vw, 16px);cursor:pointer;transition:.2s;border-left:3px solid transparent;min-height:var(--tap-min)}
 .recipe-card:hover{border-left-color:var(--accent);transform:translateX(3px)}
@@ -84,7 +84,7 @@ body{
 .empty-state{text-align:center;padding:40px;color:var(--text2)}
 .empty-state .big{font-size:2.5rem;margin-bottom:10px}
 
-/* 璇︽儏 */
+/* 详情 */
 .detail-back{background:none;border:none;color:var(--accent);font-size:.95rem;cursor:pointer;padding:8px 0;margin-bottom:10px;min-height:var(--tap-min)}
 .detail-title{font-size:clamp(1.1rem, 4vw, 1.3rem);margin-bottom:10px}
 .detail-section{margin-bottom:16px}
@@ -101,7 +101,7 @@ body{
 .btn-outline:hover{background:rgba(233,69,96,.1)}
 .btn-gray{background:#2a2a3e;color:#aaa}
 
-/* 琛ㄥ崟 */
+/* 表单 */
 .form-group{margin-bottom:14px}
 .form-group label{display:block;margin-bottom:5px;color:var(--text2);font-size:.82rem}
 .form-group input,.form-group select,.form-group textarea{
@@ -119,11 +119,11 @@ body{
 .step-num{background:var(--accent);color:#fff;min-width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;margin-top:10px}
 .step-row input{flex:1;min-height:var(--tap-min)}
 
-/* 瀵煎叆 */
+/* 导入 */
 .import-hint{color:var(--text2);font-size:.8rem;margin-bottom:7px;line-height:1.5}
 .import-area textarea{min-height:120px;font-size:.82rem}
 
-/* 搴曢儴 */
+/* 底部 */
 .bottom-nav{
   position:fixed;bottom:0;left:0;right:0;
   background:var(--accent2);
@@ -149,7 +149,7 @@ body{
   font-size:.85rem;z-index:999;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap
 }
 
-/* 閰嶇疆椤?*/
+/* 配置页 */
 .config-section{margin-bottom:20px}
 .config-section h3{color:var(--accent);margin-bottom:10px;font-size:.95rem}
 .config-section p{color:var(--text2);font-size:.82rem;margin-bottom:8px;line-height:1.5}
@@ -159,147 +159,147 @@ body{
 <body>
 
 <div class="header">
-  <h1>馃嵔锔?浠婂ぉ鍚冧粈涔堬紵</h1>
+  <h1>🍽️ 今天吃什么？</h1>
   <div class="tabs">
-    <button class="tab-btn active" onclick="setFilter('all')">鍏ㄩ儴</button>
-    <button class="tab-btn" onclick="setFilter('鏃╅')">鏃╅</button>
-    <button class="tab-btn" onclick="setFilter('鍗堥')">鍗堥</button>
-    <button class="tab-btn" onclick="setFilter('鏅氶')">鏅氶</button>
-    <button class="tab-btn" onclick="setFilter('澶滃')">澶滃</button>
-    <button class="tab-btn" onclick="setFilter('鐢滃搧')">鐢滃搧</button>
+    <button class="tab-btn active" onclick="setFilter('all')">全部</button>
+    <button class="tab-btn" onclick="setFilter('早餐')">早餐</button>
+    <button class="tab-btn" onclick="setFilter('午餐')">午餐</button>
+    <button class="tab-btn" onclick="setFilter('晚餐')">晚餐</button>
+    <button class="tab-btn" onclick="setFilter('夜宵')">夜宵</button>
+    <button class="tab-btn" onclick="setFilter('甜品')">甜品</button>
   </div>
 </div>
 
 <div class="container">
 
-  <!-- 闅忔満閫夎彍 -->
+  <!-- 随机选菜 -->
   <div id="page-wheel" class="page active">
     <div class="wheel-section">
-      <p style="color:var(--text2);margin-bottom:12px">馃幉 閫夋嫨鍒嗙被锛岄殢鏈洪€変竴閬?/p>
+      <p style="color:var(--text2);margin-bottom:12px">🎲 选择分类，随机选一道</p>
       
-      <!-- 鍒嗙被閫夋嫨 -->
+      <!-- 分类选择 -->
       <div class="category-tabs" style="display:flex;justify-content:center;gap:5px;margin-bottom:14px;flex-wrap:wrap;padding:0 4px">
-        <button class="cat-btn active" onclick="setRandomCategory('all',this)" style="background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">鍏ㄩ儴</button>
-        <button class="cat-btn" onclick="setRandomCategory('鏃╅',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">馃寘 鏃╅</button>
-        <button class="cat-btn" onclick="setRandomCategory('鍗堥',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">鈽€锔?鍗堥</button>
-        <button class="cat-btn" onclick="setRandomCategory('鏅氶',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">馃寵 鏅氶</button>
-        <button class="cat-btn" onclick="setRandomCategory('澶滃',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">馃嵒 澶滃</button>
+        <button class="cat-btn active" onclick="setRandomCategory('all',this)" style="background:var(--accent);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">全部</button>
+        <button class="cat-btn" onclick="setRandomCategory('早餐',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">🌅 早餐</button>
+        <button class="cat-btn" onclick="setRandomCategory('午餐',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">☀️ 午餐</button>
+        <button class="cat-btn" onclick="setRandomCategory('晚餐',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">🌙 晚餐</button>
+        <button class="cat-btn" onclick="setRandomCategory('夜宵',this)" style="background:rgba(255,255,255,.08);color:#fff;border:none;padding:8px 14px;border-radius:18px;cursor:pointer;font-size:.8rem;transition:.2s;min-height:var(--tap-min)">🍻 夜宵</button>
       </div>
       
       <div class="random-card" id="randomCard" style="background:var(--card);border-radius:var(--radius);padding:24px;text-align:center;min-height:120px;display:flex;flex-direction:column;justify-content:center;align-items:center;border:1px solid rgba(255,255,255,.1)">
-        <div id="randomResult" style="font-size:1.4rem;color:var(--accent);font-weight:600;min-height:2rem">鐐逛笅鏂规寜閽殢鏈洪€夎彍</div>
+        <div id="randomResult" style="font-size:1.4rem;color:var(--accent);font-weight:600;min-height:2rem">点下方按钮随机选菜</div>
         <div id="randomMeta" style="color:var(--text2);font-size:.85rem;margin-top:8px"></div>
       </div>
       
-      <button class="spin-btn" onclick="pickRandom()" style="width:100%;margin-top:16px">馃幉 闅忔満閫夎彍</button>
+      <button class="spin-btn" onclick="pickRandom()" style="width:100%;margin-top:16px">🎲 随机选菜</button>
       
       <div class="result-box" id="wheelResult" style="margin-top:16px">
         <div class="result-name" id="resultName"></div>
         <div class="result-meta" id="resultMeta"></div>
         <div class="detail-actions">
-          <button class="btn btn-accent" id="resultViewBtn" onclick="viewResultDetail()">鏌ョ湅鍋氭硶</button>
-          <button class="btn btn-outline" onclick="pickRandom()" style="margin-left:8px">鍐嶆娊涓€娆?/button>
+          <button class="btn btn-accent" id="resultViewBtn" onclick="viewResultDetail()">查看做法</button>
+          <button class="btn btn-outline" onclick="pickRandom()" style="margin-left:8px">再抽一次</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 椋熻氨搴?-->
+  <!-- 食谱库 -->
   <div id="page-list" class="page">
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="鎼滅储鑿滃悕銆侀鏉愩€佹爣绛?.." oninput="renderList()">
-      <button onclick="renderList()">馃攳</button>
+      <input type="text" id="searchInput" placeholder="搜索菜名、食材、标签..." oninput="renderList()">
+      <button onclick="renderList()">🔍</button>
     </div>
     <div class="recipe-list" id="recipeList"></div>
   </div>
 
-  <!-- 璇︽儏 -->
+  <!-- 详情 -->
   <div id="page-detail" class="page">
-    <button class="detail-back" onclick="goBack()">鈫?杩斿洖</button>
+    <button class="detail-back" onclick="goBack()">← 返回</button>
     <div id="detailContent"></div>
   </div>
 
-  <!-- 娣诲姞 -->
+  <!-- 添加 -->
   <div id="page-add" class="page">
-    <h2 style="margin-bottom:16px;font-size:1.1rem">馃摑 娣诲姞椋熻氨</h2>
+    <h2 style="margin-bottom:16px;font-size:1.1rem">📝 添加食谱</h2>
     
     <div style="margin-bottom:16px;padding:12px;background:rgba(233,69,96,.08);border-radius:var(--radius);border:1px solid rgba(233,69,96,.2)">
-      <p style="font-size:.85rem;color:var(--text2);margin-bottom:8px">馃挕 鍛婅瘔鎴戣彍鍚嶏紝鎴戝府浣犺ˉ鍏ㄥ畬鏁撮璋?/p>
+      <p style="font-size:.85rem;color:var(--text2);margin-bottom:8px">💡 告诉我菜名，我帮你补全完整食谱</p>
       <div style="display:flex;gap:8px">
-        <input type="text" id="aiInput" placeholder="杈撳叆鑿滃悕锛屽锛氱孩鐑ц倝" style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:8px 12px;border-radius:8px;font-size:.9rem;outline:none">
-        <button onclick="aiGenerateRecipe()" class="btn btn-accent" style="padding:8px 14px;font-size:.85rem">鐢熸垚</button>
+        <input type="text" id="aiInput" placeholder="输入菜名，如：红烧肉" style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:8px 12px;border-radius:8px;font-size:.9rem;outline:none">
+        <button onclick="aiGenerateRecipe()" class="btn btn-accent" style="padding:8px 14px;font-size:.85rem">生成</button>
       </div>
-      <p style="font-size:.75rem;color:var(--text2);margin-top:6px">绀轰緥锛氱孩鐑ц倝銆佹竻钂搁奔銆佽挏钃夌矇涓濇墖璐?..</p>
+      <p style="font-size:.75rem;color:var(--text2);margin-top:6px">示例：红烧肉、清蒸鱼、蒜蓉粉丝扇贝...</p>
     </div>
     
     <div style="margin-bottom:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)">
-      <p style="font-size:.82rem;color:var(--text2)">鎴栨墜鍔ㄥ～鍐欙細</p>
+      <p style="font-size:.82rem;color:var(--text2)">或手动填写：</p>
     </div>
     <div class="form-group">
-      <label>鑿滃悕 *</label>
-      <input type="text" id="f_name" placeholder="渚嬪锛氱暘鑼勭倰铔?>
+      <label>菜名 *</label>
+      <input type="text" id="f_name" placeholder="例如：番茄炒蛋">
     </div>
     <div style="display:flex;gap:8px">
       <div class="form-group" style="flex:1">
-        <label>鍒嗙被</label>
+        <label>分类</label>
         <select id="f_category">
-          <option value="鏃╅">鏃╅</option>
-          <option value="鍗堥" selected>鍗堥</option>
-          <option value="鏅氶">鏅氶</option>
-          <option value="澶滃">澶滃</option>
-          <option value="鐢滃搧">鐢滃搧</option>
-          <option value="楗搧">楗搧</option>
+          <option value="早餐">早餐</option>
+          <option value="午餐" selected>午餐</option>
+          <option value="晚餐">晚餐</option>
+          <option value="夜宵">夜宵</option>
+          <option value="甜品">甜品</option>
+          <option value="饮品">饮品</option>
         </select>
       </div>
       <div class="form-group" style="flex:1">
-        <label>闅惧害</label>
+        <label>难度</label>
         <select id="f_difficulty">
-          <option value="绠€鍗?>绠€鍗?/option>
-          <option value="涓瓑">涓瓑</option>
-          <option value="鍥伴毦">鍥伴毦</option>
+          <option value="简单">简单</option>
+          <option value="中等">中等</option>
+          <option value="困难">困难</option>
         </select>
       </div>
       <div class="form-group" style="flex:1">
-        <label>鐢ㄦ椂锛堝垎閽燂級</label>
+        <label>用时（分钟）</label>
         <input type="number" id="f_time" value="30">
       </div>
     </div>
     <div class="form-group">
-      <label>椋熸潗锛?浜轰唤锛?/label>
+      <label>食材（2人份）</label>
       <div id="ingredientsList"></div>
-      <button class="add-btn" onclick="addIngredientRow()">+ 娣诲姞椋熸潗</button>
+      <button class="add-btn" onclick="addIngredientRow()">+ 添加食材</button>
     </div>
     <div class="form-group">
-      <label>鍋氭硶姝ラ</label>
+      <label>做法步骤</label>
       <div id="stepsList"></div>
-      <button class="add-btn" onclick="addStepRow()">+ 娣诲姞姝ラ</button>
+      <button class="add-btn" onclick="addStepRow()">+ 添加步骤</button>
     </div>
     <div class="form-group">
-      <label>鏍囩锛堥€楀彿鍒嗛殧锛屼緥濡傦細蹇墜鑿?瀹跺父,杈ｏ級</label>
-      <input type="text" id="f_tags" placeholder="蹇墜鑿? 瀹跺父">
+      <label>标签（逗号分隔，例如：快手菜,家常,辣）</label>
+      <input type="text" id="f_tags" placeholder="快手菜, 家常">
     </div>
     <div class="detail-actions">
-      <button class="btn btn-accent" onclick="saveRecipe()">淇濆瓨椋熻氨</button>
-      <button class="btn btn-gray" onclick="switchPage('list')">鍙栨秷</button>
+      <button class="btn btn-accent" onclick="saveRecipe()">保存食谱</button>
+      <button class="btn btn-gray" onclick="switchPage('list')">取消</button>
     </div>
 
     <div style="margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08)">
-      <h3 style="margin-bottom:8px;font-size:.95rem;color:var(--accent)">馃摜 鎵归噺瀵煎叆</h3>
-      <p class="import-hint">姣忚涓€閬擄紝鏍煎紡锛氳彍鍚?| 鍒嗙被 | 闅惧害 | 鐢ㄦ椂(鍒嗛挓) | 椋熸潗(鍒嗗彿鍒嗛殧) | 鏍囩(閫楀彿鍒嗛殧)</p>
-      <textarea id="importText" class="form-group" placeholder="鐣寗鐐掕泲 | 鍗堥 | 绠€鍗?| 15 | 鐣寗2涓?楦¤泲3涓?鐩?绯?娌?| 蹇墜鑿?瀹跺父"></textarea>
-      <button class="btn btn-outline" style="width:100%" onclick="batchImport()">鎵归噺瀵煎叆</button>
+      <h3 style="margin-bottom:8px;font-size:.95rem;color:var(--accent)">📥 批量导入</h3>
+      <p class="import-hint">每行一道，格式：菜名 | 分类 | 难度 | 用时(分钟) | 食材(分号分隔) | 标签(逗号分隔)</p>
+      <textarea id="importText" class="form-group" placeholder="番茄炒蛋 | 午餐 | 简单 | 15 | 番茄2个;鸡蛋3个;盐;糖;油 | 快手菜,家常"></textarea>
+      <button class="btn btn-outline" style="width:100%" onclick="batchImport()">批量导入</button>
     </div>
   </div>
 
-  <!-- 璁剧疆 -->
+  <!-- 设置 -->
   <div id="page-config" class="page">
-    <h2 style="margin-bottom:16px;font-size:1.1rem">鈿欙笍 璁剧疆</h2>
+    <h2 style="margin-bottom:16px;font-size:1.1rem">⚙️ 设置</h2>
     <div class="demo-note">
-      馃搶 褰撳墠涓?strong>鏈湴瀛樺偍妯″紡</strong>锛屾暟鎹繚瀛樺湪鏈満娴忚鍣ㄣ€?br>
-      濡傞渶鍙屼汉鑱旂綉鍚屾锛岃閰嶇疆 Supabase锛堜笅鏂瑰～鍐欏湴鍧€鍜孠ey锛夈€?
+      📌 当前为<strong>本地存储模式</strong>，数据保存在本机浏览器。<br>
+      如需双人联网同步，请配置 Supabase（下方填写地址和Key）。
     </div>
     <div class="config-section">
-      <h3>Supabase 鑱旂綉鍚屾锛堝彲閫夛級</h3>
+      <h3>Supabase 联网同步（可选）</h3>
       <div class="form-group">
         <label>Supabase URL</label>
         <input type="text" id="cfg_url" placeholder="https://xxx.supabase.co">
@@ -308,31 +308,31 @@ body{
         <label>Anon Key</label>
         <input type="text" id="cfg_key" placeholder="eyJ...">
       </div>
-      <button class="btn btn-accent" style="width:100%;margin-bottom:8px" onclick="saveConfig()">淇濆瓨骞惰繛鎺?/button>
-      <p style="color:var(--text2);font-size:.78rem;margin-top:6px">鍦?Supabase SQL 缂栬緫鍣ㄦ墽琛屽缓琛?SQL 鍚庡啀杩炴帴锛岃繛鎺ユ垚鍔熷悗鏁版嵁鑷姩鍚屾銆?/p>
+      <button class="btn btn-accent" style="width:100%;margin-bottom:8px" onclick="saveConfig()">保存并连接</button>
+      <p style="color:var(--text2);font-size:.78rem;margin-top:6px">在 Supabase SQL 编辑器执行建表 SQL 后再连接，连接成功后数据自动同步。</p>
     </div>
     <div class="config-section">
-      <h3>鏁版嵁绠＄悊</h3>
-      <button class="btn btn-outline" style="width:100%;margin-bottom:8px" onclick="loadRecipesFromStorage()">馃攧 鍒锋柊鏁版嵁</button>
-      <button class="btn btn-gray" style="width:100%;margin-bottom:8px" onclick="clearExcluded()">鉁?娓呴櫎鎵€鏈夋帓闄ゆ爣璁?/button>
+      <h3>数据管理</h3>
+      <button class="btn btn-outline" style="width:100%;margin-bottom:8px" onclick="loadRecipesFromStorage()">🔄 刷新数据</button>
+      <button class="btn btn-gray" style="width:100%;margin-bottom:8px" onclick="clearExcluded()">✅ 清除所有排除标记</button>
     </div>
     <div class="config-section">
-      <h3>蹇€熶綋楠?/h3>
-      <p style="color:var(--text2);font-size:.82rem;margin-bottom:8px">涓€閿鍏?0閬撳甯歌彍绀轰緥椋熻氨锛岀珛鍗充綋楠屽畬鏁村姛鑳姐€?/p>
-      <button class="btn btn-outline" style="width:100%" onclick="loadSampleRecipes()">馃摜 瀵煎叆绀轰緥椋熻氨</button>
+      <h3>快速体验</h3>
+      <p style="color:var(--text2);font-size:.82rem;margin-bottom:8px">一键导入10道家常菜示例食谱，立即体验完整功能。</p>
+      <button class="btn btn-outline" style="width:100%" onclick="loadSampleRecipes()">📥 导入示例食谱</button>
     </div>
     <div class="config-section">
-      <h3>閲嶇疆椋熻氨搴?/h3>
-      <p style="color:var(--text2);font-size:.82rem;margin-bottom:8px">鎭㈠涓洪粯璁ょ殑30閬撴竻娣＄礌椋熷甯歌彍椋熻氨锛堜細瑕嗙洊褰撳墠鏁版嵁锛夈€?/p>
-      <button class="btn btn-gray" style="width:100%;color:#e94560;border-color:#e94560" onclick="resetToDefaultRecipes()">馃攧 閲嶇疆涓洪粯璁ら璋?/button>
+      <h3>重置食谱库</h3>
+      <p style="color:var(--text2);font-size:.82rem;margin-bottom:8px">恢复为默认的30道清淡素食家常菜食谱（会覆盖当前数据）。</p>
+      <button class="btn btn-gray" style="width:100%;color:#e94560;border-color:#e94560" onclick="resetToDefaultRecipes()">🔄 重置为默认食谱</button>
     </div>
     <div class="config-section">
-      <h3>Supabase 寤鸿〃 SQL</h3>
+      <h3>Supabase 建表 SQL</h3>
       <textarea readonly style="width:100%;min-height:120px;font-size:.75rem;background:#0d1b3e;border:1px solid rgba(255,255,255,.1);color:var(--text2);padding:10px;border-radius:12px;font-family:monospace;resize:vertical;line-height:1.5">CREATE TABLE IF NOT EXISTS recipes (
   id BIGSERIAL PRIMARY KEY,
   name TEXT NOT NULL,
-  category TEXT NOT NULL DEFAULT '鍗堥',
-  difficulty TEXT NOT NULL DEFAULT '绠€鍗?,
+  category TEXT NOT NULL DEFAULT '午餐',
+  difficulty TEXT NOT NULL DEFAULT '简单',
   cook_time INTEGER NOT NULL DEFAULT 30,
   servings INTEGER NOT NULL DEFAULT 2,
   ingredients JSONB NOT NULL DEFAULT '[]',
@@ -351,103 +351,103 @@ CREATE POLICY "Allow all" ON recipes
 
 </div>
 
-<!-- 搴曢儴瀵艰埅 -->
+<!-- 底部导航 -->
 <div class="bottom-nav">
   <button class="nav-item active" onclick="switchPage('wheel',this)">
-    <span class="nav-icon">馃幉</span><span>闅忔満</span>
+    <span class="nav-icon">🎲</span><span>随机</span>
   </button>
   <button class="nav-item" onclick="switchPage('list',this)">
-    <span class="nav-icon">馃摉</span><span>椋熻氨搴?/span>
+    <span class="nav-icon">📖</span><span>食谱库</span>
   </button>
   <button class="nav-item" onclick="switchPage('add',this)">
-    <span class="nav-icon">鉃?/span><span>娣诲姞</span>
+    <span class="nav-icon">➕</span><span>添加</span>
   </button>
   <button class="nav-item" onclick="switchPage('config',this)">
-    <span class="nav-icon">鈿欙笍</span><span>璁剧疆</span>
+    <span class="nav-icon">⚙️</span><span>设置</span>
   </button>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== 鍏ㄥ眬鐘舵€?=====
+// ===== 全局状态 =====
 let recipes = [];
 let currentFilter = 'all';
 let currentDetail = null;
 let spinning = false;
 let wheelResultId = null;
 
-// ===== 鍐呯疆椋熻氨锛堟竻娣＄礌椋熷甯歌彍锛?====
+// ===== 内置食谱（清淡素食家常菜）=====
 const BUILTIN_RECIPES = [
-// 鏃╅锛?0閬擄級
-{id:1,name:'灏忕背绮?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:45,servings:2,tags:['绮?,'鍏荤敓','娓呮贰','绱?],excluded:false,ingredients:[{name:'灏忕背',amount:'80g'},{name:'娓呮按',amount:'1000ml'},{name:'鏋告潪',amount:'8绮?鍙€?'}],steps:['灏忕背娲楀噣锛屽姞娓呮按澶х伀鐑у紑','杞皬鐏啲30鍒嗛挓锛屼腑閫旀悈鍔?-3娆￠槻姝㈢矘搴?,'鐔嚦绮ュ彉绋犲嵆鍙紝鍙姞鏋告潪']},
-{id:2,name:'鐧界播閰嶉叡鑿?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:40,servings:2,tags:['绮?,'娓呮贰','绱?],excluded:false,ingredients:[{name:'澶х背',amount:'80g'},{name:'娓呮按',amount:'1200ml'},{name:'姒ㄨ彍涓?,amount:'閫傞噺(閰嶇播)'}],steps:['澶х背娲楀噣锛屽姞姘村ぇ鐏儳寮€','杞皬鐏參鐔?0鍒嗛挓鑷崇背寮€鑺?,'閰嶆Θ鑿滄垨閰辩摐椋熺敤']},
-{id:3,name:'璞嗘祮',category:'鏃╅',difficulty:'绠€鍗?,cook_time:25,servings:2,tags:['楗搧','绱?,'鍏荤敓'],excluded:false,ingredients:[{name:'榛勮眴',amount:'80g'},{name:'娓呮按',amount:'800ml'},{name:'鐧界硸',amount:'閫傞噺(鍙€?'}],steps:['榛勮眴鎻愬墠娴告场6-8灏忔椂鎴栦竴澶?,'灏嗛粍璞嗗姞娓呮按鏀惧叆璞嗘祮鏈?鐮村鏈?,'鎸夎眴娴嗗姛鑳芥墦濂藉悗杩囨护','鍔犵櫧绯栬皟鍛冲嵆鍙?]},
-{id:4,name:'鐣寗楦¤泲闈?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['闈㈤','蹇墜','瀹跺父'],excluded:false,ingredients:[{name:'鎸傞潰',amount:'100g/浜?},{name:'鐣寗',amount:'1涓?},{name:'楦¤泲',amount:'1涓?},{name:'鐩?,amount:'灏戣'},{name:'钁辫姳',amount:'閫傞噺'}],steps:['鐣寗鍒囧潡锛岄浮铔嬫墦鏁?,'閿呬腑鍊掓补鐐掗浮铔嬭嚦鍑濆浐鐩涘嚭','閿呬腑鍐嶅姞灏戣娌癸紝鐐掔暘鑼勮嚦鍑烘眮','鍔犳竻姘寸儳寮€涓嬮潰鏉?,'闈㈡潯鐓蒋鍚庡€掑叆楦¤泲锛屽姞鐩愯皟鍛筹紝鎾掕懕鑺?]},
-{id:5,name:'钁辫姳铔嬮ゼ',category:'鏃╅',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['楗?,'蹇墜','瀹跺父'],excluded:false,ingredients:[{name:'楦¤泲',amount:'2涓?},{name:'闈㈢矇',amount:'50g'},{name:'姘?,amount:'80ml'},{name:'灏忚懕',amount:'2鏍?},{name:'鐩?,amount:'灏戣'}],steps:['楦¤泲鎵撴暎锛屽姞闈㈢矇銆佹按銆佺洂鎼呮垚绋€绯?,'鍔犲叆钁辫姳鎼呭寑','骞冲簳閿呭埛钖勬补锛屽€掑叆闈㈢硦鎽婅杽','灏忕伀鐓庤嚦涓ら潰閲戦粍鍗冲彲']},
-{id:6,name:'绱犲寘瀛?,category:'鏃╅',difficulty:'涓瓑',cook_time:60,servings:4,tags:['闈㈤','绱?,'瀹跺父'],excluded:false,ingredients:[{name:'鑷彂闈㈢矇',amount:'300g'},{name:'娓╂按',amount:'160ml'},{name:'鑿犺彍',amount:'200g'},{name:'绮変笣',amount:'50g'},{name:'楦¤泲',amount:'2涓?},{name:'鐩?,amount:'閫傞噺'},{name:'棣欐补',amount:'1鑼跺寵'}],steps:['闈㈢矇鍔犳俯姘存弶鎴愰潰鍥紝閱掑彂30鍒嗛挓','鑿犺彍鐒按鎸ゅ共鍒囩锛岀矇涓濇场杞垏鐭紝楦¤泲鐐掓暎鍒囩','灏嗕笁鏍锋贩鍚堬紝鍔犵洂銆侀娌规媽鍖€鎴愰','闈㈠洟鍒嗘垚鍓傚瓙锛屾搥鐨寘棣?,'鍐锋按涓婇攨锛屾按寮€鍚庤捀12鍒嗛挓鍗冲彲']},
-{id:7,name:'钂哥孩钖?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:40,servings:1,tags:['绮楃伯','娓呮贰','绱?,'鍋ュ悍'],excluded:false,ingredients:[{name:'绾㈣柉',amount:'2涓?绾?00g)'}],steps:['绾㈣柉娲楀噣锛屼笉鍘荤毊','鍐锋按涓婇攨锛屾按寮€鍚庝腑鐏捀35-40鍒嗛挓','鐢ㄧ瀛愯兘杞绘澗鎴抽€忓嵆鐔?]},
-{id:8,name:'鐜夌背绯?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['绮?,'娓呮贰','绱?,'蹇墜'],excluded:false,ingredients:[{name:'鐜夌背闈?,amount:'50g'},{name:'娓呮按',amount:'600ml'},{name:'鐧界硸',amount:'閫傞噺(鍙€?'}],steps:['鐜夌背闈㈠姞灏戦噺娓呮按璋冩垚绯婄姸','閿呬腑鍔犳竻姘寸儳寮€','缂撶紦鍊掑叆鐜夌背绯婏紝杈瑰€掕竟鎼?,'灏忕伀鐓?鍒嗛挓鑷虫祿绋狅紝鍔犵櫧绯栬皟鍛?]},
-{id:9,name:'钄彍楦¤泲鍗?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['铔?,'蹇墜','瀹跺父'],excluded:false,ingredients:[{name:'楦¤泲',amount:'2涓?},{name:'鑳¤悵鍗?,amount:'鍗婃牴'},{name:'榛勭摐',amount:'鍗婃牴'},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'灏戣'}],steps:['鑳¤悵鍗溿€侀粍鐡滃垏缁嗕笣鐒按娌ュ共','楦¤泲鎵撴暎鍔犲皯璁哥洂','骞冲簳閿呮憡钖勮泲鐨?,'铔嬬毊涓婃斁钄彍涓濆嵎璧峰垏娈?]},
-{id:10,name:'鍏疂绮?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:90,servings:3,tags:['绮?,'鍏荤敓','绱?],excluded:false,ingredients:[{name:'绾㈣眴',amount:'20g'},{name:'钖忕背',amount:'20g'},{name:'鑺辩敓',amount:'20g'},{name:'鑾插瓙',amount:'15g'},{name:'绯背',amount:'30g'},{name:'绾㈡灒',amount:'5棰?},{name:'娓呮按',amount:'1500ml'},{name:'鍐扮硸',amount:'閫傞噺'}],steps:['绾㈣眴銆佽枏绫炽€佽姳鐢熴€佽幉瀛愭彁鍓嶆蹈娉?灏忔椂','鎵€鏈夐鏉愭礂鍑€鏀惧叆閿呬腑','鍔犳竻姘村ぇ鐏儳寮€','杞皬鐏參鐔?0鍒嗛挓鑷宠蒋鐑?,'鍔犲啺绯栬皟鍛?]},
-// 鍗堥锛?0閬擄級
-{id:11,name:'鐣寗鐐掕泲',category:'鍗堥',difficulty:'绠€鍗?,cook_time:12,servings:2,tags:['瀹跺父','蹇墜','绱?,'娓呮贰'],excluded:false,ingredients:[{name:'鐣寗',amount:'2涓?绾?00g)'},{name:'楦¤泲',amount:'3涓?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'},{name:'钁辫姳',amount:'閫傞噺'}],steps:['鐣寗鍒囧潡锛岄浮铔嬫墦鏁ｅ姞灏戣鐩?,'閿呬腑鍊掓补鐐掗浮铔嬭嚦鍑濆浐鐩涘嚭','閿呬腑鍐嶅姞灏戣娌圭倰鐣寗鑷冲嚭姹?,'鍊掑洖楦¤泲缈荤倰锛屽姞鐩愯皟鍛筹紝鎾掕懕鑺卞嚭閿?]},
-{id:12,name:'娓呯倰鏃惰敩',category:'鍗堥',difficulty:'绠€鍗?,cook_time:8,servings:2,tags:['绱?,'娓呮贰','蹇墜'],excluded:false,ingredients:[{name:'鏃朵护闈掕彍',amount:'300g(濡傛补鑿?灏忕櫧鑿?鑿犺彍)'},{name:'钂?,amount:'2鐡?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['闈掕彍娲楀噣锛岃挏鍒囩墖','閿呬腑鍊掓补鐖嗛钂滅墖','鏀惧叆闈掕彍澶х伀蹇€熺炕鐐?,'鍔犵洂璋冨懗锛岀倰鑷虫柇鐢熷嵆鍙嚭閿?]},
-{id:13,name:'娓呯倰瑗垮叞鑺?,category:'鍗堥',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['绱?,'娓呮贰','鍋ュ悍'],excluded:false,ingredients:[{name:'瑗垮叞鑺?,amount:'1棰?绾?00g)'},{name:'钂?,amount:'2鐡?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['瑗垮叞鑺辨幇灏忔湹娴告场娲楀噣','鐒按1鍒嗛挓鎹炲嚭娌ュ共','閿呬腑鍊掓补鐖嗛钂滅墖','鏀惧叆瑗垮叞鑺卞ぇ鐏炕鐐?鍒嗛挓','鍔犵洂璋冨懗鍑洪攨']},
-{id:14,name:'涓濈摐鐐掕泲',category:'鍗堥',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['瀹跺父','娓呮贰','绱?],excluded:false,ingredients:[{name:'涓濈摐',amount:'1鏍?绾?50g)'},{name:'楦¤泲',amount:'2涓?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['涓濈摐鍘荤毊鍒囨粴鍒€鍧楋紝楦¤泲鎵撴暎','閿呬腑鍊掓补鐐掗浮铔嬭嚦鍑濆浐鐩涘嚭','閿呬腑鍐嶅姞灏戣娌圭倰涓濈摐鑷冲井杞?,'鍊掑洖楦¤泲鍔犵洂缈荤倰鍧囧寑鍑洪攨']},
-{id:15,name:'钂滆搲钂镐笣鐡?,category:'鍗堥',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['钂歌彍','娓呮贰','绱?,'鍋ュ悍'],excluded:false,ingredients:[{name:'涓濈摐',amount:'2鏍?绾?00g)'},{name:'钂?,amount:'5鐡?},{name:'鐩?,amount:'灏戣'},{name:'鐢熸娊',amount:'1姹ゅ寵'},{name:'棣欐补',amount:'鍑犳淮'}],steps:['涓濈摐鍘荤毊鍒囨锛屾暣榻愮爜鍦ㄧ洏涓?,'钂滃垏鏈摵鍦ㄤ笣鐡滀笂','鎾掑皯璁哥洂','姘村紑鍚庢斁鍏ヨ捀閿呭ぇ鐏捀8鍒嗛挓','娣嬬敓鎶藉拰棣欐补鍗冲彲']},
-{id:16,name:'鍑夋媽榛勭摐',category:'鍗堥',difficulty:'绠€鍗?,cook_time:5,servings:2,tags:['鍑夎彍','绱?,'娓呮贰','蹇墜'],excluded:false,ingredients:[{name:'榛勭摐',amount:'2鏍?绾?00g)'},{name:'钂?,amount:'2鐡?},{name:'鐢熸娊',amount:'1.5姹ゅ寵'},{name:'闄堥唻',amount:'1姹ゅ寵'},{name:'棣欐补',amount:'鍑犳淮'},{name:'鐩?,amount:'灏戣'}],steps:['榛勭摐娲楀噣鎷嶇鍒囨','钂滃垏鏈姞鐢熸娊銆侀唻銆侀娌广€佺洂璋冩眮','灏嗘眮娣嬪湪榛勭摐涓婃媽鍖€鍗冲彲']},
-{id:17,name:'鍦熻眴鐣寗姹?,category:'鍗堥',difficulty:'绠€鍗?,cook_time:20,servings:2,tags:['姹?,'娓呮贰','绱?,'瀹跺父'],excluded:false,ingredients:[{name:'鍦熻眴',amount:'1涓?绾?00g)'},{name:'鐣寗',amount:'2涓?绾?50g)'},{name:'鐩?,amount:'灏戣'},{name:'钁辫姳',amount:'閫傞噺'},{name:'椋熺敤娌?,amount:'1姹ゅ寵'}],steps:['鍦熻眴鍘荤毊鍒囧皬鍧楋紝鐣寗鍒囧潡','閿呬腑灏戣娌圭倰鐣寗鑷冲嚭姹?,'鍔犳竻姘存斁鍏ュ湡璞嗗潡','澶х伀鐑у紑杞皬鐏叜15鍒嗛挓鑷冲湡璞嗚蒋','鍔犵洂璋冨懗鎾掕懕鑺卞嚭閿?]},
-{id:18,name:'娓呯倰璞嗚娊',category:'鍗堥',difficulty:'绠€鍗?,cook_time:8,servings:2,tags:['绱?,'蹇墜','娓呮贰'],excluded:false,ingredients:[{name:'榛勮眴鑺?,amount:'400g'},{name:'灏忚懕',amount:'1鏍?},{name:'鐩?,amount:'灏戣'},{name:'閱?,amount:'鍑犳淮'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['璞嗚娊娲楀噣娌ュ共锛岃懕鍒囨','閿呬腑鍊掓补澶х伀鐑х儹','鏀惧叆璞嗚娊澶х伀蹇倰2鍒嗛挓','鍔犵洂鍜屽嚑婊撮唻璋冨懗','鎾掕懕娈电炕鐐掑潎鍖€鍑洪攨']},
-{id:19,name:'绱犵倰涓変笣',category:'鍗堥',difficulty:'绠€鍗?,cook_time:12,servings:2,tags:['绱?,'瀹跺父','娓呮贰'],excluded:false,ingredients:[{name:'鍦熻眴',amount:'1涓?},{name:'鑳¤悵鍗?,amount:'1鏍?},{name:'闈掓',amount:'1涓?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'}],steps:['鍦熻眴銆佽儭钀濆崪銆侀潚妞掑垎鍒垏缁嗕笣','閿呬腑鍊掓补鍏堢倰鍦熻眴涓濆拰鑳¤悵鍗滀笣(涓嶆槗鐔?','鐐?鍒嗛挓鍚庢斁鍏ラ潚妞掍笣','鍔犵洂缈荤倰1鍒嗛挓鏂敓鍑洪攨']},
-{id:20,name:'鑵愪钩绌哄績鑿?,category:'鍗堥',difficulty:'绠€鍗?,cook_time:8,servings:2,tags:['绱?,'蹇墜','瀹跺父'],excluded:false,ingredients:[{name:'绌哄績鑿?,amount:'400g'},{name:'鑵愪钩',amount:'2鍧?},{name:'钂?,amount:'2鐡?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'}],steps:['绌哄績鑿滄礂鍑€鍒囨锛岃厫涔虫崳纰庯紝钂滃垏鐗?,'閿呬腑鍊掓补鐖嗛钂滅墖','鏀惧叆绌哄績鑿滃ぇ鐏揩鐐?,'鍔犲叆鑵愪钩蹇€熺炕鐐?,'鍔犲皯璁哥洂璋冨懗鍑洪攨']},
-// 鏅氶锛?0閬擄級
-{id:21,name:'娓呯倰鏉忛矋鑿?,category:'鏅氶',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['绱?,'娓呮贰','瀹跺父'],excluded:false,ingredients:[{name:'鏉忛矋鑿?,amount:'300g'},{name:'闈掓',amount:'1涓?},{name:'鐩?,amount:'灏戣'},{name:'鐢熸娊',amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['鏉忛矋鑿囧垏婊氬垁鍧楋紝闈掓鍒囧潡','閿呬腑鍊掓补鍏堢倰鏉忛矋鑿?,'鐐掕嚦寰井閲戦粍鍑烘按','鍔犻潚妞掔炕鐐?鍒嗛挓','鍔犵洂鍜屽皯璁哥敓鎶借皟鍛冲嚭閿?]},
-{id:22,name:'钂稿▋濞冭彍',category:'鏅氶',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['钂歌彍','娓呮贰','绱?,'鍋ュ悍'],excluded:false,ingredients:[{name:'濞冨▋鑿?,amount:'2棰?绾?00g)'},{name:'钂?,amount:'4鐡?},{name:'鐢熸娊',amount:'1.5姹ゅ寵'},{name:'棣欐补',amount:'鍑犳淮'},{name:'鐩?,amount:'灏戣'}],steps:['濞冨▋鑿滄礂鍑€鍒囨潯锛岀爜鍦ㄧ洏涓?,'钂滃垏鏈摵鍦ㄥ▋濞冭彍涓?,'鎾掑皯璁哥洂锛屾按寮€鍚庤捀8鍒嗛挓','娣嬬敓鎶藉拰棣欐补鍗冲彲']},
-{id:23,name:'鐣寗璞嗚厫姹?,category:'鏅氶',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['姹?,'娓呮贰','绱?,'瀹跺父'],excluded:false,ingredients:[{name:'鐣寗',amount:'2涓?绾?50g)'},{name:'瀚╄眴鑵?,amount:'1鍧?绾?00g)'},{name:'鐩?,amount:'灏戣'},{name:'钁辫姳',amount:'閫傞噺'},{name:'椋熺敤娌?,amount:'1姹ゅ寵'}],steps:['鐣寗鍒囧潡锛岃眴鑵愬垏灏忓潡','閿呬腑灏戣娌圭倰鐣寗鑷冲嚭姹?,'鍔犳竻姘存斁鍏ヨ眴鑵愬潡','鐓?鍒嗛挓','鍔犵洂璋冨懗鎾掕懕鑺卞嚭閿?]},
-{id:24,name:'绱犵倰棣欒弴闈掕彍',category:'鏅氶',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['绱?,'娓呮贰','瀹跺父'],excluded:false,ingredients:[{name:'闈掕彍',amount:'300g'},{name:'棣欒弴',amount:'5鏈?绾?00g)'},{name:'钂?,amount:'2鐡?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['闈掕彍娲楀噣锛岄鑿囧垏鐗囩劘姘?,'閿呬腑鍊掓补鐖嗛钂滅墖','鍏堢倰棣欒弴2鍒嗛挓','鍔犲叆闈掕彍澶х伀蹇倰','鍔犵洂璋冨懗鍑洪攨']},
-{id:25,name:'鍐摐鎺掗姹?,category:'鏅氶',difficulty:'涓瓑',cook_time:60,servings:3,tags:['姹?,'娓呮贰','鍏荤敓'],excluded:false,ingredients:[{name:'鍐摐',amount:'500g'},{name:'鎺掗',amount:'200g(鍙笉鍔?'},{name:'濮?,amount:'3鐗?},{name:'鐩?,amount:'灏戣'},{name:'钁辫姳',amount:'閫傞噺'}],steps:['鎺掗鐒按娲楀噣锛屽啲鐡滃幓鐨垏鍧?,'閿呬腑鍔犳按鏀惧叆鎺掗鍜屽鐗?,'澶х伀鐑у紑杞皬鐏倴40鍒嗛挓','鍔犲叆鍐摐鍐嶇倴15鍒嗛挓','鍔犵洂璋冨懗鎾掕懕鑺?]},
-{id:26,name:'娓呰捀楸?,category:'鏅氶',difficulty:'绠€鍗?,cook_time:20,servings:2,tags:['楸?,'娓呮贰','钂歌彍'],excluded:false,ingredients:[{name:'椴堥奔',amount:'1鏉?绾?00g)'},{name:'濮?,amount:'3鐗?},{name:'钁?,amount:'2鏍?},{name:'钂搁奔璞夋补',amount:'2姹ゅ寵'},{name:'鏂欓厭',amount:'1姹ゅ寵'}],steps:['楸兼礂鍑€鎶规枡閰掞紝鑲氬瓙閲屾斁濮滅墖','姘村紑鍚庢斁鍏ヨ捀閿呭ぇ鐏捀8鍒嗛挓','鍊掓帀鐩樹腑鑵ユ按','楸艰韩閾鸿懕涓濓紝娣嬭捀楸艰眽娌?,'鐑补娉艰懕涓濇粙棣?]},
-{id:27,name:'鍑夋媽鏈ㄨ€?,category:'鏅氶',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['鍑夎彍','绱?,'娓呮贰','鍏荤敓'],excluded:false,ingredients:[{name:'骞叉湪鑰?,amount:'20g'},{name:'榛勭摐',amount:'鍗婃牴'},{name:'钂?,amount:'2鐡?},{name:'鐢熸娊',amount:'1.5姹ゅ寵'},{name:'閱?,amount:'1姹ゅ寵'},{name:'棣欐补',amount:'鍑犳淮'},{name:'鐩?,amount:'灏戣'}],steps:['鏈ㄨ€虫彁鍓嶆场鍙戞礂鍑€锛岀劘姘?鍒嗛挓鎹炲嚭','榛勭摐鍒囦笣锛岃挏鍒囨湯','鏈ㄨ€抽粍鐡滄斁纰椾腑','鍔犵敓鎶姐€侀唻銆侀娌广€佺洂鎷屽寑','鍐扮鍐疯棌10鍒嗛挓鍙ｆ劅鏇翠匠']},
-{id:28,name:'鐣寗鑿滆姳',category:'鏅氶',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['绱?,'娓呮贰','瀹跺父'],excluded:false,ingredients:[{name:'鑿滆姳',amount:'300g'},{name:'鐣寗',amount:'1涓?绾?50g)'},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['鑿滆姳鎺板皬鏈电劘姘?鍒嗛挓鎹炲嚭','鐣寗鍒囧潡','閿呬腑灏戣娌圭倰鐣寗鍑烘眮','鏀惧叆鑿滆姳缈荤倰2鍒嗛挓','鍔犵洂璋冨懗鍑洪攨']},
-{id:29,name:'娓呯倰鍗楃摐',category:'鏅氶',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['绱?,'娓呮贰','鍏荤敓','瀹跺父'],excluded:false,ingredients:[{name:'鍗楃摐',amount:'400g'},{name:'钂?,amount:'2鐡?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['鍗楃摐鍘荤毊鍒囪杽鐗囷紝钂滃垏鐗?,'閿呬腑鍊掓补鐖嗛钂滅墖','鏀惧叆鍗楃摐鐗囦腑鐏炕鐐?,'鍔犲皯璁告竻姘寸洊鐩栫剸3鍒嗛挓','鑷冲崡鐡滆蒋绯悗鍔犵洂璋冨懗鍑洪攨']},
-{id:30,name:'绱彍铔嬭姳姹?,category:'鏅氶',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['姹?,'娓呮贰','蹇墜','绱?],excluded:false,ingredients:[{name:'绱彍',amount:'5g'},{name:'楦¤泲',amount:'1涓?},{name:'鐩?,amount:'灏戣'},{name:'棣欐补',amount:'鍑犳淮'},{name:'钁辫姳',amount:'閫傞噺'}],steps:['閿呬腑鍔犳按鐑у紑','绱彍鎾曞皬鍧楁斁鍏?,'姘村啀娆＄儳寮€鍚庢穻鍏ヨ泲娑插舰鎴愯泲鑺?,'鍔犵洂璋冨懗锛屾拻钁辫姳锛屾穻棣欐补鍑洪攨']}
+// 早餐（10道）
+{id:1,name:'小米粥',category:'早餐',difficulty:'简单',cook_time:45,servings:2,tags:['粥','养生','清淡','素'],excluded:false,ingredients:[{name:'小米',amount:'80g'},{name:'清水',amount:'1000ml'},{name:'枸杞',amount:'8粒(可选)'}],steps:['小米洗净，加清水大火烧开','转小火熬30分钟，中途搅动2-3次防止粘底','熬至粥变稠即可，可加枸杞']},
+{id:2,name:'白粥配酱菜',category:'早餐',difficulty:'简单',cook_time:40,servings:2,tags:['粥','清淡','素'],excluded:false,ingredients:[{name:'大米',amount:'80g'},{name:'清水',amount:'1200ml'},{name:'榨菜丝',amount:'适量(配粥)'}],steps:['大米洗净，加水大火烧开','转小火慢熬40分钟至米开花','配榨菜或酱瓜食用']},
+{id:3,name:'豆浆',category:'早餐',difficulty:'简单',cook_time:25,servings:2,tags:['饮品','素','养生'],excluded:false,ingredients:[{name:'黄豆',amount:'80g'},{name:'清水',amount:'800ml'},{name:'白糖',amount:'适量(可选)'}],steps:['黄豆提前浸泡6-8小时或一夜','将黄豆加清水放入豆浆机/破壁机','按豆浆功能打好后过滤','加白糖调味即可']},
+{id:4,name:'番茄鸡蛋面',category:'早餐',difficulty:'简单',cook_time:15,servings:2,tags:['面食','快手','家常'],excluded:false,ingredients:[{name:'挂面',amount:'100g/人'},{name:'番茄',amount:'1个'},{name:'鸡蛋',amount:'1个'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'}],steps:['番茄切块，鸡蛋打散','锅中倒油炒鸡蛋至凝固盛出','锅中再加少许油，炒番茄至出汁','加清水烧开下面条','面条煮软后倒入鸡蛋，加盐调味，撒葱花']},
+{id:5,name:'葱花蛋饼',category:'早餐',difficulty:'简单',cook_time:10,servings:2,tags:['饼','快手','家常'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'面粉',amount:'50g'},{name:'水',amount:'80ml'},{name:'小葱',amount:'2根'},{name:'盐',amount:'少许'}],steps:['鸡蛋打散，加面粉、水、盐搅成稀糊','加入葱花搅匀','平底锅刷薄油，倒入面糊摊薄','小火煎至两面金黄即可']},
+{id:6,name:'素包子',category:'早餐',difficulty:'中等',cook_time:60,servings:4,tags:['面食','素','家常'],excluded:false,ingredients:[{name:'自发面粉',amount:'300g'},{name:'温水',amount:'160ml'},{name:'菠菜',amount:'200g'},{name:'粉丝',amount:'50g'},{name:'鸡蛋',amount:'2个'},{name:'盐',amount:'适量'},{name:'香油',amount:'1茶匙'}],steps:['面粉加温水揉成面团，醒发30分钟','菠菜焯水挤干切碎，粉丝泡软切短，鸡蛋炒散切碎','将三样混合，加盐、香油拌匀成馅','面团分成剂子，擀皮包馅','冷水上锅，水开后蒸12分钟即可']},
+{id:7,name:'蒸红薯',category:'早餐',difficulty:'简单',cook_time:40,servings:1,tags:['粗粮','清淡','素','健康'],excluded:false,ingredients:[{name:'红薯',amount:'2个(约300g)'}],steps:['红薯洗净，不去皮','冷水上锅，水开后中火蒸35-40分钟','用筷子能轻松戳透即熟']},
+{id:8,name:'玉米糊',category:'早餐',difficulty:'简单',cook_time:15,servings:2,tags:['粥','清淡','素','快手'],excluded:false,ingredients:[{name:'玉米面',amount:'50g'},{name:'清水',amount:'600ml'},{name:'白糖',amount:'适量(可选)'}],steps:['玉米面加少量清水调成糊状','锅中加清水烧开','缓缓倒入玉米糊，边倒边搅','小火煮5分钟至浓稠，加白糖调味']},
+{id:9,name:'蔬菜鸡蛋卷',category:'早餐',difficulty:'简单',cook_time:10,servings:2,tags:['蛋','快手','家常'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'胡萝卜',amount:'半根'},{name:'黄瓜',amount:'半根'},{name:'盐',amount:'少许'},{name:'食用油',amount:'少许'}],steps:['胡萝卜、黄瓜切细丝焯水沥干','鸡蛋打散加少许盐','平底锅摊薄蛋皮','蛋皮上放蔬菜丝卷起切段']},
+{id:10,name:'八宝粥',category:'早餐',difficulty:'简单',cook_time:90,servings:3,tags:['粥','养生','素'],excluded:false,ingredients:[{name:'红豆',amount:'20g'},{name:'薏米',amount:'20g'},{name:'花生',amount:'20g'},{name:'莲子',amount:'15g'},{name:'糯米',amount:'30g'},{name:'红枣',amount:'5颗'},{name:'清水',amount:'1500ml'},{name:'冰糖',amount:'适量'}],steps:['红豆、薏米、花生、莲子提前浸泡2小时','所有食材洗净放入锅中','加清水大火烧开','转小火慢熬60分钟至软烂','加冰糖调味']},
+// 午餐（10道）
+{id:11,name:'番茄炒蛋',category:'午餐',difficulty:'简单',cook_time:12,servings:2,tags:['家常','快手','素','清淡'],excluded:false,ingredients:[{name:'番茄',amount:'2个(约300g)'},{name:'鸡蛋',amount:'3个'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'},{name:'葱花',amount:'适量'}],steps:['番茄切块，鸡蛋打散加少许盐','锅中倒油炒鸡蛋至凝固盛出','锅中再加少许油炒番茄至出汁','倒回鸡蛋翻炒，加盐调味，撒葱花出锅']},
+{id:12,name:'清炒时蔬',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','清淡','快手'],excluded:false,ingredients:[{name:'时令青菜',amount:'300g(如油菜/小白菜/菠菜)'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['青菜洗净，蒜切片','锅中倒油爆香蒜片','放入青菜大火快速翻炒','加盐调味，炒至断生即可出锅']},
+{id:13,name:'清炒西兰花',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['素','清淡','健康'],excluded:false,ingredients:[{name:'西兰花',amount:'1颗(约300g)'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['西兰花掰小朵浸泡洗净','焯水1分钟捞出沥干','锅中倒油爆香蒜片','放入西兰花大火翻炒1分钟','加盐调味出锅']},
+{id:14,name:'丝瓜炒蛋',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['家常','清淡','素'],excluded:false,ingredients:[{name:'丝瓜',amount:'1根(约250g)'},{name:'鸡蛋',amount:'2个'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['丝瓜去皮切滚刀块，鸡蛋打散','锅中倒油炒鸡蛋至凝固盛出','锅中再加少许油炒丝瓜至微软','倒回鸡蛋加盐翻炒均匀出锅']},
+{id:15,name:'蒜蓉蒸丝瓜',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['蒸菜','清淡','素','健康'],excluded:false,ingredients:[{name:'丝瓜',amount:'2根(约400g)'},{name:'蒜',amount:'5瓣'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'}],steps:['丝瓜去皮切段，整齐码在盘中','蒜切末铺在丝瓜上','撒少许盐','水开后放入蒸锅大火蒸8分钟','淋生抽和香油即可']},
+{id:16,name:'凉拌黄瓜',category:'午餐',difficulty:'简单',cook_time:5,servings:2,tags:['凉菜','素','清淡','快手'],excluded:false,ingredients:[{name:'黄瓜',amount:'2根(约300g)'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'1.5汤匙'},{name:'陈醋',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'盐',amount:'少许'}],steps:['黄瓜洗净拍碎切段','蒜切末加生抽、醋、香油、盐调汁','将汁淋在黄瓜上拌匀即可']},
+{id:17,name:'土豆番茄汤',category:'午餐',difficulty:'简单',cook_time:20,servings:2,tags:['汤','清淡','素','家常'],excluded:false,ingredients:[{name:'土豆',amount:'1个(约200g)'},{name:'番茄',amount:'2个(约250g)'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'},{name:'食用油',amount:'1汤匙'}],steps:['土豆去皮切小块，番茄切块','锅中少许油炒番茄至出汁','加清水放入土豆块','大火烧开转小火煮15分钟至土豆软','加盐调味撒葱花出锅']},
+{id:18,name:'清炒豆芽',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','快手','清淡'],excluded:false,ingredients:[{name:'黄豆芽',amount:'400g'},{name:'小葱',amount:'1根'},{name:'盐',amount:'少许'},{name:'醋',amount:'几滴'},{name:'食用油',amount:'1.5汤匙'}],steps:['豆芽洗净沥干，葱切段','锅中倒油大火烧热','放入豆芽大火快炒2分钟','加盐和几滴醋调味','撒葱段翻炒均匀出锅']},
+{id:19,name:'素炒三丝',category:'午餐',difficulty:'简单',cook_time:12,servings:2,tags:['素','家常','清淡'],excluded:false,ingredients:[{name:'土豆',amount:'1个'},{name:'胡萝卜',amount:'1根'},{name:'青椒',amount:'1个'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['土豆、胡萝卜、青椒分别切细丝','锅中倒油先炒土豆丝和胡萝卜丝(不易熟)','炒3分钟后放入青椒丝','加盐翻炒1分钟断生出锅']},
+{id:20,name:'腐乳空心菜',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','快手','家常'],excluded:false,ingredients:[{name:'空心菜',amount:'400g'},{name:'腐乳',amount:'2块'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['空心菜洗净切段，腐乳捣碎，蒜切片','锅中倒油爆香蒜片','放入空心菜大火快炒','加入腐乳快速翻炒','加少许盐调味出锅']},
+// 晚餐（10道）
+{id:21,name:'清炒杏鲍菇',category:'晚餐',difficulty:'简单',cook_time:10,servings:2,tags:['素','清淡','家常'],excluded:false,ingredients:[{name:'杏鲍菇',amount:'300g'},{name:'青椒',amount:'1个'},{name:'盐',amount:'少许'},{name:'生抽',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['杏鲍菇切滚刀块，青椒切块','锅中倒油先炒杏鲍菇','炒至微微金黄出水','加青椒翻炒1分钟','加盐和少许生抽调味出锅']},
+{id:22,name:'蒸娃娃菜',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['蒸菜','清淡','素','健康'],excluded:false,ingredients:[{name:'娃娃菜',amount:'2颗(约400g)'},{name:'蒜',amount:'4瓣'},{name:'生抽',amount:'1.5汤匙'},{name:'香油',amount:'几滴'},{name:'盐',amount:'少许'}],steps:['娃娃菜洗净切条，码在盘中','蒜切末铺在娃娃菜上','撒少许盐，水开后蒸8分钟','淋生抽和香油即可']},
+{id:23,name:'番茄豆腐汤',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['汤','清淡','素','家常'],excluded:false,ingredients:[{name:'番茄',amount:'2个(约250g)'},{name:'嫩豆腐',amount:'1块(约200g)'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'},{name:'食用油',amount:'1汤匙'}],steps:['番茄切块，豆腐切小块','锅中少许油炒番茄至出汁','加清水放入豆腐块','煮5分钟','加盐调味撒葱花出锅']},
+{id:24,name:'素炒香菇青菜',category:'晚餐',difficulty:'简单',cook_time:10,servings:2,tags:['素','清淡','家常'],excluded:false,ingredients:[{name:'青菜',amount:'300g'},{name:'香菇',amount:'5朵(约100g)'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['青菜洗净，香菇切片焯水','锅中倒油爆香蒜片','先炒香菇2分钟','加入青菜大火快炒','加盐调味出锅']},
+{id:25,name:'冬瓜排骨汤',category:'晚餐',difficulty:'中等',cook_time:60,servings:3,tags:['汤','清淡','养生'],excluded:false,ingredients:[{name:'冬瓜',amount:'500g'},{name:'排骨',amount:'200g(可不加)'},{name:'姜',amount:'3片'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'}],steps:['排骨焯水洗净，冬瓜去皮切块','锅中加水放入排骨和姜片','大火烧开转小火炖40分钟','加入冬瓜再炖15分钟','加盐调味撒葱花']},
+{id:26,name:'清蒸鱼',category:'晚餐',difficulty:'简单',cook_time:20,servings:2,tags:['鱼','清淡','蒸菜'],excluded:false,ingredients:[{name:'鲈鱼',amount:'1条(约400g)'},{name:'姜',amount:'3片'},{name:'葱',amount:'2根'},{name:'蒸鱼豉油',amount:'2汤匙'},{name:'料酒',amount:'1汤匙'}],steps:['鱼洗净抹料酒，肚子里放姜片','水开后放入蒸锅大火蒸8分钟','倒掉盘中腥水','鱼身铺葱丝，淋蒸鱼豉油','热油泼葱丝滋香']},
+{id:27,name:'凉拌木耳',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['凉菜','素','清淡','养生'],excluded:false,ingredients:[{name:'干木耳',amount:'20g'},{name:'黄瓜',amount:'半根'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'1.5汤匙'},{name:'醋',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'盐',amount:'少许'}],steps:['木耳提前泡发洗净，焯水2分钟捞出','黄瓜切丝，蒜切末','木耳黄瓜放碗中','加生抽、醋、香油、盐拌匀','冰箱冷藏10分钟口感更佳']},
+{id:28,name:'番茄菜花',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['素','清淡','家常'],excluded:false,ingredients:[{name:'菜花',amount:'300g'},{name:'番茄',amount:'1个(约150g)'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['菜花掰小朵焯水2分钟捞出','番茄切块','锅中少许油炒番茄出汁','放入菜花翻炒2分钟','加盐调味出锅']},
+{id:29,name:'清炒南瓜',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['素','清淡','养生','家常'],excluded:false,ingredients:[{name:'南瓜',amount:'400g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['南瓜去皮切薄片，蒜切片','锅中倒油爆香蒜片','放入南瓜片中火翻炒','加少许清水盖盖焖3分钟','至南瓜软糯后加盐调味出锅']},
+{id:30,name:'紫菜蛋花汤',category:'晚餐',difficulty:'简单',cook_time:10,servings:2,tags:['汤','清淡','快手','素'],excluded:false,ingredients:[{name:'紫菜',amount:'5g'},{name:'鸡蛋',amount:'1个'},{name:'盐',amount:'少许'},{name:'香油',amount:'几滴'},{name:'葱花',amount:'适量'}],steps:['锅中加水烧开','紫菜撕小块放入','水再次烧开后淋入蛋液形成蛋花','加盐调味，撒葱花，淋香油出锅']}
 ];
 
-// ===== 鏈懆瀹氬埗椋熻氨锛堟竻娣″仴搴烽锛?浜轰唤锛?====
+// ===== 本周定制食谱（清淡健康餐，2人份）=====
 const WEEKLY_RECIPES = [
-// === 鏃╅绫?===
-{id:101,name:'鏃犵硸娴撹眴娴?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:25,servings:2,tags:['楗搧','鏃犵硸','楂樿泲鐧?,'鍏荤敓'],excluded:false,ingredients:[{name:'榛勮眴',amount:'100g'},{name:'娓呮按',amount:'900ml(绾?鏉?'},{name:'鍐扮硸',amount:'浠ｇ硸鍙€?}],steps:['榛勮眴鎻愬墠涓€鏅氱敤娓呮按娴告场锛堝8鍐?2灏忔椂锛夛紝娌ュ共','灏嗘场濂界殑榛勮眴鍒嗘鏀惧叆璞嗘祮鏈?鐮村鏈猴紝鍔犳竻姘磋嚦900ml鍒诲害绾?,'鍚姩銆岀函璞嗘祮銆嶆垨銆屼簲璋疯眴娴嗐€嶅姛鑳芥墦濂?,'鐢ㄧ瓫缃戞垨绾卞竷杩囨护璞嗘福','瓒佺儹楗敤锛屽彲鍔犲皯璁镐唬绯?]},
-{id:102,name:'姘寸叜铔?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:12,servings:2,tags:['蹇墜','楂樿泲鐧?,'鍑忚剛'],excluded:false,ingredients:[{name:'楦¤泲',amount:'2涓?姣忎汉1涓?'},{name:'鍐锋按',amount:'娌¤繃楦¤泲绾?cm'},{name:'鐩?,amount:'灏戣(鍙€夛紝闃茶)'},{name:'鐧介唻',amount:'鍑犳淮(鍙€夛紝鏂逛究鍓ュ３)'}],steps:['楦¤泲娲楀噣锛屽喎姘翠笅閿咃紝姘撮噺娌¤繃楦¤泲绾?cm','婊村嚑婊寸櫧閱嬪彲璁╄泲澹虫洿濂藉墺','涓ぇ鐏儳寮€锛屾按寮€鍚庣珛鍗宠鏃?,'鐓?鍒嗛挓婧忓績铔?/ 鐓?鍒嗛挓鍏ㄧ啛铔?/ 鐓?0鍒嗛挓鑰佽泲','鍒版椂闂村悗鎹炲嚭鏀惧叆鍑夌櫧寮€鎴栧喎姘翠腑娴告场1鍒嗛挓','纾曞３鍚庡墺寮€鍗冲彲']},
-{id:103,name:'棰勭害钂歌礉璐濆崡鐡?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:25,servings:2,tags:['绮楃伯','娓呮贰','鍋ュ悍','鏃╅'],excluded:false,ingredients:[{name:'璐濊礉鍗楃摐',amount:'1涓?绾?00g)'},{name:'姘?,amount:'钂搁攨姘撮€傞噺'}],steps:['璐濊礉鍗楃摐娲楀噣锛屼粠椤堕儴1/3澶勫垏寮€锛屾寲鍘荤摛鍜岀苯','锛堝鐢ㄨ捀鐑ょ棰勭害锛屽彲鐪佸幓姝ゆ锛岀洿鎺ユ暣涓甫鐨捀锛?,'钂搁攨澶х伀鐑у紑姘达紝鏀惧叆鍗楃摐鍧楄捀20-25鍒嗛挓','鐢ㄧ瀛愭埑鏈€鍘氬锛岃兘杞绘澗鎴抽€忓嵆鐔?,'甯︾毊鎸栧嚭瑁呯锛岃秮鐑悆']},
-{id:104,name:'灏戞补鐓庤泲',category:'鏃╅',difficulty:'绠€鍗?,cook_time:5,servings:2,tags:['蹇墜','鏃╅','楂樿泲鐧?],excluded:false,ingredients:[{name:'楦¤泲',amount:'2涓?姣忎汉1涓?'},{name:'姗勬娌?,amount:'绾?鑼跺寵(钖勮杽娑﹂攨搴?'},{name:'鐩?,amount:'灏戣'},{name:'榛戣儭妞?,amount:'灏戣(鍙€?'}],steps:['骞冲簳涓嶇矘閿呬腑灏忕伀鐑攨','鍊掑叆绾?鑼跺寵姗勬娌癸紝杞昏交鏅冨姩璁╂补鍧囧寑閾哄紑','楦¤泲鎵撳叆纰椾腑澶囩敤','娌规俯鑷冲井寰啋鐑燂紝鍊掑叆楦¤泲','涓伀鐓庯紝铔嬬櫧鍑濆浐鍚庡彲鐢ㄩ攨閾茶交鍘嬭竟缂?,'鐓庤嚦鎯宠鐨勭啛搴︼紙搴曢儴閲戦粍銆佷笂闈㈠井鍑濓級锛屾拻鐩愬拰榛戣儭妞掑嚭閿?]},
-{id:105,name:'鐑墰濂跺啿娉＄函鐕曢害',category:'鏃╅',difficulty:'绠€鍗?,cook_time:5,servings:2,tags:['鏃╅','蹇墜','鍏荤敓'],excluded:false,ingredients:[{name:'绾嚂楹︾墖',amount:'40g(涓や汉绾?婊″嫼)'},{name:'绾墰濂?,amount:'250ml(绾?鏉?'},{name:'铚傝湝',amount:'灏戣(鍙€?'},{name:'鍧氭灉',amount:'灏戣(鍙€夎楗?'}],steps:['灏嗙函鐕曢害鐗囨斁鍏ョ涓?,'鐗涘ザ鍊掑叆灏忛攨涓皬鐏姞鐑嚦寰哺锛堢害70-80掳C锛屼笉瑕佺叜寮€锛?,'灏嗙儹鐗涘ザ缂撶紦鍊掑叆鐕曢害涓紝杈瑰€掕竟鎼呮媽','鐩栦笂鐩栧瓙鎴栬淇濋矞鑶滐紝鐒?鍒嗛挓','鎵撳紑鍚庢拻灏戣铚傝湝鎷屽寑锛屽彲鍔犲潥鏋滅偣缂€']},
-{id:106,name:'鐜拌捀楦¤泲缇?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['鏃╅','钂歌彍','娓呮贰','楂樿泲鐧?],excluded:false,ingredients:[{name:'楦¤泲',amount:'2涓?},{name:'娓╂按',amount:'300ml(楦¤泲娑茬殑1.5鍊?'},{name:'鐩?,amount:'灏戣'},{name:'鐢熸娊',amount:'鍑犳淮'},{name:'棣欐补',amount:'鍑犳淮'},{name:'灏忚懕',amount:'灏戣鍒囨湯'}],steps:['楦¤泲鎵撳叆纰椾腑杞昏交鎵撴暎锛堜笉瑕佹墦鍑烘场娌級','鍔犲叆300ml娓╂按锛堢害35掳C锛夛紝鍔犲皯璁哥洂鎼呭寑','鐢ㄧ瓫缃戣繃婊よ泲娑?閬嶏紝鍘婚櫎姘旀场鍜岃泲绛?,'鍊掑叆闄剁摲钂哥锛岀洊淇濋矞鑶滐紙鎵庡嚑涓皬瀛旓級','钂搁攨澶х伀鐑у紑姘达紝鏀惧叆铔嬫恫纰?,'涓伀钂?0鍒嗛挓锛屽叧鐏悗鍐嶇剸2鍒嗛挓','娣嬬敓鎶藉拰棣欐补锛屾拻钁辫姳']},
-{id:107,name:'鐗涙补鏋滄按鐓泲纰?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:8,servings:2,tags:['鏃╅','楂樿泲鐧?,'鍋ュ悍','鐢熼叜'],excluded:false,ingredients:[{name:'楦¤泲',amount:'2涓?},{name:'鐗涙补鏋?,amount:'1涓垚鐔?},{name:'鏌犳姹?,amount:'鍑犳淮(闃叉哀鍖栧彲閫?'},{name:'鐩?,amount:'灏戣'},{name:'榛戣儭妞?,amount:'灏戣'},{name:'鍏ㄩ害鍚愬徃',amount:'2鐗?鎼厤)'}],steps:['楦¤泲鍐锋按涓嬮攨锛屼腑澶х伀鐑у紑鍚庣叜8鍒嗛挓鍏ㄧ啛','鎹炲嚭鏀惧叆鍑夋按娴告场1鍒嗛挓锛屽墺澹冲垏纰?,'鐗涙补鏋滃鍗婂垏寮€鍘绘牳锛屾寲鍑烘灉鑲夊垏灏忓潡','灏嗛浮铔嬬鍜岀墰娌规灉鍧楁贩鍚?,'鎾掔洂銆侀粦鑳℃銆佸嚑婊存煚妾眮杞昏交鎷屽寑','鎼厤鍏ㄩ害鍚愬徃椋熺敤']},
-{id:108,name:'闊彍鐐掗浮铔?,category:'鏃╅',difficulty:'绠€鍗?,cook_time:8,servings:2,tags:['鏃╅','瀹跺父','蹇墜鑿?],excluded:false,ingredients:[{name:'闊彍',amount:'150g'},{name:'楦¤泲',amount:'2涓?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['闊彍娲楀噣鍒囨锛堝彾鍜屾鍒嗗紑锛夛紝楦¤泲鎵撴暎鍔犲皯璁哥洂','閿呬腑鍊掓补鐑ц嚦涓冩垚鐑紝鍊掑叆铔嬫恫鐐掓垚澶у潡鐩涘嚭','閿呬腑鐣欏簳娌癸紝鍏堟斁闊彍姊椾腑鐏炕鐐?5绉?,'鍐嶆斁闊彍鍙剁炕鐐?5绉?,'鍊掑洖楦¤泲鍔犵洂锛屽揩閫熺炕鐐掑潎鍖€鍑洪攨']},
-{id:109,name:'钂搁矞鐜夌背',category:'鏃╅',difficulty:'绠€鍗?,cook_time:20,servings:2,tags:['绮楃伯','娓呮贰','鏃╅','鍋ュ悍'],excluded:false,ingredients:[{name:'鏂伴矞鐢滅帀绫?,amount:'1鏍?绾?00g)'},{name:'姘?,amount:'钂搁攨姘撮€傞噺'}],steps:['鐜夌背鍓ュ幓澶栫毊鐣欐渶鍚庝竴灞傝杽鐨紙淇濈暀鏈夋竻棣欙級锛屽幓椤?,'钂搁攨澶х伀鐑у紑姘?,'鏀惧叆鐜夌背涓伀钂?5-20鍒嗛挓','鐢ㄧ瀛愯兘杞绘澗鎴冲叆鍗崇啛','瓒佺儹椋熺敤']},
-{id:110,name:'鏃犵硸閰稿ザ+鏂伴矞榛勭摐',category:'鏃╅',difficulty:'绠€鍗?,cook_time:3,servings:2,tags:['鏀跺熬椁?,'蹇墜','娓呮贰'],excluded:false,ingredients:[{name:'鏃犵硸閰稿ザ',amount:'200g(涓や汉鍚?00g)'},{name:'榛勭摐',amount:'1鏍?绾?50g)'}],steps:['榛勭摐娲楀噣鍒囨垚灏忔潯鎴栬杽鐗?,'涓や汉鍒嗚閰稿ザ锛屾惌閰嶉粍鐡滄潯椋熺敤','鍙姞鍏ュ皯璁稿浜氱苯鎴栦簹楹荤苯澧炲姞鍙ｆ劅']},
-// === 鍗堥绫?===
-{id:111,name:'椴滄椿椴滆櫨鐧界伡',category:'鍗堥',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['娴烽矞','娓呮贰','蹇墜','浣庤剛'],excluded:false,ingredients:[{name:'椴滄椿鍩哄洿铏?,amount:'250g(绾?5鍙?浜轰唤)'},{name:'濮?,amount:'3鐗?},{name:'钁?,amount:'2鏍?},{name:'鏂欓厭',amount:'1姹ゅ寵'},{name:'鐢熸娊',amount:'2姹ゅ寵'},{name:'棣欐补',amount:'鍑犳淮'},{name:'钂?,amount:'1鐡?铇告眮)'}],steps:['椴滄椿铏炬礂鍑€锛屽壀鍘昏櫨椤诲拰铏炬灙锛屾寫鍘昏櫨绾?,'閿呬腑鍔犳按銆佹枡閰掋€佸鐗囥€佽懕娈靛ぇ鐏儳寮€','姘村紑鍚庡€掑叆铏撅紝澶х伀鐓?-2鍒嗛挓','铏捐韩寮洸鍙樼孩鍗冲彲鎹炲嚭锛堜笉瑕佺叜杩囧ご锛?,'铇告眮锛氱敓鎶?棣欐补+钂滄湯璋冨寑','鎽嗙洏瓒佺儹鍚?]},
-{id:112,name:'钂滆搲绌哄績鑿?,category:'鍗堥',difficulty:'绠€鍗?,cook_time:8,servings:2,tags:['绱犺彍','蹇墜','娓呮贰','瀹跺父'],excluded:false,ingredients:[{name:'绌哄績鑿?,amount:'400g'},{name:'钂?,amount:'4鐡?绾?鑼跺寵钂滆搲)'},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'},{name:'铓濇补',amount:'1鑼跺寵(鍙€夋彁椴?'}],steps:['绌哄績鑿滃幓鏍瑰垏娈碉紝娲楀噣娌ュ共','钂滃垏鏈?,'閿呬腑鍊掓补鐑ц嚦鍐掔儫锛屾斁鍏ヨ挏鏈垎棣欙紙5绉掞級','鍊掑叆绌哄績鑿滃ぇ鐏揩鐐掞紝鍏堟斁姊楀悗鏀惧彾','鍔犵洂鍜屽皯璁歌殱娌癸紝鎸佺画澶х伀缈荤倰','鐐掕嚦鍙跺瓙寰井濉岄櫡绔嬪埢鍑洪攨锛堢害1鍒嗛挓锛屼笉瑕佺倰杩囧ご锛?]},
-{id:113,name:'榛戞棣欑厧鑰佽眴鑵?,category:'鍗堥',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['绱犺彍','蹇墜','瀹跺父','楂樿泲鐧?],excluded:false,ingredients:[{name:'鑰佽眴鑵?鍖楄眴鑵?,amount:'1鍧?绾?00g)'},{name:'榛戣儭妞掔矇',amount:'1鑼跺寵'},{name:'鐩?,amount:'灏戣'},{name:'鐢熸娊',amount:'1姹ゅ寵'},{name:'姗勬娌?,amount:'2姹ゅ寵'},{name:'灏忚懕',amount:'1鏍瑰垏鏈?}],steps:['鑰佽眴鑵愬垏鎴?.5cm鍘氭柟鍧楋紝鍘ㄦ埧绾稿惛骞茶〃闈㈡按鍒?,'骞冲簳閿呬腑鐏儳鐑紝鍊掑叆姗勬娌?,'灏嗚眴鑵愬潡鍧囧寑鏀惧叆锛屼腑鐏厧3鍒嗛挓','缈婚潰鍐嶇厧3鍒嗛挓鑷充袱闈㈤噾榛?,'鎾掗粦鑳℃绮夊拰灏戣鐩?,'娣嬬敓鎶借皟鍛筹紝鎾掕懕鑺卞嚭閿?]},
-{id:114,name:'娓呯倰鑻嬭彍',category:'鍗堥',difficulty:'绠€鍗?,cook_time:8,servings:2,tags:['绱犺彍','蹇墜','娓呮贰','瀹跺父'],excluded:false,ingredients:[{name:'鑻嬭彍',amount:'300g'},{name:'钂?,amount:'2鐡?},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'},{name:'钂滅毊',amount:'鍑犻(鍙€夛紝鎻愰矞)'}],steps:['鑻嬭彍鍘绘牴娲楀噣锛岃挏鍒囩墖','閿呬腑鍊掓补鐑х儹锛岀垎棣欒挏鐗?,'鏀惧叆鑻嬭彍澶х伀蹇倰','鍔犵洂璋冨懗锛岀炕鐐掕嚦鑻嬭彍鍙樿蒋鍑烘眮鍗冲彲鍑洪攨']},
-{id:115,name:'椴滄椿椴堥奔鐜拌捀',category:'鍗堥',difficulty:'绠€鍗?,cook_time:20,servings:2,tags:['楸?,'娓呮贰','钂歌彍','楂樿泲鐧?],excluded:false,ingredients:[{name:'椴滄椿椴堥奔',amount:'1鏉?绾?00g)'},{name:'濮?,amount:'4鐗?},{name:'钁?,amount:'2鏍?},{name:'钂搁奔璞夋补',amount:'2姹ゅ寵'},{name:'鏂欓厭',amount:'1姹ゅ寵'},{name:'鐑鐢ㄦ补',amount:'2姹ゅ寵(娉艰懕鐢?'}],steps:['椴堥奔璇锋憡涓诲鐞嗗共鍑€锛屾礂鍑€鎿﹀共锛屼袱闈㈠悇鍒?鍒€','楸艰韩鎶规枡閰掞紝鑲氬瓙閲屽拰琛ㄩ潰鍚勬斁2鐗囧','钂搁攨澶х伀鐑у紑姘达紝鏀惧叆楸肩洏','澶х伀钂?鍒嗛挓锛堟瘡鏂ょ害6鍒嗛挓锛屾澶勭害400g钂?鍒嗛挓锛?,'鍊掓帀鐩樹腑鑵ユ按锛岄摵钁变笣','娣嬭捀楸艰眽娌癸紝娉间笂鐑补婊嬮','瓒佺儹浜敤']},
-{id:116,name:'娓呯倰闀胯眴瑙?,category:'鍗堥',difficulty:'绠€鍗?,cook_time:12,servings:2,tags:['绱犺彍','娓呮贰','瀹跺父'],excluded:false,ingredients:[{name:'闀胯眴瑙?璞囪眴',amount:'300g'},{name:'钂?,amount:'2鐡?},{name:'鐩?,amount:'灏戣'},{name:'鐢熸娊',amount:'灏戣'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'},{name:'骞茶荆妞?,amount:'1涓?鍙€夊井杈?'}],steps:['闀胯眴瑙掑幓澶村熬锛屾幇鎴?-5cm娈碉紝娲楀噣','娌告按鍔犲皯璁哥洂鍜屾补锛屾斁鍏ヨ眴瑙掔劘姘?鍒嗛挓鎹炲嚭锛堝幓璞嗚叆骞剁‘淇濈啛閫忥級','閿呬腑鍊掓补鐖嗛钂滅墖鍜屽共杈ｆ','鏀惧叆鐒ソ鐨勮眴瑙掑ぇ鐏揩鐐?鍒嗛挓','鍔犵洂鍜屽皯璁哥敓鎶借皟鍛筹紝缈荤倰鍧囧寑鍑洪攨']},
-{id:117,name:'闈掓鍗冨紶涓?,category:'鍗堥',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['绱犺彍','瀹跺父','娓呮贰','楂樿泲鐧?],excluded:false,ingredients:[{name:'闈掓',amount:'2涓?绾?00g)'},{name:'鍗冨紶/璞嗚厫鐨?,amount:'100g'},{name:'钂?,amount:'2鐡?},{name:'鐩?,amount:'灏戣'},{name:'鐢熸娊',amount:'1鑼跺寵'},{name:'棣欐补',amount:'鍑犳淮'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['闈掓鍘荤苯鍒囩粏涓濓紝鍗冨紶鍒囩粏涓濓紙瓒婄粏瓒婂ソ锛?,'鍗冨紶涓濆彲鐒按1鍒嗛挓鍘昏眴鑵ュ苟浣垮叾鍙樿蒋','閿呬腑鍊掓补鐖嗛钂滄湯','鍏堟斁闈掓涓濅腑鐏炕鐐?鍒嗛挓鑷冲井寰彉杞?,'鏀惧叆鍗冨紶涓濓紝鍔犲皯璁哥敓鎶藉拰鐩?,'澶х伀缈荤倰1鍒嗛挓锛屾穻棣欐补鍑洪攨']},
-{id:118,name:'钂滆搲涓濈摐',category:'鍗堥',difficulty:'绠€鍗?,cook_time:10,servings:2,tags:['绱犺彍','娓呮贰','鍏荤敓','钂歌彍'],excluded:false,ingredients:[{name:'涓濈摐',amount:'2鏍?绾?00g)'},{name:'钂?,amount:'5鐡?绾?.5鑼跺寵钂滆搲)'},{name:'鐩?,amount:'灏戣'},{name:'鐢熸娊',amount:'1姹ゅ寵'},{name:'棣欐补',amount:'鍑犳淮'},{name:'鏋告潪',amount:'鍑犵矑(鍙€夎楗?'},{name:'椋熺敤娌?,amount:'1姹ゅ寵'}],steps:['涓濈摐鍘荤毊鍒囨粴鍒€鍧楋紝鍧囧寑鐮佸湪鐩樹腑','钂滃垏鏈垎鎴愪袱浠斤紝涓€浠介摵鍦ㄤ笣鐡滀笂','姘村紑鍚庢斁鍏ヨ捀閿呭ぇ鐏捀8鍒嗛挓','鍙栧嚭鍊掓帀鐩樹腑钂稿嚭鐨勬按','娣嬬敓鎶斤紝閾轰笂鍓╀綑鐨勭敓钂滆搲','鐑补娉煎湪钂滆搲涓婃粙棣欙紝娣嬮娌瑰嵆鍙?]},
-{id:119,name:'鏂伴矞鐣寗鐐栧璞嗚厫',category:'鍗堥',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['绱犺彍','娓呮贰','瀹跺父','寮€鑳?],excluded:false,ingredients:[{name:'鐣寗',amount:'2涓?绾?00g)'},{name:'瀚╄眴鑵?,amount:'1鐩?绾?00g)'},{name:'钂?,amount:'2鐡?},{name:'鐩?,amount:'灏戣'},{name:'钁辫姳',amount:'閫傞噺'},{name:'棣欐补',amount:'鍑犳淮'},{name:'椋熺敤娌?,amount:'1姹ゅ寵'}],steps:['鐣寗椤堕儴鍒掑崄瀛楋紝寮€姘寸儷30绉掑幓鐨紝鍒囨垚灏忓潡','瀚╄眴鑵愬垏2cm灏忓潡','閿呬腑灏戣娌圭倰鐣寗鑷宠蒋鐑傚嚭姹?,'鍔犳竻姘?00ml澶х伀鐑у紑','鏀惧叆璞嗚厫鍧楋紝杞昏交鎺ㄥ姩锛屼腑鐏叜5鍒嗛挓','鍔犵洂璋冨懗锛屾拻钁辫姳锛屾穻棣欐补鍑洪攨']},
-{id:120,name:'鍑夋媽鐣寗榛勭摐',category:'鍗堥',difficulty:'绠€鍗?,cook_time:5,servings:2,tags:['鍑夎彍','蹇墜','娓呮贰','绱?],excluded:false,ingredients:[{name:'鐣寗',amount:'2涓?绾?50g)'},{name:'榛勭摐',amount:'1鏍?绾?50g)'},{name:'钂?,amount:'1鐡?鍙€?'},{name:'鑻规灉閱?,amount:'1姹ゅ寵(鎴栨煚妾眮)'},{name:'姗勬娌?,amount:'1鑼跺寵'},{name:'鐩?,amount:'灏戣'},{name:'榛戣儭妞?,amount:'灏戣'}],steps:['鐣寗椤堕儴鍒掑崄瀛楋紝寮€姘寸儷30绉掑幓鐨紝鍒囨垚鏈堢墮鍧?,'榛勭摐娲楀噣锛岀敤鍒€鑳屾媿纰庡悗鍒囧皬鍧?,'灏嗙暘鑼勫拰榛勭摐鍧楁斁鍏ョ涓?,'璋冩眮锛氳嫻鏋滈唻+姗勬娌?灏戣鐩愬拰榛戣儭妞?,'灏嗛叡姹佹穻鍏ユ媽鍖€','鍐疯棌10鍒嗛挓鍚庨鐢ㄦ洿浣?]},
-// === 鏅氶绫?===
-{id:121,name:'椴滆櫨瀚╄眴鑵愮叢',category:'鏅氶',difficulty:'绠€鍗?,cook_time:20,servings:2,tags:['娴烽矞','璞嗚厫','娓呮贰','瀹跺父'],excluded:false,ingredients:[{name:'椴滄椿鍩哄洿铏?,amount:'200g'},{name:'瀚╄眴鑵?,amount:'1鐩?绾?00g)'},{name:'濮?,amount:'2鐗?},{name:'钁?,amount:'1鏍?},{name:'鐩?,amount:'灏戣'},{name:'鐧借儭妞?,amount:'灏戣'},{name:'棣欐补',amount:'鍑犳淮'},{name:'姘存穩绮?,amount:'1姹ゅ寵(娣€绮?姘?'},{name:'楂樻堡鎴栨竻姘?,amount:'400ml'}],steps:['铏惧幓澹崇暀灏撅紝寮€鑳屽幓铏剧嚎锛屽姞灏戣鐩愬拰鐧借儭妞掕厡鍒?鍒嗛挓','瀚╄眴鑵愬垏2cm灏忓潡','閿呬腑鍔犻珮姹?娓呮按鐑у紑锛屾斁鍏ュ鐗?,'杞昏交鏀惧叆璞嗚厫鍧楋紝涓伀鐓?鍒嗛挓','鏀惧叆铏句粊鐓?鍒嗛挓鑷冲彉鑹?,'鍔犳按娣€绮夎交杞绘帹鍔ㄥ嬀钖勮姟','鎾掕懕鑺憋紝娣嬮娌瑰嚭閿?]},
-{id:122,name:'鑼勫瓙鐦﹁倝鐗囧揩鐐?,category:'鏅氶',difficulty:'涓瓑',cook_time:20,servings:2,tags:['鑽よ彍','瀹跺父','涓嬮キ'],excluded:false,ingredients:[{name:'鑼勫瓙',amount:'300g(1涓渾鑼勬垨2涓暱鑼?'},{name:'鐦﹁倝鐗?鐚噷鑴?,amount:'150g'},{name:'钂?,amount:'3鐡?},{name:'濮?,amount:'2鐗?},{name:'鐢熸娊',amount:'2姹ゅ寵'},{name:'鑰佹娊',amount:'1鑼跺寵'},{name:'鏂欓厭',amount:'1姹ゅ寵'},{name:'娣€绮?,amount:'1鑼跺寵'},{name:'鐩?,amount:'灏戣'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'}],steps:['鑼勫瓙鍒囨粴鍒€鍧楋紝鎾掑皯璁哥洂鑵?0鍒嗛挓鍚庢尋鍘绘按鍒?,'鐦﹁倝鐗囧姞鏂欓厭鍜屾穩绮夋姄鍖€鑵?鍒嗛挓','閿呬腑鍊掓补鐑ц嚦鍏垚鐑紝鏀惧叆鑼勫瓙涓伀鐓庤嚦杞韩鎹炲嚭','閿呯暀搴曟补锛屾粦鐐掕倝鐗囪嚦鍙樿壊鐩涘嚭','閿呬腑鍐嶅姞灏戣娌癸紝鐖嗛钂滅墖濮滅墖','鏀惧洖鑼勫瓙锛屽姞鐢熸娊鍜岃€佹娊缈荤倰','鍊掑叆鑲夌墖锛屽姞灏戣鐩愶紝澶х伀蹇倰1鍒嗛挓鍑洪攨']},
-{id:123,name:'钂滆搲鐢熻彍',category:'鏅氶',difficulty:'绠€鍗?,cook_time:5,servings:2,tags:['绱犺彍','蹇墜','娓呮贰'],excluded:false,ingredients:[{name:'鐢熻彍/鐞冪敓鑿?,amount:'300g'},{name:'钂?,amount:'3鐡?},{name:'鐩?,amount:'灏戣'},{name:'鐢熸娊',amount:'1姹ゅ寵'},{name:'棣欐补',amount:'鍑犳淮'},{name:'姗勬娌?,amount:'1姹ゅ寵'}],steps:['鐢熻彍鍙舵礂鍑€鎾曟垚澶у潡锛岃挏鍒囨湯','閿呬腑鐑у紑姘达紝鍔犲皯璁哥洂鍜屾补','鏀惧叆鐢熻彍鐒按10绉掕繀閫熸崬鍑猴紙淇濇寔缈犵豢鍜岃剢鎰燂級','灏嗙敓鑿滄尋鍘诲浣欐按鍒嗚鐩?,'閿呬腑鍊掓﹦姒勬补鐖嗛钂滄湯','娣嬪湪鐢熻彍涓婏紝鍔犵敓鎶藉拰棣欐补鎷屽寑']},
-{id:124,name:'鐜扮叜鏂伴矞姣涜眴',category:'鏅氶',difficulty:'绠€鍗?,cook_time:15,servings:2,tags:['蹇墜','鍋ュ悍','绱犻','灏忓悆'],excluded:false,ingredients:[{name:'鏂伴矞姣涜眴',amount:'300g(甯﹀３)'},{name:'鐩?,amount:'绾?0g(绾?鑼跺寵)'},{name:'娓呮按',amount:'閫傞噺'},{name:'鍏',amount:'1涓?鍙€?'},{name:'鑺辨',amount:'5绮?鍙€?'},{name:'骞茶荆妞?,amount:'1涓?鍙€夊井杈?'}],steps:['姣涜眴鐢ㄦ竻姘村啿娲楀共鍑€锛屽壀鍘讳袱绔皷瑙掞紙渚夸簬鍏ュ懗锛?,'閿呬腑鍔犳按銆佸叓瑙掋€佽姳妞掋€佸共杈ｆ鍜岀洂锛屽ぇ鐏儳寮€','鏀惧叆姣涜眴锛屽ぇ鐏叜寮€鍚庤浆涓伀鐓?0-12鍒嗛挓','涓嶈鐩栫洊鐓紙鐩栫洊浼氳姣涜眴鍙戦粍锛?,'鎹炲嚭娌ュ共姘达紝瓒佺儹椋熺敤']}
+// === 早餐类 ===
+{id:101,name:'无糖浓豆浆',category:'早餐',difficulty:'简单',cook_time:25,servings:2,tags:['饮品','无糖','高蛋白','养生'],excluded:false,ingredients:[{name:'黄豆',amount:'100g'},{name:'清水',amount:'900ml(约4杯)'},{name:'冰糖',amount:'代糖可选'}],steps:['黄豆提前一晚用清水浸泡（夏8冬12小时），沥干','将泡好的黄豆分次放入豆浆机/破壁机，加清水至900ml刻度线','启动「纯豆浆」或「五谷豆浆」功能打好','用筛网或纱布过滤豆渣','趁热饮用，可加少许代糖']},
+{id:102,name:'水煮蛋',category:'早餐',difficulty:'简单',cook_time:12,servings:2,tags:['快手','高蛋白','减脂'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个(每人1个)'},{name:'冷水',amount:'没过鸡蛋约2cm'},{name:'盐',amount:'少许(可选，防裂)'},{name:'白醋',amount:'几滴(可选，方便剥壳)'}],steps:['鸡蛋洗净，冷水下锅，水量没过鸡蛋约2cm','滴几滴白醋可让蛋壳更好剥','中大火烧开，水开后立即计时','煮6分钟溏心蛋 / 煮8分钟全熟蛋 / 煮10分钟老蛋','到时间后捞出放入凉白开或冷水中浸泡1分钟','磕壳后剥开即可']},
+{id:103,name:'预约蒸贝贝南瓜',category:'早餐',difficulty:'简单',cook_time:25,servings:2,tags:['粗粮','清淡','健康','早餐'],excluded:false,ingredients:[{name:'贝贝南瓜',amount:'1个(约300g)'},{name:'水',amount:'蒸锅水适量'}],steps:['贝贝南瓜洗净，从顶部1/3处切开，挖去瓤和籽','（如用蒸烤箱预约，可省去此步，直接整个带皮蒸）','蒸锅大火烧开水，放入南瓜块蒸20-25分钟','用筷子戳最厚处，能轻松戳透即熟','带皮挖出装碗，趁热吃']},
+{id:104,name:'少油煎蛋',category:'早餐',difficulty:'简单',cook_time:5,servings:2,tags:['快手','早餐','高蛋白'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个(每人1个)'},{name:'橄榄油',amount:'约1茶匙(薄薄润锅底)'},{name:'盐',amount:'少许'},{name:'黑胡椒',amount:'少许(可选)'}],steps:['平底不粘锅中小火热锅','倒入约1茶匙橄榄油，轻轻晃动让油均匀铺开','鸡蛋打入碗中备用','油温至微微冒烟，倒入鸡蛋','中火煎，蛋白凝固后可用锅铲轻压边缘','煎至想要的熟度（底部金黄、上面微凝），撒盐和黑胡椒出锅']},
+{id:105,name:'热牛奶冲泡纯燕麦',category:'早餐',difficulty:'简单',cook_time:5,servings:2,tags:['早餐','快手','养生'],excluded:false,ingredients:[{name:'纯燕麦片',amount:'40g(两人约2满勺)'},{name:'纯牛奶',amount:'250ml(约1杯)'},{name:'蜂蜜',amount:'少许(可选)'},{name:'坚果',amount:'少许(可选装饰)'}],steps:['将纯燕麦片放入碗中','牛奶倒入小锅中小火加热至微沸（约70-80°C，不要煮开）','将热牛奶缓缓倒入燕麦中，边倒边搅拌','盖上盖子或覆保鲜膜，焖3分钟','打开后撒少许蜂蜜拌匀，可加坚果点缀']},
+{id:106,name:'现蒸鸡蛋羹',category:'早餐',difficulty:'简单',cook_time:15,servings:2,tags:['早餐','蒸菜','清淡','高蛋白'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'温水',amount:'300ml(鸡蛋液的1.5倍)'},{name:'盐',amount:'少许'},{name:'生抽',amount:'几滴'},{name:'香油',amount:'几滴'},{name:'小葱',amount:'少许切末'}],steps:['鸡蛋打入碗中轻轻打散（不要打出泡沫）','加入300ml温水（约35°C），加少许盐搅匀','用筛网过滤蛋液2遍，去除气泡和蛋筋','倒入陶瓷蒸碗，盖保鲜膜（扎几个小孔）','蒸锅大火烧开水，放入蛋液碗','中火蒸10分钟，关火后再焖2分钟','淋生抽和香油，撒葱花']},
+{id:107,name:'牛油果水煮蛋碎',category:'早餐',difficulty:'简单',cook_time:8,servings:2,tags:['早餐','高蛋白','健康','生酮'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'牛油果',amount:'1个成熟'},{name:'柠檬汁',amount:'几滴(防氧化可选)'},{name:'盐',amount:'少许'},{name:'黑胡椒',amount:'少许'},{name:'全麦吐司',amount:'2片(搭配)'}],steps:['鸡蛋冷水下锅，中大火烧开后煮8分钟全熟','捞出放入凉水浸泡1分钟，剥壳切碎','牛油果对半切开去核，挖出果肉切小块','将鸡蛋碎和牛油果块混合','撒盐、黑胡椒、几滴柠檬汁轻轻拌匀','搭配全麦吐司食用']},
+{id:108,name:'韭菜炒鸡蛋',category:'早餐',difficulty:'简单',cook_time:8,servings:2,tags:['早餐','家常','快手菜'],excluded:false,ingredients:[{name:'韭菜',amount:'150g'},{name:'鸡蛋',amount:'2个'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['韭菜洗净切段（叶和梗分开），鸡蛋打散加少许盐','锅中倒油烧至七成热，倒入蛋液炒成大块盛出','锅中留底油，先放韭菜梗中火翻炒15秒','再放韭菜叶翻炒15秒','倒回鸡蛋加盐，快速翻炒均匀出锅']},
+{id:109,name:'蒸鲜玉米',category:'早餐',difficulty:'简单',cook_time:20,servings:2,tags:['粗粮','清淡','早餐','健康'],excluded:false,ingredients:[{name:'新鲜甜玉米',amount:'1根(约200g)'},{name:'水',amount:'蒸锅水适量'}],steps:['玉米剥去外皮留最后一层薄皮（保留有清香），去须','蒸锅大火烧开水','放入玉米中火蒸15-20分钟','用筷子能轻松戳入即熟','趁热食用']},
+{id:110,name:'无糖酸奶+新鲜黄瓜',category:'早餐',difficulty:'简单',cook_time:3,servings:2,tags:['收尾餐','快手','清淡'],excluded:false,ingredients:[{name:'无糖酸奶',amount:'200g(两人各100g)'},{name:'黄瓜',amount:'1根(约150g)'}],steps:['黄瓜洗净切成小条或薄片','两人分装酸奶，搭配黄瓜条食用','可加入少许奇亚籽或亚麻籽增加口感']},
+// === 午餐类 ===
+{id:111,name:'鲜活鲜虾白灼',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['海鲜','清淡','快手','低脂'],excluded:false,ingredients:[{name:'鲜活基围虾',amount:'250g(约15只2人份)'},{name:'姜',amount:'3片'},{name:'葱',amount:'2根'},{name:'料酒',amount:'1汤匙'},{name:'生抽',amount:'2汤匙'},{name:'香油',amount:'几滴'},{name:'蒜',amount:'1瓣(蘸汁)'}],steps:['鲜活虾洗净，剪去虾须和虾枪，挑去虾线','锅中加水、料酒、姜片、葱段大火烧开','水开后倒入虾，大火煮1-2分钟','虾身弯曲变红即可捞出（不要煮过头）','蘸汁：生抽+香油+蒜末调匀','摆盘趁热吃']},
+{id:112,name:'蒜蓉空心菜',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素菜','快手','清淡','家常'],excluded:false,ingredients:[{name:'空心菜',amount:'400g'},{name:'蒜',amount:'4瓣(约2茶匙蒜蓉)'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'},{name:'蚝油',amount:'1茶匙(可选提鲜)'}],steps:['空心菜去根切段，洗净沥干','蒜切末','锅中倒油烧至冒烟，放入蒜末爆香（5秒）','倒入空心菜大火快炒，先放梗后放叶','加盐和少许蚝油，持续大火翻炒','炒至叶子微微塌陷立刻出锅（约1分钟，不要炒过头）']},
+{id:113,name:'黑椒香煎老豆腐',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['素菜','快手','家常','高蛋白'],excluded:false,ingredients:[{name:'老豆腐/北豆腐',amount:'1块(约300g)'},{name:'黑胡椒粉',amount:'1茶匙'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1汤匙'},{name:'橄榄油',amount:'2汤匙'},{name:'小葱',amount:'1根切末'}],steps:['老豆腐切成1.5cm厚方块，厨房纸吸干表面水分','平底锅中火烧热，倒入橄榄油','将豆腐块均匀放入，中火煎3分钟','翻面再煎3分钟至两面金黄','撒黑胡椒粉和少许盐','淋生抽调味，撒葱花出锅']},
+{id:114,name:'清炒苋菜',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['素菜','快手','清淡','家常'],excluded:false,ingredients:[{name:'苋菜',amount:'300g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'},{name:'蒜皮',amount:'几颗(可选，提鲜)'}],steps:['苋菜去根洗净，蒜切片','锅中倒油烧热，爆香蒜片','放入苋菜大火快炒','加盐调味，翻炒至苋菜变软出汁即可出锅']},
+{id:115,name:'鲜活鲈鱼现蒸',category:'午餐',difficulty:'简单',cook_time:20,servings:2,tags:['鱼','清淡','蒸菜','高蛋白'],excluded:false,ingredients:[{name:'鲜活鲈鱼',amount:'1条(约400g)'},{name:'姜',amount:'4片'},{name:'葱',amount:'2根'},{name:'蒸鱼豉油',amount:'2汤匙'},{name:'料酒',amount:'1汤匙'},{name:'热食用油',amount:'2汤匙(泼葱用)'}],steps:['鲈鱼请摊主处理干净，洗净擦干，两面各划3刀','鱼身抹料酒，肚子里和表面各放2片姜','蒸锅大火烧开水，放入鱼盘','大火蒸8分钟（每斤约6分钟，此处约400g蒸8分钟）','倒掉盘中腥水，铺葱丝','淋蒸鱼豉油，泼上热油滋香','趁热享用']},
+{id:116,name:'清炒长豆角',category:'午餐',difficulty:'简单',cook_time:12,servings:2,tags:['素菜','清淡','家常'],excluded:false,ingredients:[{name:'长豆角/豇豆',amount:'300g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'生抽',amount:'少许'},{name:'食用油',amount:'1.5汤匙'},{name:'干辣椒',amount:'1个(可选微辣)'}],steps:['长豆角去头尾，掰成4-5cm段，洗净','沸水加少许盐和油，放入豆角焯水3分钟捞出（去豆腥并确保熟透）','锅中倒油爆香蒜片和干辣椒','放入焯好的豆角大火快炒1分钟','加盐和少许生抽调味，翻炒均匀出锅']},
+{id:117,name:'青椒千张丝',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['素菜','家常','清淡','高蛋白'],excluded:false,ingredients:[{name:'青椒',amount:'2个(约200g)'},{name:'千张/豆腐皮',amount:'100g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1茶匙'},{name:'香油',amount:'几滴'},{name:'食用油',amount:'1.5汤匙'}],steps:['青椒去籽切细丝，千张切细丝（越细越好）','千张丝可焯水1分钟去豆腥并使其变软','锅中倒油爆香蒜末','先放青椒丝中火翻炒1分钟至微微变软','放入千张丝，加少许生抽和盐','大火翻炒1分钟，淋香油出锅']},
+{id:118,name:'蒜蓉丝瓜',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['素菜','清淡','养生','蒸菜'],excluded:false,ingredients:[{name:'丝瓜',amount:'2根(约400g)'},{name:'蒜',amount:'5瓣(约2.5茶匙蒜蓉)'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'枸杞',amount:'几粒(可选装饰)'},{name:'食用油',amount:'1汤匙'}],steps:['丝瓜去皮切滚刀块，均匀码在盘中','蒜切末分成两份，一份铺在丝瓜上','水开后放入蒸锅大火蒸8分钟','取出倒掉盘中蒸出的水','淋生抽，铺上剩余的生蒜蓉','热油泼在蒜蓉上滋香，淋香油即可']},
+{id:119,name:'新鲜番茄炖嫩豆腐',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['素菜','清淡','家常','开胃'],excluded:false,ingredients:[{name:'番茄',amount:'2个(约300g)'},{name:'嫩豆腐',amount:'1盒(约300g)'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'},{name:'香油',amount:'几滴'},{name:'食用油',amount:'1汤匙'}],steps:['番茄顶部划十字，开水烫30秒去皮，切成小块','嫩豆腐切2cm小块','锅中少许油炒番茄至软烂出汁','加清水300ml大火烧开','放入豆腐块，轻轻推动，中火煮5分钟','加盐调味，撒葱花，淋香油出锅']},
+{id:120,name:'凉拌番茄黄瓜',category:'午餐',difficulty:'简单',cook_time:5,servings:2,tags:['凉菜','快手','清淡','素'],excluded:false,ingredients:[{name:'番茄',amount:'2个(约250g)'},{name:'黄瓜',amount:'1根(约150g)'},{name:'蒜',amount:'1瓣(可选)'},{name:'苹果醋',amount:'1汤匙(或柠檬汁)'},{name:'橄榄油',amount:'1茶匙'},{name:'盐',amount:'少许'},{name:'黑胡椒',amount:'少许'}],steps:['番茄顶部划十字，开水烫30秒去皮，切成月牙块','黄瓜洗净，用刀背拍碎后切小块','将番茄和黄瓜块放入碗中','调汁：苹果醋+橄榄油+少许盐和黑胡椒','将酱汁淋入拌匀','冷藏10分钟后食用更佳']},
+// === 晚餐类 ===
+{id:121,name:'鲜虾嫩豆腐煲',category:'晚餐',difficulty:'简单',cook_time:20,servings:2,tags:['海鲜','豆腐','清淡','家常'],excluded:false,ingredients:[{name:'鲜活基围虾',amount:'200g'},{name:'嫩豆腐',amount:'1盒(约300g)'},{name:'姜',amount:'2片'},{name:'葱',amount:'1根'},{name:'盐',amount:'少许'},{name:'白胡椒',amount:'少许'},{name:'香油',amount:'几滴'},{name:'水淀粉',amount:'1汤匙(淀粉+水)'},{name:'高汤或清水',amount:'400ml'}],steps:['虾去壳留尾，开背去虾线，加少许盐和白胡椒腌制5分钟','嫩豆腐切2cm小块','锅中加高汤/清水烧开，放入姜片','轻轻放入豆腐块，中火煮3分钟','放入虾仁煮1分钟至变色','加水淀粉轻轻推动勾薄芡','撒葱花，淋香油出锅']},
+{id:122,name:'茄子瘦肉片快炒',category:'晚餐',difficulty:'中等',cook_time:20,servings:2,tags:['荤菜','家常','下饭'],excluded:false,ingredients:[{name:'茄子',amount:'300g(1个圆茄或2个长茄)'},{name:'瘦肉片/猪里脊',amount:'150g'},{name:'蒜',amount:'3瓣'},{name:'姜',amount:'2片'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'1茶匙'},{name:'料酒',amount:'1汤匙'},{name:'淀粉',amount:'1茶匙'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['茄子切滚刀块，撒少许盐腌10分钟后挤去水分','瘦肉片加料酒和淀粉抓匀腌5分钟','锅中倒油烧至六成热，放入茄子中火煎至软身捞出','锅留底油，滑炒肉片至变色盛出','锅中再加少许油，爆香蒜片姜片','放回茄子，加生抽和老抽翻炒','倒入肉片，加少许盐，大火快炒1分钟出锅']},
+{id:123,name:'蒜蓉生菜',category:'晚餐',difficulty:'简单',cook_time:5,servings:2,tags:['素菜','快手','清淡'],excluded:false,ingredients:[{name:'生菜/球生菜',amount:'300g'},{name:'蒜',amount:'3瓣'},{name:'盐',amount:'少许'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'橄榄油',amount:'1汤匙'}],steps:['生菜叶洗净撕成大块，蒜切末','锅中烧开水，加少许盐和油','放入生菜焯水10秒迅速捞出（保持翠绿和脆感）','将生菜挤去多余水分装盘','锅中倒橄榄油爆香蒜末','淋在生菜上，加生抽和香油拌匀']},
+{id:124,name:'现煮新鲜毛豆',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['快手','健康','素食','小吃'],excluded:false,ingredients:[{name:'新鲜毛豆',amount:'300g(带壳)'},{name:'盐',amount:'约10g(约2茶匙)'},{name:'清水',amount:'适量'},{name:'八角',amount:'1个(可选)'},{name:'花椒',amount:'5粒(可选)'},{name:'干辣椒',amount:'1个(可选微辣)'}],steps:['毛豆用清水冲洗干净，剪去两端尖角（便于入味）','锅中加水、八角、花椒、干辣椒和盐，大火烧开','放入毛豆，大火煮开后转中火煮10-12分钟','不要盖盖煮（盖盖会让毛豆发黄）','捞出沥干水，趁热食用']}
 ];
 
-// ===== 鍒濆鍖?=====
+// ===== 初始化 =====
 function init() {
-  // 棣栨浣跨敤鑷姩鍔犺浇鍐呯疆椋熻氨 + 鏈懆瀹氬埗椋熻氨
+  // 首次使用自动加载内置食谱 + 本周定制食谱
   if (!localStorage.getItem('recipes_init')) {
     recipes = JSON.parse(JSON.stringify([...BUILTIN_RECIPES, ...WEEKLY_RECIPES]));
     saveToStorage();
@@ -469,7 +469,7 @@ function saveToStorage() {
   localStorage.setItem('recipes', JSON.stringify(recipes));
 }
 
-// ===== 椤甸潰鍒囨崲 =====
+// ===== 页面切换 =====
 function switchPage(name, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
@@ -486,12 +486,12 @@ function goBack() {
 function setFilter(cat) {
   currentFilter = cat;
   document.querySelectorAll('.tab-btn').forEach(b => {
-    b.classList.toggle('active', b.textContent === (cat === 'all' ? '鍏ㄩ儴' : cat));
+    b.classList.toggle('active', b.textContent === (cat === 'all' ? '全部' : cat));
   });
   switchPage('list', document.querySelectorAll('.nav-item')[1]);
 }
 
-// ===== 闅忔満閫夎彍 =====
+// ===== 随机选菜 =====
 let randomResultId = null;
 let randomCategory = 'all';
 
@@ -508,13 +508,13 @@ function setRandomCategory(cat, btn) {
 function pickRandom() {
   let items = recipes.filter(r => !r.excluded);
   
-  // 鎸夊垎绫荤瓫閫?
+  // 按分类筛选
   if (randomCategory !== 'all') {
     items = items.filter(r => r.category === randomCategory);
   }
   
   if (items.length === 0) {
-    showToast(randomCategory === 'all' ? '椋熻氨搴撴槸绌虹殑锛屽厛娣诲姞鍑犻亾鑿滃惂' : '璇ュ垎绫绘殏鏃犻璋?);
+    showToast(randomCategory === 'all' ? '食谱库是空的，先添加几道菜吧' : '该分类暂无食谱');
     return;
   }
   
@@ -523,12 +523,12 @@ function pickRandom() {
   randomResultId = r.id;
   
   document.getElementById('randomResult').textContent = r.name;
-  document.getElementById('randomMeta').textContent = r.category + ' 路 ' + r.difficulty + ' 路 ' + r.cook_time + '鍒嗛挓';
+  document.getElementById('randomMeta').textContent = r.category + ' · ' + r.difficulty + ' · ' + r.cook_time + '分钟';
   document.getElementById('resultName').textContent = r.name;
-  document.getElementById('resultMeta').textContent = r.category + ' 路 ' + r.difficulty + ' 路 ' + r.cook_time + '鍒嗛挓';
+  document.getElementById('resultMeta').textContent = r.category + ' · ' + r.difficulty + ' · ' + r.cook_time + '分钟';
   document.getElementById('wheelResult').classList.add('show');
   
-  // 鍔ㄧ敾鏁堟灉
+  // 动画效果
   const card = document.getElementById('randomCard');
   card.style.transform = 'scale(0.95)';
   setTimeout(() => card.style.transform = 'scale(1)', 150);
@@ -540,7 +540,7 @@ function viewResultDetail() {
   if (r) showDetail(r);
 }
 
-// ===== 鍒楄〃 =====
+// ===== 列表 =====
 function getActiveRecipes() {
   let list = recipes.filter(r => !r.excluded);
   if (currentFilter !== 'all') list = list.filter(r => r.category === currentFilter);
@@ -560,20 +560,20 @@ function renderList() {
     ));
   }
   if (list.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="big">馃摥</div><p>鏆傛棤椋熻氨<br><span style="font-size:.85rem">鍘汇€屾坊鍔犮€嶉噷鏂板缓鎴栨壒閲忓鍏?/span></p></div>';
+    container.innerHTML = '<div class="empty-state"><div class="big">📭</div><p>暂无食谱<br><span style="font-size:.85rem">去「添加」里新建或批量导入</span></p></div>';
     return;
   }
   container.innerHTML = list.map(r => `
     <div class="recipe-card${r.excluded ? ' excluded' : ''}" data-id="${r.id}">
       <div class="name">${esc(r.name)}</div>
       <div class="meta">
-        <span class="info">${r.category} 路 ${r.difficulty} 路 ${r.cook_time}鍒嗛挓</span>
+        <span class="info">${r.category} · ${r.difficulty} · ${r.cook_time}分钟</span>
         ${(r.tags || []).map(t => '<span class="tag">' + esc(t) + '</span>').join('')}
       </div>
     </div>
   `).join('');
 
-  // 浜嬩欢濮旀墭锛氬吋瀹圭Щ鍔ㄧ
+  // 事件委托：兼容移动端
   container.onclick = function(e) {
     const card = e.target.closest('.recipe-card');
     if (!card) return;
@@ -583,7 +583,7 @@ function renderList() {
   };
 }
 
-// ===== 璇︽儏 =====
+// ===== 详情 =====
 function showDetail(r) {
   if (!r) return;
   currentDetail = r;
@@ -592,20 +592,20 @@ function showDetail(r) {
     <div class="detail-tags">
       <span class="tag">${r.category}</span>
       <span class="tag">${r.difficulty}</span>
-      <span class="tag">鈴?${r.cook_time}鍒嗛挓</span>
-      <span class="tag">馃懃 ${r.servings || 2}浜轰唤</span>
+      <span class="tag">⏱ ${r.cook_time}分钟</span>
+      <span class="tag">👥 ${r.servings || 2}人份</span>
     </div>
     <div class="detail-section">
-      <h3>馃洅 椋熸潗锛?{r.servings || 2}浜轰唤锛?/h3>
+      <h3>🛒 食材（${r.servings || 2}人份）</h3>
       <ul>${(r.ingredients || []).map(ig => '<li>' + esc(ig.name) + ' <strong>' + esc(ig.amount) + '</strong></li>').join('')}</ul>
     </div>
     <div class="detail-section">
-      <h3>馃懆鈥嶐煃?鍋氭硶姝ラ</h3>
+      <h3>👨‍🍳 做法步骤</h3>
       <ol>${(r.steps || []).map((s, i) => '<li>' + esc(s) + '</li>').join('')}</ol>
     </div>
     <div class="detail-actions">
-      <button class="btn btn-outline" onclick="toggleExclude(${r.id}, ${!r.excluded})">${r.excluded ? '鉁?鎭㈠' : '馃毇 浠婂ぉ涓嶆兂鍚?}</button>
-      <button class="btn btn-gray" onclick="deleteRecipe(${r.id})">馃棏锔?鍒犻櫎</button>
+      <button class="btn btn-outline" onclick="toggleExclude(${r.id}, ${!r.excluded})">${r.excluded ? '✅ 恢复' : '🚫 今天不想吃'}</button>
+      <button class="btn btn-gray" onclick="deleteRecipe(${r.id})">🗑️ 删除</button>
     </div>
   `;
   switchPage('detail', null);
@@ -618,26 +618,26 @@ function toggleExclude(id, val) {
 }
 
 function deleteRecipe(id) {
-  if (!confirm('纭畾鍒犻櫎杩欓亾鑿滐紵')) return;
+  if (!confirm('确定删除这道菜？')) return;
   recipes = recipes.filter(r => r.id !== id);
   saveToStorage();
-  showToast('宸插垹闄?);
+  showToast('已删除');
   goBack();
 }
 
 function clearExcluded() {
   recipes.forEach(r => r.excluded = false);
   saveToStorage();
-  showToast('宸叉竻闄ゆ墍鏈夋帓闄ゆ爣璁?);
+  showToast('已清除所有排除标记');
   renderList(); drawWheel();
 }
 
-// ===== 娣诲姞 =====
+// ===== 添加 =====
 let nextId = 1;
 
 function saveRecipe() {
   const name = document.getElementById('f_name').value.trim();
-  if (!name) { showToast('璇疯緭鍏ヨ彍鍚?); return; }
+  if (!name) { showToast('请输入菜名'); return; }
   const ingredients = [];
   document.querySelectorAll('.ingredient-row').forEach(row => {
     const n = row.querySelector('.ig-name') && row.querySelector('.ig-name').value.trim();
@@ -652,61 +652,58 @@ function saveRecipe() {
 {id:206,name:'馒头',category:'早餐',difficulty:'中等',cook_time:25,servings:4,tags:['面食','素','北方'],excluded:false,ingredients:[{name:'面粉',amount:'400g'},{name:'酵母',amount:'3g'},{name:'温水',amount:'200ml'},{name:'白糖',amount:'1茶匙'}],steps:['酵母溶于温水，加入面粉和白糖揉成面团','盖上保鲜膜醒发至两倍大（约1小时）','面团揉搓排气，搓成长条切成剂子','每个剂子揉成馒头形状','蒸锅冷水上锅，醒发15分钟','大火蒸15分钟，关火焖5分钟再开盖']},
 {id:207,name:'花卷',category:'早餐',difficulty:'中等',cook_time:30,servings:4,tags:['面食','素'],excluded:false,ingredients:[{name:'面粉',amount:'400g'},{name:'酵母',amount:'3g'},{name:'温水',amount:'200ml'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'},{name:'食用油',amount:'2汤匙'}],steps:['酵母溶于温水，加入面粉揉成面团醒发1小时','面团擀成长方形薄片','刷一层油，撒盐和葱花','从长边卷起切成小段','每段用筷子从中间压一下，两手拉长扭成花卷','蒸锅冷水上锅蒸15分钟']},
 {id:208,name:'糯米鸡',category:'早餐',difficulty:'中等',cook_time:60,servings:4,tags:['点心','荤','广东'],excluded:false,ingredients:[{name:'糯米',amount:'200g'},{name:'鸡肉',amount:'150g'},{name:'香菇',amount:'3朵'},{name:'粽叶',amount:'8片'},{name:'酱油',amount:'1汤匙'},{name:'蚝油',amount:'1汤匙'},{name:'盐',amount:'少许'}],steps:['糯米提前浸泡4小时','鸡肉切块用酱油蚝油腌制','香菇泡发切丁','粽叶洗净焯水','粽叶折成漏斗状，放入糯米、鸡肉、香菇','包紧用棉线绑好','蒸锅蒸40分钟']},
-{id:209,name:'烧麦',category:'早餐',difficulty:'中等',cook_time:40,servings:6,tags:['点心','荤'],excluded:false,ingredients:[{name:'饺子皮',amount:'12张'},{name:'糯米',amount:'150g'},{name:'猪肉馅',amount:'100g'},{name:'香菇',amount:'3朵'},{name:'酱油',amount:'1汤匙'},{name:'盐',amount:'少许'}],steps:['糯米浸泡4小时蒸熟','香菇泡发切丁','猪肉馅炒香加酱油调味','将糯米、肉馅、香菇丁混合','饺子皮包入馅料，用虎口收口','顶部敞开如花状','蒸锅蒸10分钟']},
-{id:210,name:'小笼包',category:'早餐',difficulty:'中等',cook_time:45,servings:4,tags:['点心','荤','上海'],excluded:false,ingredients:[{name:'面粉',amount:'200g'},{name:'猪肉馅',amount:'200g'},{name:'皮冻',amount:'50g'},{name:'姜',amount:'适量'},{name:'葱',amount:'适量'},{name:'酱油',amount:'1汤匙'},{name:'香油',amount:'1茶匙'}],steps:['面粉加温水揉成面团醒发30分钟','猪肉馅加姜末葱花酱油香油搅拌均匀','皮冻切碎拌入肉馅（这是出汤汁的关键）','面团分成小剂子擀薄皮','包入馅料捏出褶子','蒸锅蒸8分钟']},
-{id:211,name:'生煎包',category:'早餐',difficulty:'中等',cook_time:20,servings:4,tags:['点心','荤','上海'],excluded:false,ingredients:[{name:'面粉',amount:'200g'},{name:'酵母',amount:'2g'},{name:'猪肉馅',amount:'200g'},{name:'葱',amount:'适量'},{name:'芝麻',amount:'适量'},{name:'酱油',amount:'1汤匙'}],steps:['面粉加酵母和温水揉成面团醒发30分钟','猪肉馅加酱油葱花调味','面团分成剂子擀皮包馅','平底锅倒油放入包子煎至底部金黄','加少量水煎3分钟至水分蒸发','撒芝麻和葱花出锅']},
-{id:212,name:'葱油拌面',category:'早餐',difficulty:'简单',cook_time:15,servings:2,tags:['面食','快手','上海'],excluded:false,ingredients:[{name:'挂面',amount:'150g'},{name:'小葱',amount:'4根'},{name:'食用油',amount:'3汤匙'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'},{name:'白糖',amount:'1茶匙'}],steps:['小葱切长段，葱白和葱绿分开','锅中倒油小火煎葱段至焦黄捞出','葱油中加入生抽、老抽、白糖煮开成酱汁','面条煮熟捞出','淋上葱油酱汁拌匀即可']},
-{id:213,name:'红烧茄子',category:'午餐',difficulty:'简单',cook_time:20,servings:2,tags:['家常','素','下饭'],excluded:false,ingredients:[{name:'茄子',amount:'2根'},{name:'蒜',amount:'3瓣'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'},{name:'白糖',amount:'1茶匙'},{name:'淀粉',amount:'1茶匙'},{name:'食用油',amount:'2汤匙'}],steps:['茄子切滚刀块','锅中多放油将茄子煎至软身捞出','锅留底油爆香蒜末','加生抽老抽白糖和少量水烧开','放入茄子翻炒收汁','水淀粉勾薄芡出锅']},
-{id:214,name:'鱼香肉丝',category:'午餐',difficulty:'中等',cook_time:15,servings:2,tags:['川菜','荤','下饭'],excluded:false,ingredients:[{name:'猪里脊',amount:'150g'},{name:'木耳',amount:'30g'},{name:'胡萝卜',amount:'半根'},{name:'青椒',amount:'1个'},{name:'泡椒',amount:'3个'},{name:'蒜',amount:'2瓣'},{name:'姜',amount:'适量'},{name:'醋',amount:'1汤匙'},{name:'糖',amount:'1汤匙'},{name:'酱油',amount:'1汤匙'}],steps:['猪里脊切丝加盐淀粉腌制','木耳泡发切丝，胡萝卜青椒切丝','调鱼香汁：醋、糖、酱油、淀粉水混合','锅中炒肉丝至变色盛出','爆香泡椒蒜末姜末','放入配菜翻炒','倒入肉丝和鱼香汁翻炒均匀出锅']},
-{id:215,name:'宫保鸡丁',category:'午餐',difficulty:'中等',cook_time:15,servings:2,tags:['川菜','荤'],excluded:false,ingredients:[{name:'鸡胸肉',amount:'200g'},{name:'花生米',amount:'50g'},{name:'干辣椒',amount:'5个'},{name:'花椒',amount:'10粒'},{name:'葱',amount:'1根'},{name:'姜',amount:'适量'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'糖',amount:'1汤匙'},{name:'酱油',amount:'1汤匙'}],steps:['鸡胸肉切丁加盐淀粉腌制','花生米炒熟备用','调糖醋汁：醋、糖、酱油、淀粉水','锅中爆香干辣椒和花椒','放入鸡丁翻炒至变色','倒入糖醋汁翻炒','加入花生米和葱段翻炒均匀']},
-{id:216,name:'麻婆豆腐',category:'午餐',difficulty:'中等',cook_time:15,servings:2,tags:['川菜','素','下饭'],excluded:false,ingredients:[{name:'嫩豆腐',amount:'1盒(400g)'},{name:'猪肉末',amount:'50g'},{name:'豆瓣酱',amount:'1汤匙'},{name:'花椒粉',amount:'少许'},{name:'蒜',amount:'2瓣'},{name:'葱',amount:'1根'},{name:'淀粉',amount:'1茶匙'}],steps:['豆腐切2cm方块焯水备用','锅中倒油炒香肉末','加入豆瓣酱炒出红油','加蒜末和适量清水烧开','放入豆腐小火煮5分钟入味','水淀粉勾薄芡','撒花椒粉和葱花出锅']},
-{id:217,name:'可乐鸡翅',category:'午餐',difficulty:'简单',cook_time:30,servings:2,tags:['家常','荤','甜味'],excluded:false,ingredients:[{name:'鸡翅中',amount:'8个'},{name:'可乐',amount:'1罐(330ml)'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'},{name:'姜',amount:'3片'},{name:'葱',amount:'1根'}],steps:['鸡翅两面划刀便于入味','冷水下锅焯水捞出','锅中少许油煎鸡翅至两面金黄','加入姜片葱段','倒入可乐没过鸡翅','加生抽老抽大火烧开','转小火收汁至浓稠出锅']},
-{id:218,name:'糖醋排骨',category:'午餐',difficulty:'中等',cook_time:40,servings:2,tags:['家常','荤','甜味'],excluded:false,ingredients:[{name:'排骨',amount:'400g'},{name:'醋',amount:'3汤匙'},{name:'白糖',amount:'2汤匙'},{name:'生抽',amount:'2汤匙'},{name:'料酒',amount:'1汤匙'},{name:'姜',amount:'3片'},{name:'葱',amount:'1根'}],steps:['排骨冷水下锅焯水捞出','锅中倒油放冰糖炒出糖色','放入排骨翻炒上色','加料酒、生抽、醋、姜片','加清水没过排骨大火烧开','转小火炖30分钟','大火收汁至浓稠撒葱花']},
-{id:219,name:'回锅肉',category:'午餐',difficulty:'中等',cook_time:25,servings:2,tags:['川菜','荤','下饭'],excluded:false,ingredients:[{name:'五花肉',amount:'250g'},{name:'青椒',amount:'2个'},{name:'蒜苗',amount:'2根'},{name:'豆瓣酱',amount:'1汤匙'},{name:'姜',amount:'2片'},{name:'料酒',amount:'1汤匙'}],steps:['五花肉整块冷水下锅煮20分钟至熟','捞出放凉切薄片','青椒切块，蒜苗切段','锅中少许油煸炒肉片至微微卷曲出油','放入豆瓣酱炒出红油','加入青椒和蒜苗大火快炒','加少许酱油翻炒均匀出锅']},
-{id:220,name:'青椒土豆丝',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['家常','素','快手'],excluded:false,ingredients:[{name:'土豆',amount:'2个'},{name:'青椒',amount:'2个'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['土豆去皮切细丝泡水去淀粉','青椒切丝，蒜切片','锅中倒油爆香蒜片','放入土豆丝大火快炒2分钟','加入青椒丝翻炒1分钟','加醋和盐调味出锅']},
-{id:221,name:'醋溜白菜',category:'午餐',difficulty:'简单',cook_time:8,servings:2,tags:['家常','素','快手'],excluded:false,ingredients:[{name:'大白菜',amount:'半颗'},{name:'干辣椒',amount:'3个'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'2汤匙'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['白菜洗净切片（帮和叶分开）','蒜切片，干辣椒切段','锅中倒油爆香蒜和辣椒','先放白菜帮翻炒1分钟','再放入白菜叶翻炒','沿锅边倒入醋，加盐调味出锅']},
-{id:222,name:'手撕包菜',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['家常','素'],excluded:false,ingredients:[{name:'包菜',amount:'半颗'},{name:'五花肉',amount:'50g(可选)'},{name:'干辣椒',amount:'3个'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'生抽',amount:'1汤匙'},{name:'盐',amount:'少许'}],steps:['包菜手撕成小块洗净沥干','五花肉切薄片','锅中少许油煸炒肉片至出油','放入干辣椒和蒜片爆香','放入包菜大火翻炒2分钟','加醋生抽盐调味出锅']},
-{id:223,name:'地三鲜',category:'午餐',difficulty:'中等',cook_time:20,servings:2,tags:['东北菜','素','家常'],excluded:false,ingredients:[{name:'茄子',amount:'1根'},{name:'土豆',amount:'1个'},{name:'青椒',amount:'2个'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'2汤匙'},{name:'淀粉',amount:'1茶匙'},{name:'食用油',amount:'2汤匙'}],steps:['茄子切滚刀块，土豆切薄片，青椒切块','锅中多油将土豆和茄子分别炸至金黄捞出','锅留底油爆香蒜末','放入所有食材翻炒','加生抽和少量水','水淀粉勾薄芡出锅']},
-{id:224,name:'干煸四季豆',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['川菜','素'],excluded:false,ingredients:[{name:'四季豆',amount:'300g'},{name:'猪肉末',amount:'50g(可选)'},{name:'干辣椒',amount:'3个'},{name:'蒜',amount:'2瓣'},{name:'榨菜',amount:'1小块'},{name:'盐',amount:'少许'}],steps:['四季豆去筋掰成段洗净','锅中少油将四季豆煸至表皮起皱微焦','放入肉末炒散','加入干辣椒蒜末榨菜碎翻炒','加盐调味出锅']},
-{id:225,name:'蒜蓉菠菜',category:'午餐',difficulty:'简单',cook_time:5,servings:2,tags:['素','快手','清淡'],excluded:false,ingredients:[{name:'菠菜',amount:'300g'},{name:'蒜',amount:'3瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['菠菜洗净去根','锅中倒油爆香蒜末','放入菠菜大火快炒','炒至菠菜变软出水','加盐调味出锅']},
-{id:226,name:'虎皮青椒',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['家常','素'],excluded:false,ingredients:[{name:'青椒',amount:'5个'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'2汤匙'},{name:'醋',amount:'1茶匙'},{name:'白糖',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['青椒去籽洗净','锅中少油放入青椒中火煎','煎至两面出现焦斑（虎皮）盛出','锅留底油爆香蒜末','调汁：生抽、醋、白糖混合','倒入调汁和青椒翻炒均匀出锅']},
-{id:227,name:'蒜蓉粉丝蒸虾',category:'午餐',difficulty:'中等',cook_time:20,servings:2,tags:['海鲜','蒸菜','清淡'],excluded:false,ingredients:[{name:'大虾',amount:'8只'},{name:'粉丝',amount:'50g'},{name:'蒜',amount:'5瓣'},{name:'生抽',amount:'1汤匙'},{name:'料酒',amount:'1茶匙'},{name:'食用油',amount:'1汤匙'}],steps:['粉丝泡软铺在盘底','虾开背去虾线摆在粉丝上','蒜切末铺在虾上','淋生抽和料酒','蒸锅水开后放入蒸8分钟','出锅淋上热油滋香']},
-{id:228,name:'酸辣土豆丝',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['家常','素','快手'],excluded:false,ingredients:[{name:'土豆',amount:'2个'},{name:'干辣椒',amount:'3个'},{name:'花椒',amount:'10粒'},{name:'醋',amount:'2汤匙'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['土豆去皮切细丝泡水洗净淀粉','锅中倒油爆香花椒和干辣椒','放入土豆丝大火快炒2分钟','沿锅边倒入醋翻炒','加盐调味出锅']},
-{id:229,name:'西红柿炖牛腩',category:'午餐',difficulty:'困难',cook_time:90,servings:3,tags:['荤','炖菜','家常'],excluded:false,ingredients:[{name:'牛腩',amount:'500g'},{name:'番茄',amount:'3个'},{name:'土豆',amount:'1个'},{name:'洋葱',amount:'半个'},{name:'姜',amount:'3片'},{name:'八角',amount:'1个'},{name:'酱油',amount:'2汤匙'},{name:'料酒',amount:'1汤匙'}],steps:['牛腩切块冷水下锅焯水捞出','番茄切块，土豆切滚刀块','锅中倒油炒香洋葱和姜片','加入牛腩翻炒','加酱油料酒八角和足量热水','大火烧开转小火炖60分钟','加入番茄和土豆再炖20分钟','加盐调味']},
-{id:230,name:'香菇滑鸡',category:'午餐',difficulty:'中等',cook_time:30,servings:2,tags:['荤','家常'],excluded:false,ingredients:[{name:'鸡腿',amount:'2个'},{name:'香菇',amount:'6朵'},{name:'姜',amount:'2片'},{name:'葱',amount:'1根'},{name:'酱油',amount:'2汤匙'},{name:'蚝油',amount:'1汤匙'},{name:'料酒',amount:'1汤匙'},{name:'淀粉',amount:'1茶匙'}],steps:['鸡腿去骨切块用酱油蚝油料酒淀粉腌制','香菇泡发切片','锅中倒油煎鸡肉至两面金黄','加入姜片翻炒','加入香菇和适量清水','中小火煮15分钟至鸡肉熟透','大火收汁撒葱花']},
-{id:231,name:'红烧带鱼',category:'午餐',difficulty:'中等',cook_time:25,servings:2,tags:['海鲜','家常'],excluded:false,ingredients:[{name:'带鱼',amount:'400g'},{name:'姜',amount:'3片'},{name:'蒜',amount:'2瓣'},{name:'酱油',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'},{name:'料酒',amount:'1汤匙'},{name:'白糖',amount:'1茶匙'},{name:'面粉',amount:'适量'}],steps:['带鱼处理干净切段，用料酒和盐腌制15分钟','带鱼裹薄面粉','锅中倒油中火将带鱼煎至两面金黄','放入姜片蒜末','加酱油老抽料酒白糖和少量水','中火焖煮10分钟','大火收汁出锅']},
-{id:232,name:'干锅花菜',category:'午餐',difficulty:'中等',cook_time:15,servings:2,tags:['家常','素'],excluded:false,ingredients:[{name:'花菜',amount:'1颗'},{name:'五花肉',amount:'50g(可选)'},{name:'干辣椒',amount:'3个'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'1汤匙'},{name:'豆瓣酱',amount:'半汤匙'}],steps:['花菜掰小朵洗净','锅中少油煸炒花菜至微微焦黄盛出','锅中炒五花肉出油','加干辣椒蒜末豆瓣酱炒香','放入花菜翻炒均匀','加生抽调味出锅']},
-{id:233,name:'三杯鸡',category:'午餐',difficulty:'中等',cook_time:30,servings:2,tags:['台湾菜','荤'],excluded:false,ingredients:[{name:'鸡腿',amount:'3个'},{name:'九层塔',amount:'1把'},{name:'姜',amount:'5片'},{name:'蒜',amount:'5瓣'},{name:'食用油',amount:'1杯'},{name:'酱油',amount:'1杯'},{name:'米酒',amount:'1杯'}],steps:['鸡腿切块','锅中倒油爆香姜片和蒜瓣','放入鸡块煎至两面金黄','倒入酱油和米酒','大火烧开转小火焖煮15分钟','大火收汁至浓稠','放入九层塔翻炒出香味出锅']},
-{id:234,name:'白灼菜心',category:'午餐',difficulty:'简单',cook_time:5,servings:2,tags:['粤菜','素','清淡'],excluded:false,ingredients:[{name:'菜心',amount:'300g'},{name:'蒜',amount:'3瓣'},{name:'生抽',amount:'2汤匙'},{name:'蚝油',amount:'1汤匙'},{name:'食用油',amount:'1汤匙'}],steps:['菜心洗净','烧开水加少许盐和油','放入菜心焯水30秒捞出摆盘','锅中倒油爆香蒜末','加蚝油和生抽调成汁','淋在菜心上']},
-{id:235,name:'蒜泥白肉',category:'晚餐',difficulty:'中等',cook_time:20,servings:2,tags:['川菜','荤'],excluded:false,ingredients:[{name:'五花肉',amount:'300g'},{name:'蒜',amount:'5瓣'},{name:'生抽',amount:'2汤匙'},{name:'醋',amount:'1汤匙'},{name:'辣椒油',amount:'1汤匙'},{name:'白糖',amount:'少许'},{name:'葱',amount:'适量'}],steps:['五花肉整块冷水下锅加姜片煮至熟透','捞出放凉切薄片','蒜捣成泥加生抽醋辣椒油白糖调成蘸料','肉片摆盘淋蒜泥汁撒葱花']},
-{id:236,name:'凉拌折耳根',category:'晚餐',difficulty:'简单',cook_time:5,servings:2,tags:['凉菜','川菜','素'],excluded:false,ingredients:[{name:'折耳根/鱼腥草',amount:'200g'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'酱油',amount:'1汤匙'},{name:'辣椒油',amount:'1汤匙'},{name:'香油',amount:'少许'}],steps:['折耳根洗净掐成段','蒜切末','所有调料混合成汁','淋入折耳根拌匀即可']},
-{id:237,name:'排骨莲藕汤',category:'晚餐',difficulty:'中等',cook_time:60,servings:3,tags:['汤','养生','荤'],excluded:false,ingredients:[{name:'排骨',amount:'300g'},{name:'莲藕',amount:'300g'},{name:'姜',amount:'3片'},{name:'料酒',amount:'1汤匙'},{name:'盐',amount:'少许'},{name:'葱',amount:'1根'}],steps:['排骨冷水下锅焯水去血沫','莲藕去皮切滚刀块','锅中加水放入排骨和姜片','大火烧开转小火炖40分钟','加入莲藕再炖20分钟','加盐调味撒葱花']},
-{id:238,name:'玉米排骨汤',category:'晚餐',difficulty:'中等',cook_time:50,servings:3,tags:['汤','养生','家常'],excluded:false,ingredients:[{name:'排骨',amount:'300g'},{name:'玉米',amount:'1根'},{name:'胡萝卜',amount:'半根'},{name:'姜',amount:'3片'},{name:'盐',amount:'少许'}],steps:['排骨冷水下锅焯水','玉米切段，胡萝卜切滚刀块','锅中加水放入排骨和姜片','大火烧开转小火炖40分钟','加入玉米和胡萝卜再炖15分钟','加盐调味']},
-{id:239,name:'山药排骨汤',category:'晚餐',difficulty:'中等',cook_time:50,servings:3,tags:['汤','养生','清淡'],excluded:false,ingredients:[{name:'排骨',amount:'300g'},{name:'山药',amount:'200g'},{name:'姜',amount:'3片'},{name:'枸杞',amount:'10粒'},{name:'盐',amount:'少许'}],steps:['排骨冷水下锅焯水','山药去皮切滚刀块泡水防氧化','锅中加水放排骨和姜片','大火烧开转小火炖40分钟','加入山药再炖15分钟','加盐调味撒枸杞']},
-{id:240,name:'萝卜牛腩汤',category:'晚餐',difficulty:'困难',cook_time:90,servings:3,tags:['汤','炖菜','荤'],excluded:false,ingredients:[{name:'牛腩',amount:'400g'},{name:'白萝卜',amount:'1根'},{name:'姜',amount:'3片'},{name:'八角',amount:'1个'},{name:'酱油',amount:'1汤匙'},{name:'盐',amount:'少许'}],steps:['牛腩切块冷水下锅焯水','白萝卜切滚刀块','锅中加水放牛腩姜片八角','大火烧开转小火炖60分钟','加入萝卜再炖20分钟','加盐和酱油调味']},
-{id:241,name:'鸡蛋羹配虾仁',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['蒸菜','海鲜','清淡'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'虾仁',amount:'100g'},{name:'温水',amount:'300ml'},{name:'生抽',amount:'少许'},{name:'香油',amount:'几滴'}],steps:['鸡蛋打散加温水搅匀，过滤气泡','倒入蒸碗盖保鲜膜','蒸锅大火烧开后中火蒸10分钟','虾仁焯水备用','蛋羹蒸好后摆上虾仁','淋生抽和香油']},
-{id:242,name:'葱烧豆腐',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['家常','素'],excluded:false,ingredients:[{name:'老豆腐',amount:'1块(300g)'},{name:'大葱',amount:'2根'},{name:'生抽',amount:'2汤匙'},{name:'蚝油',amount:'1汤匙'},{name:'淀粉',amount:'1茶匙'},{name:'食用油',amount:'2汤匙'}],steps:['老豆腐切方块，大葱切段','锅中倒油将豆腐煎至两面金黄','放入葱段炒香','加生抽蚝油和少量水','小火煮3分钟入味','水淀粉勾薄芡出锅']},
-{id:243,name:'蚝油生菜',category:'晚餐',difficulty:'简单',cook_time:5,servings:2,tags:['粤菜','素','快手'],excluded:false,ingredients:[{name:'生菜',amount:'300g'},{name:'蚝油',amount:'2汤匙'},{name:'生抽',amount:'1汤匙'},{name:'蒜',amount:'2瓣'},{name:'香油',amount:'少许'}],steps:['生菜洗净','烧开水加少许盐和油','生菜焯水30秒捞出摆盘','锅中少许油爆香蒜末','加蚝油和生抽调成汁','淋在生菜上滴香油']},
-{id:244,name:'蒜蓉秋葵',category:'晚餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','清淡','健康'],excluded:false,ingredients:[{name:'秋葵',amount:'200g'},{name:'蒜',amount:'3瓣'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'}],steps:['秋葵洗净整根焯水2分钟','捞出过冷水后切段','蒜切末铺在秋葵上','淋生抽和香油即可']},
-{id:245,name:'凉拌藕片',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['凉菜','素','清淡'],excluded:false,ingredients:[{name:'莲藕',amount:'1节(约300g)'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'盐',amount:'少许'}],steps:['莲藕去皮切薄片泡水去淀粉','烧开水加少许醋（防氧化）','放入藕片焯水2分钟捞出过冷水','蒜切末','藕片加蒜末醋生抽香油盐拌匀即可']},
-{id:246,name:'清炒芦笋',category:'晚餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','清淡','健康'],excluded:false,ingredients:[{name:'芦笋',amount:'200g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['芦笋去皮切段，蒜切片','锅中倒油爆香蒜片','放入芦笋中火翻炒3分钟','加盐调味出锅']},
-{id:247,name:'蒸排骨',category:'晚餐',difficulty:'中等',cook_time:30,servings:2,tags:['蒸菜','荤','广东'],excluded:false,ingredients:[{name:'小排',amount:'300g'},{name:'蒜',amount:'3瓣'},{name:'豆豉',amount:'1汤匙'},{name:'生抽',amount:'1汤匙'},{name:'淀粉',amount:'1汤匙'},{name:'料酒',amount:'1汤匙'},{name:'盐',amount:'少许'}],steps:['排骨斩小段洗净沥干','蒜切末加豆豉生抽料酒淀粉和盐腌制30分钟','排骨平铺在盘中','蒸锅水开后大火蒸25分钟','出锅撒葱花']},
-{id:248,name:'番茄鱼片汤',category:'晚餐',difficulty:'中等',cook_time:20,servings:2,tags:['汤','海鲜','清淡'],excluded:false,ingredients:[{name:'草鱼/鲈鱼片',amount:'200g'},{name:'番茄',amount:'2个'},{name:'姜',amount:'2片'},{name:'淀粉',amount:'1茶匙'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'}],steps:['鱼片加盐和淀粉腌制','番茄切块','锅中少许油炒番茄至出汁','加清水大火烧开','放入鱼片轻轻推动','鱼片变白后加盐调味撒葱花']},
-{id:249,name:'白灼虾配蘸汁',category:'晚餐',difficulty:'简单',cook_time:10,servings:2,tags:['海鲜','清淡','快手'],excluded:false,ingredients:[{name:'基围虾',amount:'300g'},{name:'姜',amount:'3片'},{name:'葱',amount:'2根'},{name:'料酒',amount:'1汤匙'},{name:'生抽',amount:'2汤匙'},{name:'香油',amount:'1汤匙'}],steps:['虾洗净剪去虾须挑去虾线','锅中加水姜片葱段料酒烧开','放入虾大火煮2分钟至虾身弯曲变红','捞出过凉水摆盘','蘸汁：生抽加香油即可']},
-{id:250,name:'香菇青菜',category:'晚餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','清淡','家常'],excluded:false,ingredients:[{name:'青菜',amount:'300g'},{name:'香菇',amount:'4朵'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['青菜洗净，香菇切片','锅中倒油爆香蒜片','先炒香菇2分钟','加入青菜大火快炒','加盐调味出锅']},
-{id:251,name:'蛋炒饭',category:'夜宵',difficulty:'简单',cook_time:10,servings:1,tags:['米饭','快手','家常'],excluded:false,ingredients:[{name:'隔夜米饭',amount:'1碗'},{name:'鸡蛋',amount:'2个'},{name:'葱',amount:'1根'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['米饭提前冷藏（隔夜饭炒出来更散）','鸡蛋打散','锅中倒油倒入蛋液炒至凝固铲碎','倒入米饭大火翻炒至粒粒分明','加盐调味撒葱花出锅']},
-{id:252,name:'炒河粉',category:'夜宵',difficulty:'简单',cook_time:15,servings:1,tags:['广东','粉','快手'],excluded:false,ingredients:[{name:'干河粉',amount:'200g'},{name:'豆芽',amount:'50g'},{name:'韭黄',amount:'50g'},{name:'牛肉',amount:'100g(可选)'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'}],steps:['河粉提前泡软或过热水','豆芽洗净，韭黄切段','锅中倒油炒牛肉至变色盛出','放入河粉翻炒','加生抽老抽调味','加入豆芽韭黄和牛肉翻炒均匀']},
-{id:253,name:'阳春面',category:'夜宵',difficulty:'简单',cook_time:10,servings:1,tags:['面食','清淡','快手'],excluded:false,ingredients:[{name:'挂面',amount:'100g'},{name:'葱',amount:'1根'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'1茶匙'},{name:'猪油',amount:'半汤匙(可选)'}],steps:['碗中放入生抽香油和葱花','烧开水下面条','面条煮熟捞入碗中','浇上面汤拌匀']},
-{id:254,name:'酸辣粉',category:'夜宵',difficulty:'中等',cook_time:15,servings:1,tags:['川味','粉','酸辣'],excluded:false,ingredients:[{name:'红薯粉',amount:'100g'},{name:'醋',amount:'2汤匙'},{name:'辣椒油',amount:'1汤匙'},{name:'花生碎',amount:'适量'},{name:'香菜',amount:'适量'},{name:'酱油',amount:'1汤匙'}],steps:['红薯粉提前泡软','调汁：醋辣椒油酱油花椒粉白糖混合','烧开水下红薯粉煮熟','捞入碗中浇上调料汁','撒花生碎香菜即可']},
-{id:255,name:'煎饺子',category:'夜宵',difficulty:'中等',cook_time:15,servings:2,tags:['面食','荤','快手'],excluded:false,ingredients:[{name:'速冻饺子',amount:'10个'},{name:'食用油',amount:'2汤匙'},{name:'面粉',amount:'少许(调水用)'},{name:'醋',amount:'适量'}],steps:['平底锅倒少许油摆入速冻饺子','中小火煎3分钟至底部微黄','面粉加水调成面糊倒入锅中（没过饺子1/3）','盖盖中小火焖煮至水分蒸发','底部形成焦脆冰花即可']},
-{id:256,name:'皮蛋豆腐',category:'夜宵',difficulty:'简单',cook_time:5,servings:2,tags:['凉菜','快手','清淡'],excluded:false,ingredients:[{name:'皮蛋',amount:'2个'},{name:'嫩豆腐',amount:'1盒'},{name:'生抽',amount:'2汤匙'},{name:'醋',amount:'1汤匙'},{name:'香油',amount:'少许'},{name:'蒜',amount:'2瓣'},{name:'葱花',amount:'适量'}],steps:['豆腐切小块摆盘','皮蛋切小块摆在豆腐上','蒜切末','调汁：生抽醋香油蒜末混合','淋在皮蛋豆腐上撒葱花']},
-{id:257,name:'凉拌毛豆',category:'夜宵',difficulty:'简单',cook_time:15,servings:2,tags:['凉菜','素','小吃'],excluded:false,ingredients:[{name:'新鲜毛豆',amount:'300g'},{name:'盐',amount:'1汤匙'},{name:'八角',amount:'1个'},{name:'花椒',amount:'10粒'},{name:'干辣椒',amount:'1个'},{name:'蒜',amount:'2瓣'}],steps:['毛豆洗净剪去两端','锅中加水八角花椒干辣椒盐烧开','放入毛豆煮10分钟','捞出沥干','加蒜末生抽香油拌匀即可']},
-{id:258,name:'酒酿圆子',category:'夜宵',difficulty:'简单',cook_time:10,servings:2,tags:['甜品','快手'],excluded:false,ingredients:[{name:'小汤圆',amount:'100g'},{name:'酒酿',amount:'200g'},{name:'枸杞',amount:'少许'},{name:'白糖',amount:'适量'},{name:'淀粉',amount:'少许'}],steps:['锅中加水烧开下小汤圆','煮至汤圆浮起','加入酒酿和枸杞','加白糖调味','少许淀粉水勾薄芡出锅']},
-{id:259,name:'银耳莲子羹',category:'夜宵',difficulty:'中等',cook_time:60,servings:2,tags:['甜品','养生'],excluded:false,ingredients:[{name:'干银耳',amount:'15g'},{name:'莲子',amount:'20g'},{name:'红枣',amount:'5颗'},{name:'冰糖',amount:'适量'},{name:'枸杞',amount:'少许'}],steps:['银耳提前泡发2小时撕成小朵','莲子去芯','所有食材放入锅加足量水','大火烧开转小火炖50分钟至银耳出胶','加冰糖和枸杞再煮5分钟']},
-{id:260,name:'烤红薯',category:'夜宵',difficulty:'简单',cook_time:50,servings:2,tags:['甜品','粗粮'],excluded:false,ingredients:[{name:'红薯',amount:'2个(约400g)'}],steps:['红薯洗净擦干水分','烤箱200度烤45-50分钟','中间翻面一次','烤至表面有糖汁冒出','取出稍凉后剥皮食用']},
-{id:261,name:'牛奶燕麦粥',category:'夜宵',difficulty:'简单',cook_time:10,servings:1,tags:['饮品','快手','养生'],excluded:false,ingredients:[{name:'牛奶',amount:'250ml'},{name:'燕麦片',amount:'40g'},{name:'蜂蜜',amount:'适量'},{name:'坚果',amount:'少许(可选)'}],steps:['牛奶倒入小锅中小火加热','加入燕麦片搅拌','煮2-3分钟至燕麦吸饱牛奶变稠','关火加蜂蜜','撒坚果碎即可']},
-{id:262,name:'小馄饨',category:'夜宵',difficulty:'中等',cook_time:20,servings:2,tags:['面食','快手'],excluded:false,ingredients:[{name:'速冻小馄饨',amount:'15个'},{name:'紫菜',amount:'少许'},{name:'虾皮',amount:'少许'},{name:'葱',amount:'1根'},{name:'盐',amount:'少许'},{name:'香油',amount:'几滴'}],steps:['碗中放入紫菜虾皮葱花盐香油','烧开水下馄饨','煮至馄饨全部浮起','舀面汤冲开碗中的调料','捞入馄饨即可']},
-
+{id:209,name:'小笼包',category:'早餐',difficulty:'中等',cook_time:45,servings:4,tags:['点心','荤','上海'],excluded:false,ingredients:[{name:'面粉',amount:'200g'},{name:'猪肉馅',amount:'200g'},{name:'皮冻',amount:'50g'},{name:'姜',amount:'适量'},{name:'葱',amount:'适量'},{name:'酱油',amount:'1汤匙'},{name:'香油',amount:'1茶匙'}],steps:['面粉加温水揉成面团醒发30分钟','猪肉馅加姜末葱花酱油香油搅拌均匀','皮冻切碎拌入肉馅（这是出汤汁的关键）','面团分成小剂子擀薄皮','包入馅料捏出褶子','蒸锅蒸8分钟']},
+{id:210,name:'生煎包',category:'早餐',difficulty:'中等',cook_time:20,servings:4,tags:['点心','荤','上海'],excluded:false,ingredients:[{name:'面粉',amount:'200g'},{name:'酵母',amount:'2g'},{name:'猪肉馅',amount:'200g'},{name:'葱',amount:'适量'},{name:'芝麻',amount:'适量'},{name:'酱油',amount:'1汤匙'}],steps:['面粉加酵母和温水揉成面团醒发30分钟','猪肉馅加酱油葱花调味','面团分成剂子擀皮包馅','平底锅倒油放入包子煎至底部金黄','加少量水煎3分钟至水分蒸发','撒芝麻和葱花出锅']},
+{id:211,name:'葱油拌面',category:'早餐',difficulty:'简单',cook_time:15,servings:2,tags:['面食','快手','上海'],excluded:false,ingredients:[{name:'挂面',amount:'150g'},{name:'小葱',amount:'4根'},{name:'食用油',amount:'3汤匙'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'},{name:'白糖',amount:'1茶匙'}],steps:['小葱切长段，葱白和葱绿分开','锅中倒油小火煎葱段至焦黄捞出','葱油中加入生抽、老抽、白糖煮开成酱汁','面条煮熟捞出','淋上葱油酱汁拌匀即可']},
+{id:212,name:'红烧茄子',category:'午餐',difficulty:'简单',cook_time:20,servings:2,tags:['家常','素','下饭'],excluded:false,ingredients:[{name:'茄子',amount:'2根'},{name:'蒜',amount:'3瓣'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'},{name:'白糖',amount:'1茶匙'},{name:'淀粉',amount:'1茶匙'},{name:'食用油',amount:'2汤匙'}],steps:['茄子切滚刀块','锅中多放油将茄子煎至软身捞出','锅留底油爆香蒜末','加生抽老抽白糖和少量水烧开','放入茄子翻炒收汁','水淀粉勾薄芡出锅']},
+{id:213,name:'鱼香肉丝',category:'午餐',difficulty:'中等',cook_time:15,servings:2,tags:['川菜','荤','下饭'],excluded:false,ingredients:[{name:'猪里脊',amount:'150g'},{name:'木耳',amount:'30g'},{name:'胡萝卜',amount:'半根'},{name:'青椒',amount:'1个'},{name:'泡椒',amount:'3个'},{name:'蒜',amount:'2瓣'},{name:'姜',amount:'适量'},{name:'醋',amount:'1汤匙'},{name:'糖',amount:'1汤匙'},{name:'酱油',amount:'1汤匙'}],steps:['猪里脊切丝加盐淀粉腌制','木耳泡发切丝，胡萝卜青椒切丝','调鱼香汁：醋、糖、酱油、淀粉水混合','锅中炒肉丝至变色盛出','爆香泡椒蒜末姜末','放入配菜翻炒','倒入肉丝和鱼香汁翻炒均匀出锅']},
+{id:214,name:'宫保鸡丁',category:'午餐',difficulty:'中等',cook_time:15,servings:2,tags:['川菜','荤'],excluded:false,ingredients:[{name:'鸡胸肉',amount:'200g'},{name:'花生米',amount:'50g'},{name:'干辣椒',amount:'5个'},{name:'花椒',amount:'10粒'},{name:'葱',amount:'1根'},{name:'姜',amount:'适量'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'糖',amount:'1汤匙'},{name:'酱油',amount:'1汤匙'}],steps:['鸡胸肉切丁加盐淀粉腌制','花生米炒熟备用','调糖醋汁：醋、糖、酱油、淀粉水','锅中爆香干辣椒和花椒','放入鸡丁翻炒至变色','倒入糖醋汁翻炒','加入花生米和葱段翻炒均匀']},
+{id:215,name:'麻婆豆腐',category:'午餐',difficulty:'中等',cook_time:15,servings:2,tags:['川菜','素','下饭'],excluded:false,ingredients:[{name:'嫩豆腐',amount:'1盒(400g)'},{name:'猪肉末',amount:'50g'},{name:'豆瓣酱',amount:'1汤匙'},{name:'花椒粉',amount:'少许'},{name:'蒜',amount:'2瓣'},{name:'葱',amount:'1根'},{name:'淀粉',amount:'1茶匙'}],steps:['豆腐切2cm方块焯水备用','锅中倒油炒香肉末','加入豆瓣酱炒出红油','加蒜末和适量清水烧开','放入豆腐小火煮5分钟入味','水淀粉勾薄芡','撒花椒粉和葱花出锅']},
+{id:216,name:'可乐鸡翅',category:'午餐',difficulty:'简单',cook_time:30,servings:2,tags:['家常','荤','甜味'],excluded:false,ingredients:[{name:'鸡翅中',amount:'8个'},{name:'可乐',amount:'1罐(330ml)'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'},{name:'姜',amount:'3片'},{name:'葱',amount:'1根'}],steps:['鸡翅两面划刀便于入味','冷水下锅焯水捞出','锅中少许油煎鸡翅至两面金黄','加入姜片葱段','倒入可乐没过鸡翅','加生抽老抽大火烧开','转小火收汁至浓稠出锅']},
+{id:217,name:'糖醋排骨',category:'午餐',difficulty:'中等',cook_time:40,servings:2,tags:['家常','荤','甜味'],excluded:false,ingredients:[{name:'排骨',amount:'400g'},{name:'醋',amount:'3汤匙'},{name:'白糖',amount:'2汤匙'},{name:'生抽',amount:'2汤匙'},{name:'料酒',amount:'1汤匙'},{name:'姜',amount:'3片'},{name:'葱',amount:'1根'}],steps:['排骨冷水下锅焯水捞出','锅中倒油放冰糖炒出糖色','放入排骨翻炒上色','加料酒、生抽、醋、姜片','加清水没过排骨大火烧开','转小火炖30分钟','大火收汁至浓稠撒葱花']},
+{id:218,name:'回锅肉',category:'午餐',difficulty:'中等',cook_time:25,servings:2,tags:['川菜','荤','下饭'],excluded:false,ingredients:[{name:'五花肉',amount:'250g'},{name:'青椒',amount:'2个'},{name:'蒜苗',amount:'2根'},{name:'豆瓣酱',amount:'1汤匙'},{name:'姜',amount:'2片'},{name:'料酒',amount:'1汤匙'}],steps:['五花肉整块冷水下锅煮20分钟至熟','捞出放凉切薄片','青椒切块，蒜苗切段','锅中少许油煸炒肉片至微微卷曲出油','放入豆瓣酱炒出红油','加入青椒和蒜苗大火快炒','加少许酱油翻炒均匀出锅']},
+{id:219,name:'青椒土豆丝',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['家常','素','快手'],excluded:false,ingredients:[{name:'土豆',amount:'2个'},{name:'青椒',amount:'2个'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'盐',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['土豆去皮切细丝泡水去淀粉','青椒切丝，蒜切片','锅中倒油爆香蒜片','放入土豆丝大火快炒2分钟','加入青椒丝翻炒1分钟','加醋和盐调味出锅']},
+{id:220,name:'手撕包菜',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['家常','素'],excluded:false,ingredients:[{name:'包菜',amount:'半颗'},{name:'五花肉',amount:'50g(可选)'},{name:'干辣椒',amount:'3个'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'生抽',amount:'1汤匙'},{name:'盐',amount:'少许'}],steps:['包菜手撕成小块洗净沥干','五花肉切薄片','锅中少许油煸炒肉片至出油','放入干辣椒和蒜片爆香','放入包菜大火翻炒2分钟','加醋生抽盐调味出锅']},
+{id:221,name:'地三鲜',category:'午餐',difficulty:'中等',cook_time:20,servings:2,tags:['东北菜','素','家常'],excluded:false,ingredients:[{name:'茄子',amount:'1根'},{name:'土豆',amount:'1个'},{name:'青椒',amount:'2个'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'2汤匙'},{name:'淀粉',amount:'1茶匙'},{name:'食用油',amount:'2汤匙'}],steps:['茄子切滚刀块，土豆切薄片，青椒切块','锅中多油将土豆和茄子分别炸至金黄捞出','锅留底油爆香蒜末','放入所有食材翻炒','加生抽和少量水','水淀粉勾薄芡出锅']},
+{id:222,name:'干煸四季豆',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['川菜','素'],excluded:false,ingredients:[{name:'四季豆',amount:'300g'},{name:'猪肉末',amount:'50g(可选)'},{name:'干辣椒',amount:'3个'},{name:'蒜',amount:'2瓣'},{name:'榨菜',amount:'1小块'},{name:'盐',amount:'少许'}],steps:['四季豆去筋掰成段洗净','锅中少油将四季豆煸至表皮起皱微焦','放入肉末炒散','加入干辣椒蒜末榨菜碎翻炒','加盐调味出锅']},
+{id:223,name:'蒜蓉菠菜',category:'午餐',difficulty:'简单',cook_time:5,servings:2,tags:['素','快手','清淡'],excluded:false,ingredients:[{name:'菠菜',amount:'300g'},{name:'蒜',amount:'3瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['菠菜洗净去根','锅中倒油爆香蒜末','放入菠菜大火快炒','炒至菠菜变软出水','加盐调味出锅']},
+{id:224,name:'虎皮青椒',category:'午餐',difficulty:'简单',cook_time:15,servings:2,tags:['家常','素'],excluded:false,ingredients:[{name:'青椒',amount:'5个'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'2汤匙'},{name:'醋',amount:'1茶匙'},{name:'白糖',amount:'少许'},{name:'食用油',amount:'2汤匙'}],steps:['青椒去籽洗净','锅中少油放入青椒中火煎','煎至两面出现焦斑（虎皮）盛出','锅留底油爆香蒜末','调汁：生抽、醋、白糖混合','倒入调汁和青椒翻炒均匀出锅']},
+{id:225,name:'蒜蓉粉丝蒸虾',category:'午餐',difficulty:'中等',cook_time:20,servings:2,tags:['海鲜','蒸菜','清淡'],excluded:false,ingredients:[{name:'大虾',amount:'8只'},{name:'粉丝',amount:'50g'},{name:'蒜',amount:'5瓣'},{name:'生抽',amount:'1汤匙'},{name:'料酒',amount:'1茶匙'},{name:'食用油',amount:'1汤匙'}],steps:['粉丝泡软铺在盘底','虾开背去虾线摆在粉丝上','蒜切末铺在虾上','淋生抽和料酒','蒸锅水开后放入蒸8分钟','出锅淋上热油滋香']},
+{id:226,name:'酸辣土豆丝',category:'午餐',difficulty:'简单',cook_time:10,servings:2,tags:['家常','素','快手'],excluded:false,ingredients:[{name:'土豆',amount:'2个'},{name:'干辣椒',amount:'3个'},{name:'花椒',amount:'10粒'},{name:'醋',amount:'2汤匙'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['土豆去皮切细丝泡水洗净淀粉','锅中倒油爆香花椒和干辣椒','放入土豆丝大火快炒2分钟','沿锅边倒入醋翻炒','加盐调味出锅']},
+{id:227,name:'西红柿炖牛腩',category:'午餐',difficulty:'困难',cook_time:90,servings:3,tags:['荤','炖菜','家常'],excluded:false,ingredients:[{name:'牛腩',amount:'500g'},{name:'番茄',amount:'3个'},{name:'土豆',amount:'1个'},{name:'洋葱',amount:'半个'},{name:'姜',amount:'3片'},{name:'八角',amount:'1个'},{name:'酱油',amount:'2汤匙'},{name:'料酒',amount:'1汤匙'}],steps:['牛腩切块冷水下锅焯水捞出','番茄切块，土豆切滚刀块','锅中倒油炒香洋葱和姜片','加入牛腩翻炒','加酱油料酒八角和足量热水','大火烧开转小火炖60分钟','加入番茄和土豆再炖20分钟','加盐调味']},
+{id:228,name:'香菇滑鸡',category:'午餐',difficulty:'中等',cook_time:30,servings:2,tags:['荤','家常'],excluded:false,ingredients:[{name:'鸡腿',amount:'2个'},{name:'香菇',amount:'6朵'},{name:'姜',amount:'2片'},{name:'葱',amount:'1根'},{name:'酱油',amount:'2汤匙'},{name:'蚝油',amount:'1汤匙'},{name:'料酒',amount:'1汤匙'},{name:'淀粉',amount:'1茶匙'}],steps:['鸡腿去骨切块用酱油蚝油料酒淀粉腌制','香菇泡发切片','锅中倒油煎鸡肉至两面金黄','加入姜片翻炒','加入香菇和适量清水','中小火煮15分钟至鸡肉熟透','大火收汁撒葱花']},
+{id:229,name:'红烧带鱼',category:'午餐',difficulty:'中等',cook_time:25,servings:2,tags:['海鲜','家常'],excluded:false,ingredients:[{name:'带鱼',amount:'400g'},{name:'姜',amount:'3片'},{name:'蒜',amount:'2瓣'},{name:'酱油',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'},{name:'料酒',amount:'1汤匙'},{name:'白糖',amount:'1茶匙'},{name:'面粉',amount:'适量'}],steps:['带鱼处理干净切段，用料酒和盐腌制15分钟','带鱼裹薄面粉','锅中倒油中火将带鱼煎至两面金黄','放入姜片蒜末','加酱油老抽料酒白糖和少量水','中火焖煮10分钟','大火收汁出锅']},
+{id:230,name:'干锅花菜',category:'午餐',difficulty:'中等',cook_time:15,servings:2,tags:['家常','素'],excluded:false,ingredients:[{name:'花菜',amount:'1颗'},{name:'五花肉',amount:'50g(可选)'},{name:'干辣椒',amount:'3个'},{name:'蒜',amount:'2瓣'},{name:'生抽',amount:'1汤匙'},{name:'豆瓣酱',amount:'半汤匙'}],steps:['花菜掰小朵洗净','锅中少油煸炒花菜至微微焦黄盛出','锅中炒五花肉出油','加干辣椒蒜末豆瓣酱炒香','放入花菜翻炒均匀','加生抽调味出锅']},
+{id:231,name:'三杯鸡',category:'午餐',difficulty:'中等',cook_time:30,servings:2,tags:['台湾菜','荤'],excluded:false,ingredients:[{name:'鸡腿',amount:'3个'},{name:'九层塔',amount:'1把'},{name:'姜',amount:'5片'},{name:'蒜',amount:'5瓣'},{name:'食用油',amount:'1杯'},{name:'酱油',amount:'1杯'},{name:'米酒',amount:'1杯'}],steps:['鸡腿切块','锅中倒油爆香姜片和蒜瓣','放入鸡块煎至两面金黄','倒入酱油和米酒','大火烧开转小火焖煮15分钟','大火收汁至浓稠','放入九层塔翻炒出香味出锅']},
+{id:232,name:'白灼菜心',category:'午餐',difficulty:'简单',cook_time:5,servings:2,tags:['粤菜','素','清淡'],excluded:false,ingredients:[{name:'菜心',amount:'300g'},{name:'蒜',amount:'3瓣'},{name:'生抽',amount:'2汤匙'},{name:'蚝油',amount:'1汤匙'},{name:'食用油',amount:'1汤匙'}],steps:['菜心洗净','烧开水加少许盐和油','放入菜心焯水30秒捞出摆盘','锅中倒油爆香蒜末','加蚝油和生抽调成汁','淋在菜心上']},
+{id:233,name:'蒜泥白肉',category:'晚餐',difficulty:'中等',cook_time:20,servings:2,tags:['川菜','荤'],excluded:false,ingredients:[{name:'五花肉',amount:'300g'},{name:'蒜',amount:'5瓣'},{name:'生抽',amount:'2汤匙'},{name:'醋',amount:'1汤匙'},{name:'辣椒油',amount:'1汤匙'},{name:'白糖',amount:'少许'},{name:'葱',amount:'适量'}],steps:['五花肉整块冷水下锅加姜片煮至熟透','捞出放凉切薄片','蒜捣成泥加生抽醋辣椒油白糖调成蘸料','肉片摆盘淋蒜泥汁撒葱花']},
+{id:234,name:'凉拌折耳根',category:'晚餐',difficulty:'简单',cook_time:5,servings:2,tags:['凉菜','川菜','素'],excluded:false,ingredients:[{name:'折耳根/鱼腥草',amount:'200g'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'酱油',amount:'1汤匙'},{name:'辣椒油',amount:'1汤匙'},{name:'香油',amount:'少许'}],steps:['折耳根洗净掐成段','蒜切末','所有调料混合成汁','淋入折耳根拌匀即可']},
+{id:235,name:'排骨莲藕汤',category:'晚餐',difficulty:'中等',cook_time:60,servings:3,tags:['汤','养生','荤'],excluded:false,ingredients:[{name:'排骨',amount:'300g'},{name:'莲藕',amount:'300g'},{name:'姜',amount:'3片'},{name:'料酒',amount:'1汤匙'},{name:'盐',amount:'少许'},{name:'葱',amount:'1根'}],steps:['排骨冷水下锅焯水去血沫','莲藕去皮切滚刀块','锅中加水放入排骨和姜片','大火烧开转小火炖40分钟','加入莲藕再炖20分钟','加盐调味撒葱花']},
+{id:236,name:'玉米排骨汤',category:'晚餐',difficulty:'中等',cook_time:50,servings:3,tags:['汤','养生','家常'],excluded:false,ingredients:[{name:'排骨',amount:'300g'},{name:'玉米',amount:'1根'},{name:'胡萝卜',amount:'半根'},{name:'姜',amount:'3片'},{name:'盐',amount:'少许'}],steps:['排骨冷水下锅焯水','玉米切段，胡萝卜切滚刀块','锅中加水放入排骨和姜片','大火烧开转小火炖40分钟','加入玉米和胡萝卜再炖15分钟','加盐调味']},
+{id:237,name:'山药排骨汤',category:'晚餐',difficulty:'中等',cook_time:50,servings:3,tags:['汤','养生','清淡'],excluded:false,ingredients:[{name:'排骨',amount:'300g'},{name:'山药',amount:'200g'},{name:'姜',amount:'3片'},{name:'枸杞',amount:'10粒'},{name:'盐',amount:'少许'}],steps:['排骨冷水下锅焯水','山药去皮切滚刀块泡水防氧化','锅中加水放排骨和姜片','大火烧开转小火炖40分钟','加入山药再炖15分钟','加盐调味撒枸杞']},
+{id:238,name:'萝卜牛腩汤',category:'晚餐',difficulty:'困难',cook_time:90,servings:3,tags:['汤','炖菜','荤'],excluded:false,ingredients:[{name:'牛腩',amount:'400g'},{name:'白萝卜',amount:'1根'},{name:'姜',amount:'3片'},{name:'八角',amount:'1个'},{name:'酱油',amount:'1汤匙'},{name:'盐',amount:'少许'}],steps:['牛腩切块冷水下锅焯水','白萝卜切滚刀块','锅中加水放牛腩姜片八角','大火烧开转小火炖60分钟','加入萝卜再炖20分钟','加盐和酱油调味']},
+{id:239,name:'鸡蛋羹配虾仁',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['蒸菜','海鲜','清淡'],excluded:false,ingredients:[{name:'鸡蛋',amount:'2个'},{name:'虾仁',amount:'100g'},{name:'温水',amount:'300ml'},{name:'生抽',amount:'少许'},{name:'香油',amount:'几滴'}],steps:['鸡蛋打散加温水搅匀，过滤气泡','倒入蒸碗盖保鲜膜','蒸锅大火烧开后中火蒸10分钟','虾仁焯水备用','蛋羹蒸好后摆上虾仁','淋生抽和香油']},
+{id:240,name:'葱烧豆腐',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['家常','素'],excluded:false,ingredients:[{name:'老豆腐',amount:'1块(300g)'},{name:'大葱',amount:'2根'},{name:'生抽',amount:'2汤匙'},{name:'蚝油',amount:'1汤匙'},{name:'淀粉',amount:'1茶匙'},{name:'食用油',amount:'2汤匙'}],steps:['老豆腐切方块，大葱切段','锅中倒油将豆腐煎至两面金黄','放入葱段炒香','加生抽蚝油和少量水','小火煮3分钟入味','水淀粉勾薄芡出锅']},
+{id:241,name:'蚝油生菜',category:'晚餐',difficulty:'简单',cook_time:5,servings:2,tags:['粤菜','素','快手'],excluded:false,ingredients:[{name:'生菜',amount:'300g'},{name:'蚝油',amount:'2汤匙'},{name:'生抽',amount:'1汤匙'},{name:'蒜',amount:'2瓣'},{name:'香油',amount:'少许'}],steps:['生菜洗净','烧开水加少许盐和油','生菜焯水30秒捞出摆盘','锅中少许油爆香蒜末','加蚝油和生抽调成汁','淋在生菜上滴香油']},
+{id:242,name:'蒜蓉秋葵',category:'晚餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','清淡','健康'],excluded:false,ingredients:[{name:'秋葵',amount:'200g'},{name:'蒜',amount:'3瓣'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'}],steps:['秋葵洗净整根焯水2分钟','捞出过冷水后切段','蒜切末铺在秋葵上','淋生抽和香油即可']},
+{id:243,name:'凉拌藕片',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['凉菜','素','清淡'],excluded:false,ingredients:[{name:'莲藕',amount:'1节(约300g)'},{name:'蒜',amount:'2瓣'},{name:'醋',amount:'1汤匙'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'几滴'},{name:'盐',amount:'少许'}],steps:['莲藕去皮切薄片泡水去淀粉','烧开水加少许醋（防氧化）','放入藕片焯水2分钟捞出过冷水','蒜切末','藕片加蒜末醋生抽香油盐拌匀即可']},
+{id:244,name:'清炒芦笋',category:'晚餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','清淡','健康'],excluded:false,ingredients:[{name:'芦笋',amount:'200g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['芦笋去皮切段，蒜切片','锅中倒油爆香蒜片','放入芦笋中火翻炒3分钟','加盐调味出锅']},
+{id:245,name:'蒸排骨',category:'晚餐',difficulty:'中等',cook_time:30,servings:2,tags:['蒸菜','荤','广东'],excluded:false,ingredients:[{name:'小排',amount:'300g'},{name:'蒜',amount:'3瓣'},{name:'豆豉',amount:'1汤匙'},{name:'生抽',amount:'1汤匙'},{name:'淀粉',amount:'1汤匙'},{name:'料酒',amount:'1汤匙'},{name:'盐',amount:'少许'}],steps:['排骨斩小段洗净沥干','蒜切末加豆豉生抽料酒淀粉和盐腌制30分钟','排骨平铺在盘中','蒸锅水开后大火蒸25分钟','出锅撒葱花']},
+{id:246,name:'番茄鱼片汤',category:'晚餐',difficulty:'中等',cook_time:20,servings:2,tags:['汤','海鲜','清淡'],excluded:false,ingredients:[{name:'草鱼/鲈鱼片',amount:'200g'},{name:'番茄',amount:'2个'},{name:'姜',amount:'2片'},{name:'淀粉',amount:'1茶匙'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'}],steps:['鱼片加盐和淀粉腌制','番茄切块','锅中少许油炒番茄至出汁','加清水大火烧开','放入鱼片轻轻推动','鱼片变白后加盐调味撒葱花']},
+{id:247,name:'白灼虾配蘸汁',category:'晚餐',difficulty:'简单',cook_time:10,servings:2,tags:['海鲜','清淡','快手'],excluded:false,ingredients:[{name:'基围虾',amount:'300g'},{name:'姜',amount:'3片'},{name:'葱',amount:'2根'},{name:'料酒',amount:'1汤匙'},{name:'生抽',amount:'2汤匙'},{name:'香油',amount:'1汤匙'}],steps:['虾洗净剪去虾须挑去虾线','锅中加水姜片葱段料酒烧开','放入虾大火煮2分钟至虾身弯曲变红','捞出过凉水摆盘','蘸汁：生抽加香油即可']},
+{id:248,name:'香菇青菜',category:'晚餐',difficulty:'简单',cook_time:8,servings:2,tags:['素','清淡','家常'],excluded:false,ingredients:[{name:'青菜',amount:'300g'},{name:'香菇',amount:'4朵'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['青菜洗净，香菇切片','锅中倒油爆香蒜片','先炒香菇2分钟','加入青菜大火快炒','加盐调味出锅']},
+{id:249,name:'蛋炒饭',category:'夜宵',difficulty:'简单',cook_time:10,servings:1,tags:['米饭','快手','家常'],excluded:false,ingredients:[{name:'隔夜米饭',amount:'1碗'},{name:'鸡蛋',amount:'2个'},{name:'葱',amount:'1根'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['米饭提前冷藏（隔夜饭炒出来更散）','鸡蛋打散','锅中倒油倒入蛋液炒至凝固铲碎','倒入米饭大火翻炒至粒粒分明','加盐调味撒葱花出锅']},
+{id:250,name:'炒河粉',category:'夜宵',difficulty:'简单',cook_time:15,servings:1,tags:['广东','粉','快手'],excluded:false,ingredients:[{name:'干河粉',amount:'200g'},{name:'豆芽',amount:'50g'},{name:'韭黄',amount:'50g'},{name:'牛肉',amount:'100g(可选)'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'半汤匙'}],steps:['河粉提前泡软或过热水','豆芽洗净，韭黄切段','锅中倒油炒牛肉至变色盛出','放入河粉翻炒','加生抽老抽调味','加入豆芽韭黄和牛肉翻炒均匀']},
+{id:251,name:'阳春面',category:'夜宵',difficulty:'简单',cook_time:10,servings:1,tags:['面食','清淡','快手'],excluded:false,ingredients:[{name:'挂面',amount:'100g'},{name:'葱',amount:'1根'},{name:'生抽',amount:'1汤匙'},{name:'香油',amount:'1茶匙'},{name:'猪油',amount:'半汤匙(可选)'}],steps:['碗中放入生抽香油和葱花','烧开水下面条','面条煮熟捞入碗中','浇上面汤拌匀']},
+{id:252,name:'酸辣粉',category:'夜宵',difficulty:'中等',cook_time:15,servings:1,tags:['川味','粉','酸辣'],excluded:false,ingredients:[{name:'红薯粉',amount:'100g'},{name:'醋',amount:'2汤匙'},{name:'辣椒油',amount:'1汤匙'},{name:'花生碎',amount:'适量'},{name:'香菜',amount:'适量'},{name:'酱油',amount:'1汤匙'}],steps:['红薯粉提前泡软','调汁：醋辣椒油酱油花椒粉白糖混合','烧开水下红薯粉煮熟','捞入碗中浇上调料汁','撒花生碎香菜即可']},
+{id:253,name:'煎饺子',category:'夜宵',difficulty:'中等',cook_time:15,servings:2,tags:['面食','荤','快手'],excluded:false,ingredients:[{name:'速冻饺子',amount:'10个'},{name:'食用油',amount:'2汤匙'},{name:'面粉',amount:'少许(调水用)'},{name:'醋',amount:'适量'}],steps:['平底锅倒少许油摆入速冻饺子','中小火煎3分钟至底部微黄','面粉加水调成面糊倒入锅中（没过饺子1/3）','盖盖中小火焖煮至水分蒸发','底部形成焦脆冰花即可']},
+{id:254,name:'皮蛋豆腐',category:'夜宵',difficulty:'简单',cook_time:5,servings:2,tags:['凉菜','快手','清淡'],excluded:false,ingredients:[{name:'皮蛋',amount:'2个'},{name:'嫩豆腐',amount:'1盒'},{name:'生抽',amount:'2汤匙'},{name:'醋',amount:'1汤匙'},{name:'香油',amount:'少许'},{name:'蒜',amount:'2瓣'},{name:'葱花',amount:'适量'}],steps:['豆腐切小块摆盘','皮蛋切小块摆在豆腐上','蒜切末','调汁：生抽醋香油蒜末混合','淋在皮蛋豆腐上撒葱花']},
+{id:255,name:'凉拌毛豆',category:'夜宵',difficulty:'简单',cook_time:15,servings:2,tags:['凉菜','素','小吃'],excluded:false,ingredients:[{name:'新鲜毛豆',amount:'300g'},{name:'盐',amount:'1汤匙'},{name:'八角',amount:'1个'},{name:'花椒',amount:'10粒'},{name:'干辣椒',amount:'1个'},{name:'蒜',amount:'2瓣'}],steps:['毛豆洗净剪去两端','锅中加水八角花椒干辣椒盐烧开','放入毛豆煮10分钟','捞出沥干','加蒜末生抽香油拌匀即可']},
+{id:256,name:'酒酿圆子',category:'夜宵',difficulty:'简单',cook_time:10,servings:2,tags:['甜品','快手'],excluded:false,ingredients:[{name:'小汤圆',amount:'100g'},{name:'酒酿',amount:'200g'},{name:'枸杞',amount:'少许'},{name:'白糖',amount:'适量'},{name:'淀粉',amount:'少许'}],steps:['锅中加水烧开下小汤圆','煮至汤圆浮起','加入酒酿和枸杞','加白糖调味','少许淀粉水勾薄芡出锅']},
+{id:257,name:'银耳莲子羹',category:'夜宵',difficulty:'中等',cook_time:60,servings:2,tags:['甜品','养生'],excluded:false,ingredients:[{name:'干银耳',amount:'15g'},{name:'莲子',amount:'20g'},{name:'红枣',amount:'5颗'},{name:'冰糖',amount:'适量'},{name:'枸杞',amount:'少许'}],steps:['银耳提前泡发2小时撕成小朵','莲子去芯','所有食材放入锅加足量水','大火烧开转小火炖50分钟至银耳出胶','加冰糖和枸杞再煮5分钟']},
+{id:258,name:'烤红薯',category:'夜宵',difficulty:'简单',cook_time:50,servings:2,tags:['甜品','粗粮'],excluded:false,ingredients:[{name:'红薯',amount:'2个(约400g)'}],steps:['红薯洗净擦干水分','烤箱200度烤45-50分钟','中间翻面一次','烤至表面有糖汁冒出','取出稍凉后剥皮食用']},
+{id:259,name:'牛奶燕麦粥',category:'夜宵',difficulty:'简单',cook_time:10,servings:1,tags:['饮品','快手','养生'],excluded:false,ingredients:[{name:'牛奶',amount:'250ml'},{name:'燕麦片',amount:'40g'},{name:'蜂蜜',amount:'适量'},{name:'坚果',amount:'少许(可选)'}],steps:['牛奶倒入小锅中小火加热','加入燕麦片搅拌','煮2-3分钟至燕麦吸饱牛奶变稠','关火加蜂蜜','撒坚果碎即可']},
+{id:260,name:'小馄饨',category:'夜宵',difficulty:'中等',cook_time:20,servings:2,tags:['面食','快手'],excluded:false,ingredients:[{name:'速冻小馄饨',amount:'15个'},{name:'紫菜',amount:'少许'},{name:'虾皮',amount:'少许'},{name:'葱',amount:'1根'},{name:'盐',amount:'少许'},{name:'香油',amount:'几滴'}],steps:['碗中放入紫菜虾皮葱花盐香油','烧开水下馄饨','煮至馄饨全部浮起','舀面汤冲开碗中的调料','捞入馄饨即可']},
 ];
   document.querySelectorAll('.step-row input').forEach(inp => {
     if (inp.value.trim()) steps.push(inp.value.trim());
@@ -721,12 +718,12 @@ function saveRecipe() {
     servings: 2,
     ingredients,
     steps,
-    tags: document.getElementById('f_tags').value.split(/[,锛宂/).map(t => t.trim()).filter(Boolean),
+    tags: document.getElementById('f_tags').value.split(/[,，]/).map(t => t.trim()).filter(Boolean),
     excluded: false
   };
   recipes.unshift(recipe);
   saveToStorage();
-  showToast('椋熻氨宸蹭繚瀛橈紒');
+  showToast('食谱已保存！');
   renderList(); drawWheel();
   switchPage('list', document.querySelectorAll('.nav-item')[1]);
 }
@@ -734,7 +731,7 @@ function saveRecipe() {
 function addIngredientRow() {
   const div = document.createElement('div');
   div.className = 'ingredient-row';
-  div.innerHTML = '<input type="text" class="ig-name" placeholder="椋熸潗鍚? style="flex:2"> <input type="text" class="ig-amount" placeholder="鐢ㄩ噺锛堝锛?涓€佸崐鍕猴級" style="flex:1"> <button class="remove-ig" onclick="this.parentElement.remove()">鉁?/button>';
+  div.innerHTML = '<input type="text" class="ig-name" placeholder="食材名" style="flex:2"> <input type="text" class="ig-amount" placeholder="用量（如：2个、半勺）" style="flex:1"> <button class="remove-ig" onclick="this.parentElement.remove()">✕</button>';
   document.getElementById('ingredientsList').appendChild(div);
 }
 
@@ -742,7 +739,7 @@ function addStepRow() {
   const div = document.createElement('div');
   div.className = 'step-row';
   const n = document.querySelectorAll('.step-row').length + 1;
-  div.innerHTML = '<div class="step-num">' + n + '</div><input type="text" placeholder="姝ラ' + n + '...">';
+  div.innerHTML = '<div class="step-num">' + n + '</div><input type="text" placeholder="步骤' + n + '...">';
   document.getElementById('stepsList').appendChild(div);
   renumberSteps();
 }
@@ -750,14 +747,14 @@ function addStepRow() {
 function renumberSteps() {
   document.querySelectorAll('.step-row').forEach((row, i) => {
     row.querySelector('.step-num').textContent = i + 1;
-    row.querySelector('input').placeholder = '姝ラ' + (i + 1) + '...';
+    row.querySelector('input').placeholder = '步骤' + (i + 1) + '...';
   });
 }
 
-// ===== 鎵归噺瀵煎叆 =====
+// ===== 批量导入 =====
 function batchImport() {
   const text = document.getElementById('importText').value.trim();
-  if (!text) { showToast('璇疯緭鍏ヨ瀵煎叆鐨勫唴瀹?); return; }
+  if (!text) { showToast('请输入要导入的内容'); return; }
   const lines = text.split('\n').filter(l => l.trim());
   let count = 0;
   const maxId = recipes.reduce((m, r) => Math.max(m, r.id || 0), 0);
@@ -771,34 +768,34 @@ function batchImport() {
     recipes.push({
       id: maxId + 1 + idx,
       name: parts[0],
-      category: parts[1] || '鍗堥',
-      difficulty: parts[2] || '绠€鍗?,
+      category: parts[1] || '午餐',
+      difficulty: parts[2] || '简单',
       cook_time: parseInt(parts[3]) || 30,
       servings: 2,
       ingredients,
       steps: [],
-      tags: (parts[5] || '').split(/[,锛宂/).filter(Boolean),
+      tags: (parts[5] || '').split(/[,，]/).filter(Boolean),
       excluded: false
     });
     count++;
   });
-  if (count === 0) { showToast('鏈瘑鍒埌鏈夋晥鏁版嵁'); return; }
+  if (count === 0) { showToast('未识别到有效数据'); return; }
   saveToStorage();
-  showToast('鎴愬姛瀵煎叆 ' + count + ' 閬撻璋憋紒');
+  showToast('成功导入 ' + count + ' 道食谱！');
   document.getElementById('importText').value = '';
   renderList(); drawWheel();
 }
 
-// ===== 閲嶇疆涓洪粯璁ら璋?=====
+// ===== 重置为默认食谱 =====
 function resetToDefaultRecipes() {
-  if (!confirm('纭畾瑕侀噸缃璋卞簱鍚楋紵褰撳墠鎵€鏈夎嚜瀹氫箟椋熻氨灏嗚瑕嗙洊锛?)) return;
+  if (!confirm('确定要重置食谱库吗？当前所有自定义食谱将被覆盖！')) return;
   recipes = JSON.parse(JSON.stringify([...BUILTIN_RECIPES, ...WEEKLY_RECIPES]));
   saveToStorage();
   renderList();
-  showToast('椋熻氨搴撳凡閲嶇疆涓洪粯璁?0閬?鏈懆24閬撳仴搴烽');
+  showToast('食谱库已重置为默认30道+本周24道健康餐');
 }
 
-// ===== 宸ュ叿 =====
+// ===== 工具 =====
 function esc(s) {
   if (!s) return '';
   const d = document.createElement('div');
@@ -813,47 +810,27 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ===== Supabase锛堝彲閫夛級=====
+// ===== Supabase（可选）=====
 function saveConfig() {
   const url = document.getElementById('cfg_url').value.trim();
   const key = document.getElementById('cfg_key').value.trim();
-  if (!url || !key) { showToast('璇峰～鍐橴RL鍜孠ey'); return; }
+  if (!url || !key) { showToast('请填写URL和Key'); return; }
   localStorage.setItem('sb_url', url);
   localStorage.setItem('sb_key', key);
-  showToast('閰嶇疆宸蹭繚瀛橈紙Supabase鑱旂綉鍔熻兘寮€鍙戜腑锛?);
+  showToast('配置已保存（Supabase联网功能开发中）');
 }
 
-// ===== AI鐢熸垚鑿滆氨锛堟湰鍦版暟鎹尮閰?鎵╁睍锛?====
+// ===== AI生成菜谱（本地数据匹配+扩展）=====
 const RECIPE_DATABASE = {
-  '绾㈢儳鑲?: {category:'鏅氶',difficulty:'涓瓑',cook_time:60,ingredients:[{name:'浜旇姳鑲?,amount:'500g'},{name:'鍐扮硸',amount:'30g'},{name:'鐢熸娊',amount:'2姹ゅ寵'},{name:'鑰佹娊',amount:'1姹ゅ寵'},{name:'鏂欓厭',amount:'2姹ゅ寵'},{name:'濮?,amount:'4鐗?},{name:'鍏',amount:'2涓?},{name:'妗傜毊',amount:'1灏忓潡'},{name:'棣欏彾',amount:'2鐗?}],steps:['浜旇姳鑲夊垏3cm鏂瑰潡锛屽喎姘翠笅閿呯劘姘?鍒嗛挓鎹炲嚭娲楀噣','閿呬腑鏀惧皯璁告补锛屾斁鍏ュ啺绯栧皬鐏倰鑷崇劍绯栬壊','鏀惧叆浜旇姳鑲夌炕鐐掍笂鑹诧紝鍔犲鐗囥€佸叓瑙掋€佹鐨€侀鍙剁倰棣?,'鍔犲叆鐢熸娊銆佽€佹娊銆佹枡閰?,'鍊掑叆鐑按娌¤繃鑲夛紝澶х伀鐑у紑鍚庤浆灏忕伀鐐?0鍒嗛挓','澶х伀鏀舵眮鑷虫祿绋狅紝姹ゆ眮鍧囧寑鎸傚湪鑲変笂鍑洪攨'],tags:['鑽よ彍','瀹跺父','涓嬮キ']},
-  '娓呰捀楸?: {category:'鏅氶',difficulty:'绠€鍗?,cook_time:20,ingredients:[{name:'椴堥奔',amount:'1鏉?绾?00g)'},{name:'濮?,amount:'4鐗?},{name:'灏忚懕',amount:'3鏍?},{name:'钂搁奔璞夋补',amount:'3姹ゅ寵'},{name:'鏂欓厭',amount:'1姹ゅ寵'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'}],steps:['椴堥奔鍘婚碁鍘诲唴鑴忔礂鍑€锛屼袱闈㈠悇鍒?鍒€','楸艰韩鎶瑰皯璁告枡閰掑拰鐩愶紝鑲氬唴濉炲鐗囷紝鑵?0鍒嗛挓','钂搁攨姘寸儳寮€锛屾斁鍏ラ奔鐩橈紝澶х伀钂?鍒嗛挓','鍊掓帀钂稿嚭鐨勮叆姘达紝鍘绘帀濮滅墖','楸艰韩閾鸿懕涓濆涓?,'娣嬩笂钂搁奔璞夋补','閿呬腑鐑х儹2姹ゅ寵娌癸紝娴囧湪钁变笣涓婃粙棣?],tags:['楸?,'娓呮贰','钂歌彍']},
-  '钂滆搲绮変笣鎵囪礉': {category:'鏅氶',difficulty:'涓瓑',cook_time:25,ingredients:[{name:'鎵囪礉',amount:'8涓?},{name:'绮変笣',amount:'1鎶?绾?0g)'},{name:'钂?,amount:'1鏁村ご(绾?0鐡?'},{name:'灏忚懕',amount:'2鏍?},{name:'鐢熸娊',amount:'2姹ゅ寵'},{name:'椋熺敤娌?,amount:'3姹ゅ寵'},{name:'鏂欓厭',amount:'1鑼跺寵'}],steps:['绮変笣鐢ㄦ俯姘存场杞悗鍓煭','鎵囪礉娲楀噣锛屽彇涓嬭倝鍘婚櫎鍐呰剰锛屽３鍒峰噣','钂滃垏鎴愯挏鏈紝钁卞垏钁辫姳','閿呬腑鍊?姹ゅ寵娌癸紝灏忕伀鏀惧叆钂滄湯鐐掕嚦寰粍鍑洪','绮変笣閾哄湪鎵囪礉澹充笂锛屾斁涓婃墖璐濊倝','娣嬪皯璁告枡閰掞紝娴囦笂钂滆搲','钂搁攨澶х伀鐑у紑锛屾斁鍏ユ墖璐濊捀5鍒嗛挓','鍙栧嚭娣嬬敓鎶斤紝鎾掕懕鑺憋紝鍐嶆祰1姹ゅ寵鐑补'],tags:['娴烽矞','钂歌彍','瀹村']},
-  '鐣寗鐐掕泲': {category:'鍗堥',difficulty:'绠€鍗?,cook_time:10,ingredients:[{name:'鐣寗',amount:'2涓?绾?00g)'},{name:'楦¤泲',amount:'3涓?},{name:'钁?,amount:'1鏍?},{name:'鐩?,amount:'閫傞噺'},{name:'绯?,amount:'1灏忔挳'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'}],steps:['鐣寗鍒囧潡锛岄浮铔嬫墦鏁ｅ姞灏戣鐩愭悈鍖€','閿呬腑鐑补锛屽€掑叆铔嬫恫鐐掕嚦鍑濆浐鐩涘嚭','閿呬腑鍐嶅姞灏戣娌癸紝鏀惧叆鐣寗缈荤倰鍑烘眮','鍔犲叆鍗婂嫼绯栨彁椴滃幓閰?,'鍊掑洖楦¤泲缈荤倰鍧囧寑','鎾掕懕鑺卞嚭閿?],tags:['瀹跺父','蹇墜','涓嬮キ']},
-  '鍙箰楦＄繀': {category:'鏅氶',difficulty:'绠€鍗?,cook_time:30,ingredients:[{name:'楦＄繀涓?,amount:'12涓?},{name:'鍙箰',amount:'1缃?330ml)'},{name:'鐢熸娊',amount:'2姹ゅ寵'},{name:'鑰佹娊',amount:'1姹ゅ寵'},{name:'鏂欓厭',amount:'1姹ゅ寵'},{name:'濮?,amount:'3鐗?},{name:'钂?,amount:'3鐡?}],steps:['楦＄繀涓ら潰鍚勫垝涓ゅ垁锛屽喎姘翠笅閿呯劘鍘昏娌崬鍑?,'閿呬腑灏戣娌癸紝鏀惧叆楦＄繀鐓庤嚦涓ら潰閲戦粍','鍔犲叆濮滆挏鐐掗锛屽€掑叆鐢熸娊銆佽€佹娊銆佹枡閰?,'鍊掑叆鍙箰娌¤繃楦＄繀锛屽ぇ鐏儳寮€杞腑灏忕伀鐒?5鍒嗛挓','澶х伀鏀舵眮鑷虫祿绋犲嵆鍙?],tags:['鑽よ彍','鐢滃彛','瀹村']},
-  '楹诲﹩璞嗚厫': {category:'鍗堥',difficulty:'绠€鍗?,cook_time:15,ingredients:[{name:'瀚╄眴鑵?,amount:'1鐩?绾?00g)'},{name:'鐚倝鏈?,amount:'100g'},{name:'璞嗙摚閰?,amount:'1.5姹ゅ寵'},{name:'鑺辨绮?,amount:'1鑼跺寵'},{name:'钂?,amount:'3鐡?},{name:'濮?,amount:'3鐗?},{name:'钁?,amount:'2鏍?},{name:'娣€绮夋按',amount:'閫傞噺'}],steps:['璞嗚厫鍒?.5cm灏忔柟鍧楋紝鏀惧叆鍔犱簡鐩愮殑寮€姘翠腑鐒儷2鍒嗛挓鎹炲嚭','閿呬腑鐑补锛屾斁鍏ヨ倝鏈倰鏁ｈ嚦鍙樿壊','鍔犲叆璞嗙摚閰便€佸钂滄湯鐐掑嚭绾㈡补','鍔犲皬鍗婄姘寸儳寮€锛屾斁鍏ヨ眴鑵愯交杞绘帹鍔紙涓嶈缈荤倰锛?,'涓伀鐓?鍒嗛挓璁╄眴鑵愬叆鍛?,'娣嬪叆娣€绮夋按鍕捐姟锛屾拻鑺辨绮夊拰钁辫姳鍑洪攨'],tags:['宸濊彍','杈?,'涓嬮キ']},
-  '绯栭唻鎺掗': {category:'鏅氶',difficulty:'涓瓑',cook_time:45,ingredients:[{name:'灏忔帓楠?,amount:'500g'},{name:'鍐扮硸',amount:'30g'},{name:'棣欓唻',amount:'3姹ゅ寵'},{name:'鐢熸娊',amount:'2姹ゅ寵'},{name:'鏂欓厭',amount:'2姹ゅ寵'},{name:'濮?,amount:'3鐗?},{name:'鐧借姖楹?,amount:'灏戣'}],steps:['鎺掗鍐锋按涓嬮攨鐒幓琛€娌紝鎹炲嚭娲楀噣','閿呬腑灏戣娌癸紝鏀惧叆鍐扮硸灏忕伀鐐掕嚦鐒︾硸鑹?,'鏀惧叆鎺掗缈荤倰涓婅壊','鍔犲鐗囥€佹枡閰掋€佺敓鎶界倰鍖€','鍔犲紑姘存病杩囨帓楠紝澶х伀鐑у紑杞皬鐏倴30鍒嗛挓','鍔犲叆棣欓唻锛岃浆澶х伀鏀舵眮','瑁呯洏鎾掔櫧鑺濋夯'],tags:['鑽よ彍','閰哥敎','瀹村']},
-  '钂滆搲瑗垮叞鑺?: {category:'鍗堥',difficulty:'绠€鍗?,cook_time:10,ingredients:[{name:'瑗垮叞鑺?,amount:'1棰?绾?00g)'},{name:'钂?,amount:'5鐡?},{name:'鐩?,amount:'閫傞噺'},{name:'铓濇补',amount:'1姹ゅ寵'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'}],steps:['瑗垮叞鑺辨幇灏忔湹锛屾贰鐩愭按娴告场10鍒嗛挓鍚庢礂鍑€','鐑т竴閿呭紑姘达紝鍔犲皯璁哥洂鍜屾补锛岀劘姘?鍒嗛挓鎹炲嚭杩囧喎姘?,'閿呬腑鐑补锛岀垎棣欒挏鏈?,'鏀惧叆瑗垮叞鑺辩炕鐐掞紝鍔犺殱娌瑰拰灏戣鐩愯皟鍛?,'缈荤倰鍧囧寑鍗冲彲鍑洪攨'],tags:['钄彍','娓呮贰','蹇墜']},
-  '閰歌荆鍦熻眴涓?: {category:'鍗堥',difficulty:'绠€鍗?,cook_time:15,ingredients:[{name:'鍦熻眴',amount:'2涓?绾?00g)'},{name:'骞茶荆妞?,amount:'5涓?},{name:'鑺辨',amount:'1灏忔挳'},{name:'钂?,amount:'3鐡?},{name:'閱?,amount:'2姹ゅ寵'},{name:'鐩?,amount:'閫傞噺'},{name:'钁?,amount:'1鏍?},{name:'椋熺敤娌?,amount:'2姹ゅ寵'}],steps:['鍦熻眴鍘荤毊鍒囩粏涓濓紝娉″叆娓呮按娲楀幓娣€绮夋崬鍑烘播骞?,'閿呬腑鐑补锛屾斁鍏ヨ姳妞掑拰骞茶荆妞掓鐖嗛','鏀惧叆鍦熻眴涓濆ぇ鐏揩閫熺炕鐐?,'娌块攨杈规穻鍏ラ唻锛屽姞鐩愯皟鍛?,'鐐掕嚦鍦熻眴涓濇柇鐢熶絾浠嶅甫鑴嗘劅','鎾掕挏鏈拰钁辫姳缈荤倰鍧囧寑鍑洪攨'],tags:['瀹跺父','绱犺彍','蹇墜']},
-  '娓呯倰鑻嬭彍': {category:'鍗堥',difficulty:'绠€鍗?,cook_time:8,ingredients:[{name:'绾㈣媼鑿?,amount:'300g'},{name:'钂?,amount:'4鐡?},{name:'鐩?,amount:'閫傞噺'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['鑻嬭彍鎽樺幓鑰佹牴锛屾礂鍑€娌ュ共','閿呬腑鐑补锛岀垎棣欒挏鏈?,'鏀惧叆鑻嬭彍澶х伀蹇倰鑷冲彉杞嚭姘?,'鍔犵洂璋冨懗鍗冲彲鍑洪攨'],tags:['钄彍','娓呮贰','蹇墜']},
-  '姘寸叜鐗涜倝': {category:'鏅氶',difficulty:'涓瓑',cook_time:35,ingredients:[{name:'鐗涢噷鑴?,amount:'300g'},{name:'璞嗚娊',amount:'200g'},{name:'鐢熻彍',amount:'200g'},{name:'骞茶荆妞?,amount:'10涓?},{name:'鑺辨',amount:'2鑼跺寵'},{name:'璞嗙摚閰?,amount:'2姹ゅ寵'},{name:'钂?,amount:'5鐡?},{name:'濮?,amount:'3鐗?},{name:'娣€绮?,amount:'1姹ゅ寵'},{name:'椋熺敤娌?,amount:'閫傞噺'}],steps:['鐗涜倝閫嗙汗鍒囪杽鐗囷紝鍔犵洂銆佹枡閰掋€佹穩绮夋姄鍖€鑵?5鍒嗛挓','璞嗚娊鍜岀敓鑿滅劘姘村悗閾哄湪澶х搴曢儴','閿呬腑鐑补锛岀倰棣欒眴鐡ｉ叡鍜屽钂?,'鍔犻€傞噺姘寸儳寮€锛屾斁鍏ョ墰鑲夌墖蹇€熸粦鏁?,'鑲夌墖鍙樿壊鍚庤繛姹ゅ€掑叆澶х','琛ㄩ潰鎾掑共杈ｆ鍜岃姳妞?,'閿呬腑鐑х儹娌规祰鍦ㄤ笂闈㈡縺鍑洪鍛?],tags:['宸濊彍','杈?,'涓嬮キ']},
-  '鐧界伡铏?: {category:'鏅氶',difficulty:'绠€鍗?,cook_time:10,ingredients:[{name:'椴滆櫨',amount:'500g'},{name:'濮?,amount:'4鐗?},{name:'钁?,amount:'2鏍?},{name:'鏂欓厭',amount:'1姹ゅ寵'},{name:'鐢熸娊',amount:'閫傞噺'},{name:'閱?,amount:'閫傞噺'}],steps:['铏惧壀鍘昏櫨椤昏櫨鑴氾紝鎸戝幓铏剧嚎娲楀噣','閿呬腑鐑ф按锛屽姞濮滅墖銆佽懕缁撳拰鏂欓厭','姘村紑鍚庢斁鍏ヨ櫨锛岀叜鑷宠櫨韬集鏇插彉绾紙绾?鍒嗛挓锛?,'鎹炲嚭杩囧啺姘翠繚鎸丵寮?,'閰嶇敓鎶?閱嬭樃鏂欓鐢?],tags:['娴烽矞','娓呮贰','蹇墜']},
-  '鍑夋媽榛勭摐': {category:'鍗堥',difficulty:'绠€鍗?,cook_time:10,ingredients:[{name:'榛勭摐',amount:'2鏍?},{name:'钂?,amount:'4鐡?},{name:'鐢熸娊',amount:'2姹ゅ寵'},{name:'棣欓唻',amount:'1姹ゅ寵'},{name:'棣欐补',amount:'1姹ゅ寵'},{name:'杈ｆ娌?,amount:'1姹ゅ寵'},{name:'鐩?,amount:'灏戣'},{name:'鐧界硸',amount:'灏戣'}],steps:['榛勭摐鎷嶇鍚庡垏鎴愬皬娈?,'钂滃垏鏈斁鍏ョ涓?,'鍔犵敓鎶姐€侀閱嬨€侀娌广€佽荆妞掓补銆佺洂銆佺櫧绯栬皟鎴愰叡姹?,'灏嗛叡姹佸€掑湪榛勭摐涓婃媽鍖€鍗冲彲'],tags:['鍑夎彍','寮€鑳?,'蹇墜']},
-  '钂搁浮铔嬬竟': {category:'鏃╅',difficulty:'绠€鍗?,cook_time:15,ingredients:[{name:'楦¤泲',amount:'3涓?},{name:'娓╂按',amount:'涓庤泲娑茬瓑閲?绾?40ml)'},{name:'鐢熸娊',amount:'1姹ゅ寵'},{name:'棣欐补',amount:'鍑犳淮'},{name:'灏忚懕',amount:'1鏍?}],steps:['楦¤泲鎵撳叆纰椾腑鎵撴暎','鍔犲叆1.5鍊嶈泲娑茬殑娓╂按锛屽姞灏戣鐩愭悈鍖€','杩囩瓫涓ゆ鍘婚櫎姘旀场','鐩栦繚椴滆啘骞剁敤鐗欑鎵庡嚑涓皬瀛?,'姘村紑鍚庝笂閿呬腑灏忕伀钂?2鍒嗛挓','鍑洪攨娣嬬敓鎶藉拰棣欐补锛屾拻钁辫姳'],tags:['娓呮贰','钂歌彍','钀ュ吇']},
-  '钁辨补鎷岄潰': {category:'鏃╅',difficulty:'绠€鍗?,cook_time:10,ingredients:[{name:'鎸傞潰',amount:'200g'},{name:'灏忚懕',amount:'5鏍?},{name:'鐢熸娊',amount:'3姹ゅ寵'},{name:'鑰佹娊',amount:'1姹ゅ寵'},{name:'鐧界硸',amount:'1姹ゅ寵'},{name:'椋熺敤娌?,amount:'3姹ゅ寵'}],steps:['钁卞垏闀挎锛堣懕鐧借懕缁垮垎寮€锛?,'閿呬腑鍊掓补锛屼腑灏忕伀鍏堟斁钁辩櫧鐐歌嚦寰粍','鍐嶆斁鍏ヨ懕缁跨偢鑷崇劍榛勫悗鎹炲嚭寮冨幓','瓒佺儹鍔犲叆鐢熸娊銆佽€佹娊銆佺櫧绯栨悈鍖€鎴愯懕娌规眮','闈㈡潯鐓啛鎹炲嚭娌ュ共锛屾祰涓婅懕娌规眮鎷屽寑鍗冲彲'],tags:['闈㈤','蹇墜','鏃╅']},
-  '鐨泲鐦﹁倝绮?: {category:'鏃╅',difficulty:'绠€鍗?,cook_time:40,ingredients:[{name:'澶х背',amount:'150g'},{name:'鐨泲',amount:'2涓?},{name:'鐚槮鑲?,amount:'150g'},{name:'濮?,amount:'3鐗?},{name:'钁?,amount:'2鏍?},{name:'鐩?,amount:'閫傞噺'},{name:'棣欐补',amount:'鍑犳淮'}],steps:['澶х背娲楀噣鍔犲皯璁告补鍜岀洂鑵?0鍒嗛挓','鐦﹁倝鍒囦笣鐢ㄧ洂鍜屾枡閰掕厡15鍒嗛挓','鐨泲鍒囧皬涓?,'閿呬腑鍔犳按鐑у紑锛屾斁鍏ュぇ绫冲ぇ鐏叜娌歌浆灏忕伀鐓?0鍒嗛挓','鏀惧叆鑲変笣鍜岀毊铔嬩竵缁х画鐓?0鍒嗛挓','涓嶅仠鎼呮媽鑷崇播娴撶锛屽姞鐩愯皟鍛筹紝娣嬮娌规拻钁辫姳'],tags:['绮?,'娓呮贰','鏆栬儍']},
-  '骞茬倰鐗涙渤': {category:'鍗堥',difficulty:'涓瓑',cook_time:15,ingredients:[{name:'娌崇矇',amount:'300g'},{name:'鐗涜倝',amount:'150g'},{name:'璞嗚娊',amount:'100g'},{name:'闊粍',amount:'50g'},{name:'鐢熸娊',amount:'2姹ゅ寵'},{name:'鑰佹娊',amount:'1姹ゅ寵'},{name:'娣€绮?,amount:'1鑼跺寵'},{name:'椋熺敤娌?,amount:'閫傞噺'}],steps:['鐗涜倝鍒囪杽鐗囧姞鐢熸娊鍜屾穩绮夋姄鍖€鑵?0鍒嗛挓','娌崇矇鐢ㄦ墜杞昏交鏁ｅ紑锛岄伩鍏嶇矘杩?,'澶х伀鐑攨瀹芥补锛屾斁鍏ョ墰鑲夊揩鐐掕嚦鍙樿壊鐩涘嚭','閿呬腑鐣欏簳娌癸紝鏀惧叆娌崇矇澶х伀缈荤倰','娌块攨杈规穻鍏ョ敓鎶藉拰鑰佹娊蹇€熺炕鐐掍笂鑹?,'鍔犲叆璞嗚娊鍜岄煭榛勶紝鍊掑洖鐗涜倝缈荤倰鍧囧寑鍗冲彲'],tags:['绮よ彍','涓婚','涓嬮キ']},
-  '瀹繚楦′竵': {category:'鍗堥',difficulty:'涓瓑',cook_time:20,ingredients:[{name:'楦¤兏鑲?,amount:'300g'},{name:'鑺辩敓绫?,amount:'50g'},{name:'骞茶荆妞?,amount:'6涓?},{name:'鑺辨',amount:'1鑼跺寵'},{name:'钁?,amount:'2鏍?},{name:'濮?,amount:'2鐗?},{name:'钂?,amount:'3鐡?},{name:'鐢熸娊',amount:'2姹ゅ寵'},{name:'閱?,amount:'1姹ゅ寵'},{name:'绯?,amount:'1姹ゅ寵'},{name:'娣€绮?,amount:'1姹ゅ寵'},{name:'鏂欓厭',amount:'1姹ゅ寵'}],steps:['楦¤兏鑲夊垏涓侊紝鍔犵洂銆佹枡閰掋€佹穩绮夋姄鍖€鑵?5鍒嗛挓','璋冪姹侊細鐢熸娊銆侀唻銆佺硸銆佹穩绮夊姞姘存悈鍖€','鑺辩敓绫冲皬鐏倰鑷抽噾榛勫鐢?,'閿呬腑鐑补锛屾斁鍏ラ浮涓佹粦鏁ｈ嚦鍙樿壊鐩涘嚭','閿呬腑鐖嗛骞茶荆妞掑拰鑺辨','鍊掑洖楦′竵锛屽姞鍏ヨ懕娈靛钂滅炕鐐?,'鍊掑叆纰楁眮蹇€熺炕鐐掑潎鍖€锛屾渶鍚庡姞鍏ヨ姳鐢熺背缈诲寑鍑洪攨'],tags:['宸濊彍','杈?,'涓嬮キ']},
-  '闊彍鐐掗浮铔?: {category:'鍗堥',difficulty:'绠€鍗?,cook_time:8,ingredients:[{name:'闊彍',amount:'200g'},{name:'楦¤泲',amount:'3涓?},{name:'鐩?,amount:'閫傞噺'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'}],steps:['闊彍娲楀噣鍒囨锛岄浮铔嬫墦鏁ｅ姞灏戣鐩?,'閿呬腑鐑补锛屽€掑叆铔嬫恫鐐掕嚦鍑濆浐鐩涘嚭','閿呬腑鍐嶅姞灏戣娌癸紝鏀惧叆闊彍澶х伀蹇倰','闊彍鏂敓鍚庡€掑洖楦¤泲缈荤倰鍧囧寑','鍔犵洂璋冨懗鍗冲彲鍑洪攨'],tags:['瀹跺父','绱犺彍','蹇墜']},
-  '楸奸鑲変笣': {category:'鍗堥',difficulty:'涓瓑',cook_time:20,ingredients:[{name:'鐚噷鑴?,amount:'250g'},{name:'鏈ㄨ€?,amount:'50g(娉″彂)'},{name:'鑳¤悵鍗?,amount:'1鏍?},{name:'闈掓',amount:'1涓?},{name:'濮?,amount:'2鐗?},{name:'钂?,amount:'3鐡?},{name:'钁?,amount:'1鏍?},{name:'璞嗙摚閰?,amount:'1姹ゅ寵'},{name:'鐢熸娊',amount:'1姹ゅ寵'},{name:'閱?,amount:'2姹ゅ寵'},{name:'绯?,amount:'2姹ゅ寵'},{name:'娣€绮?,amount:'1姹ゅ寵'}],steps:['鐚噷鑴婂垏缁嗕笣锛屽姞鐩愩€佹枡閰掋€佹穩绮夋姄鍖€鑵?0鍒嗛挓','鏈ㄨ€虫场鍙戝垏涓濓紝鑳¤悵鍗滃拰闈掓鍒囦笣','璋冪姹侊細鐢熸娊銆侀唻銆佺硸銆佹穩绮夈€佹按鎼呭寑','閿呬腑鐑补婊戠倰鑲変笣鑷冲彉鑹茬洓鍑?,'閿呬腑鐖嗛濮滆挏鍜岃眴鐡ｉ叡','鏀惧叆閰嶈彍涓濈炕鐐掓柇鐢?,'鍊掑洖鑲変笣锛屽€掑叆纰楁眮蹇€熺炕鐐掓敹姹佸嚭閿?],tags:['宸濊彍','閰哥敎杈?,'涓嬮キ']},
-  '铔嬬倰楗?: {category:'鏃╅',difficulty:'绠€鍗?,cook_time:10,ingredients:[{name:'闅斿绫抽キ',amount:'1纰?绾?00g)'},{name:'楦¤泲',amount:'2涓?},{name:'钁?,amount:'1鏍?},{name:'鐩?,amount:'閫傞噺'},{name:'椋熺敤娌?,amount:'2姹ゅ寵'}],steps:['绫抽キ鎻愬墠鎵撴暎锛堥殧澶滈キ鏈€浣筹級','楦¤泲鎵撴暎','閿呬腑鐑补锛屽€掑叆铔嬫恫鐐掕嚦鍗婂嚌鍥?,'绔嬪埢鍊掑叆绫抽キ澶х伀蹇€熺炕鐐?,'璁╂瘡绮掔背閮借９涓婅泲娑诧紝鐐掕嚦绮掔矑鍒嗘槑','鍔犵洂璋冨懗锛屾拻钁辫姳缈荤倰鍧囧寑鍑洪攨'],tags:['蹇墜','涓婚','鏃╅']},
-  '娓呯倰涓濈摐': {category:'鍗堥',difficulty:'绠€鍗?,cook_time:8,ingredients:[{name:'涓濈摐',amount:'2鏍?绾?00g)'},{name:'钂?,amount:'4鐡?},{name:'鐩?,amount:'閫傞噺'},{name:'椋熺敤娌?,amount:'1.5姹ゅ寵'}],steps:['涓濈摐鍘荤毊鍒囨粴鍒€鍧?,'閿呬腑鐑补锛岀垎棣欒挏鏈?,'鏀惧叆涓濈摐涓伀缈荤倰鑷冲彉杞嚭姹?,'鍔犵洂璋冨懗鍗冲彲鍑洪攨'],tags:['钄彍','娓呮贰','蹇墜']},
-  '鐣寗璞嗚厫姹?: {category:'鏅氶',difficulty:'绠€鍗?,cook_time:15,ingredients:[{name:'鐣寗',amount:'2涓?},{name:'瀚╄眴鑵?,amount:'1鐩?绾?50g)'},{name:'楦¤泲',amount:'1涓?},{name:'钁?,amount:'1鏍?},{name:'鐩?,amount:'閫傞噺'},{name:'棣欐补',amount:'鍑犳淮'}],steps:['鐣寗鍒囧潡锛岃眴鑵愬垏灏忔柟鍧楋紝楦¤泲鎵撴暎','閿呬腑灏戣娌癸紝鏀惧叆鐣寗缈荤倰鍑烘眮','鍔犻€傞噺姘寸儳寮€锛屾斁鍏ヨ眴鑵愮叜5鍒嗛挓','娣嬪叆铔嬫恫褰㈡垚铔嬭姳','鍔犵洂璋冨懗锛屾穻棣欐补鎾掕懕鑺?],tags:['姹?,'娓呮贰','钀ュ吇']},
-  '鍥為攨鑲?: {category:'鏅氶',difficulty:'涓瓑',cook_time:25,ingredients:[{name:'浜旇姳鑲?,amount:'300g'},{name:'闈掕挏鑻?,amount:'150g'},{name:'璞嗙摚閰?,amount:'1.5姹ゅ寵'},{name:'璞嗚眽',amount:'1姹ゅ寵'},{name:'濮?,amount:'2鐗?},{name:'鐢熸娊',amount:'1姹ゅ寵'},{name:'鐢滈潰閰?,amount:'1姹ゅ寵'},{name:'椋熺敤娌?,amount:'閫傞噺'}],steps:['浜旇姳鑲夋暣鍧楀喎姘翠笅閿咃紝鍔犲鐗囩叜鑷冲叓鎴愮啛鎹炲嚭鏀惧噳','鍒囨垚钖勭墖锛堢害3mm鍘氾級','閿呬腑灏戣娌癸紝鏀惧叆鑲夌墖涓伀鐓哥倰鑷冲井鍗峰嚭娌?,'鎺ㄥ埌涓€杈癸紝鏀惧叆璞嗙摚閰便€佽眴璞夌倰鍑虹孩娌?,'鍔犵敎闈㈤叡鍜岀敓鎶界炕鐐掍笂鑹?,'鏀惧叆钂滆嫍娈靛ぇ鐏炕鐐掓柇鐢熷嵆鍙?],tags:['宸濊彍','涓嬮キ','鑽よ彍']},
+  '红烧肉': {category:'晚餐',difficulty:'中等',cook_time:60,ingredients:[{name:'五花肉',amount:'500g'},{name:'冰糖',amount:'30g'},{name:'生抽',amount:'2汤匙'},{name:'老抽',amount:'1汤匙'},{name:'料酒',amount:'2汤匙'},{name:'姜',amount:'4片'},{name:'八角',amount:'2个'},{name:'桂皮',amount:'1小块'},{name:'香叶',amount:'2片'}],steps:['五花肉切3cm方块，冷水下锅焯水5分钟捞出洗净','锅中放少许油，放入冰糖小火炒至焦糖色','放入五花肉翻炒上色，加姜片、八角、桂皮、香叶炒香','加入生抽、老抽、料酒','倒入热水没过肉，大火烧开后转小火炖50分钟','大火收汁至浓稠，汤汁均匀挂在肉上出锅'],tags:['荤菜','家常','下饭']},
+  '清蒸鱼': {category:'晚餐',difficulty:'简单',cook_time:20,ingredients:[{name:'鲈鱼',amount:'1条(约500g)'},{name:'姜',amount:'4片'},{name:'小葱',amount:'3根'},{name:'蒸鱼豉油',amount:'3汤匙'},{name:'料酒',amount:'1汤匙'},{name:'食用油',amount:'2汤匙'}],steps:['鲈鱼去鳞去内脏洗净，两面各划3刀','鱼身抹少许料酒和盐，肚内塞姜片，腌10分钟','蒸锅水烧开，放入鱼盘，大火蒸8分钟','倒掉蒸出的腥水，去掉姜片','鱼身铺葱丝姜丝','淋上蒸鱼豉油','锅中烧热2汤匙油，浇在葱丝上滋香'],tags:['鱼','清淡','蒸菜']},
+  '蒜蓉粉丝扇贝': {category:'晚餐',difficulty:'中等',cook_time:25,ingredients:[{name:'扇贝',amount:'8个'},{name:'粉丝',amount:'1把(约40g)'},{name:'蒜',amount:'1整头(约10瓣)'},{name:'小葱',amount:'2根'},{name:'生抽',amount:'2汤匙'},{name:'食用油',amount:'3汤匙'},{name:'料酒',amount:'1茶匙'}],steps:['粉丝用温水泡软后剪短','扇贝洗净，取下肉去除内脏，壳刷净','蒜切成蒜末，葱切葱花','锅中倒2汤匙油，小火放入蒜末炒至微黄出香（不要炒糊）','粉丝铺在扇贝壳上，放上扇贝肉','淋少许料酒，浇上蒜蓉','蒸锅大火烧开，放入扇贝蒸5分钟','取出淋生抽，撒葱花，再浇1汤匙热油'],tags:['海鲜','蒸菜','宴客']},
+  '红烧肉': null, // 和上面红烧肉是同一道菜，会被匹配到
 };
 
-// 鍚嶇О鐩镐技搴﹀尮閰?
+// 名称相似度匹配
 function findSimilarRecipe(name) {
-  const n = name.replace(/[锛?].*[锛?]/g,'').trim();
+  const n = name.replace(/[（(].*[）)]/g,'').trim();
   for (const key in RECIPE_DATABASE) {
     if (key.includes(n) || n.includes(key) || key === n) {
       return {name: key, ...RECIPE_DATABASE[key]};
@@ -864,22 +841,16 @@ function findSimilarRecipe(name) {
 
 function aiGenerateRecipe() {
   const input = document.getElementById('aiInput').value.trim();
-  if (!input) { showToast('璇疯緭鍏ヨ彍鍚?); return; }
+  if (!input) { showToast('请输入菜名'); return; }
   
-  // 妫€鏌ユ槸鍚﹀凡瀛樺湪
-  if (recipes.some(r => r.name === input)) {
-    showToast('銆? + input + '銆嶅凡鍦ㄩ璋卞簱涓?);
-    return;
-  }
-
   const found = findSimilarRecipe(input);
-  if (found && found.ingredients && found.ingredients.length > 0) {
+  if (found) {
     const maxId = recipes.reduce((m, r) => Math.max(m, r.id || 0), 0);
     const recipe = {
       id: maxId + 1,
       name: input,
-      category: found.category || '鍗堥',
-      difficulty: found.difficulty || '涓瓑',
+      category: found.category || '午餐',
+      difficulty: found.difficulty || '中等',
       cook_time: found.cook_time || 30,
       servings: 2,
       ingredients: found.ingredients || [],
@@ -889,20 +860,16 @@ function aiGenerateRecipe() {
     };
     recipes.unshift(recipe);
     saveToStorage();
-    showToast('鉁?宸叉坊鍔犮€? + input + '銆?);
+    showToast('已添加「' + input + '」！');
     document.getElementById('aiInput').value = '';
     renderList(); drawWheel();
     return;
   }
   
-  // 鏈壘鍒帮紝鑷姩濉厖琛ㄥ崟锛屽府鐢ㄦ埛鐪佷簨
-  document.getElementById('f_name').value = input;
-  showToast('馃挕 鏆傛棤姝よ彍璋辨暟鎹紝宸插～鍏ヨ彍鍚嶏紝璇锋墜鍔ㄨˉ鍏呰鎯?);
-  // 婊氬姩鍒版墜鍔ㄥ～鍐欏尯鍩?
-  document.getElementById('f_name').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showToast('暂无此菜谱，请手动添加或稍后补充');
 }
 
-// 鍚姩
+// 启动
 init();
 </script>
 </body>
