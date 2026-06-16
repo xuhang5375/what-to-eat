@@ -382,7 +382,358 @@ let wheelResultId = null;
 // ===== 内置食谱（清淡素食家常菜）=====
 const BUILTIN_RECIPES = [
 // 早餐（10道）
-{id:1,name:'小米粥',category:'早餐',difficulty:'简单',cook_time:45,servings:2,tags:['粥','养生','清淡','素'],excluded:false,ingredients:[{name:'小米',amount:'80g'},{name:'清水',amount:'1000ml'},{name:'枸杞',amount:'8粒(可选)'}],steps:['小米洗净，加清水大火烧开','转小火熬30分钟，中途搅动2-3次防止粘底','熬至粥变稠即可，可加枸杞']},
+{id:1,name:'小米粥',category:'早餐',difficulty:'简单',cook_time:45,servings:2,tags:['粥','养生','清淡','素',
+{
+    name:"无糖浓豆浆",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:15,
+    servings:1,
+    ingredients:[{name:"黄豆",amount:"50g"},{name:"水",amount:"500ml"}],
+    steps:["黄豆提前浸泡6-8小时","放入豆浆机，加水","选择豆浆模式","过滤即可饮用"]
+  },
+{
+    name:"水煮蛋",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:10,
+    servings:1,
+    ingredients:[{name:"鸡蛋",amount:"1个"},{name:"水",amount:"适量"}],
+    steps:["鸡蛋洗净放入冷水中","水开后煮5-7分钟","捞出过凉水","剥壳即可"]
+  },
+{
+    name:"蒸贝贝南瓜",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:20,
+    servings:1,
+    ingredients:[{name:"贝贝南瓜",amount:"半个"}],
+    steps:["南瓜洗净切块","蒸锅水烧开","放入南瓜蒸15-20分钟","软糯即可"]
+  },
+{
+    name:"白灼鲜虾",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:1,
+    ingredients:[{name:"鲜虾",amount:"200g"},{name:"姜片",amount:"3片"},{name:"料酒",amount:"1勺"}],
+    steps:["鲜虾洗净去虾线","锅中加水、姜片、料酒烧开","下虾煮至变色卷曲","捞出蘸酱油醋即可"]
+  },
+{
+    name:"蒜蓉空心菜",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:5,
+    servings:1,
+    ingredients:[{name:"空心菜",amount:"一把"},{name:"蒜",amount:"3瓣"},{name:"盐",amount:"适量"}],
+    steps:["空心菜洗净切段","蒜切末","热锅爆香蒜末","下空心菜大火快炒","加盐调味出锅"]
+  },
+{
+    name:"糙米饭",
+    category:"主食",
+    difficulty:"简单",
+    cook_time:50,
+    servings:2,
+    ingredients:[{name:"糙米",amount:"1杯"},{name:"水",amount:"1.5杯"}],
+    steps:["糙米提前浸泡2小时","放入电饭锅，加水","选择糙米模式","煮熟即可"]
+  },
+{
+    name:"无糖希腊酸奶",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:0,
+    servings:1,
+    ingredients:[{name:"希腊酸奶",amount:"1盒"}],
+    steps:["直接食用即可"]
+  },
+{
+    name:"西瓜",
+    category:"水果",
+    difficulty:"简单",
+    cook_time:0,
+    servings:1,
+    ingredients:[{name:"西瓜",amount:"数片"}],
+    steps:["西瓜切块食用"]
+  },
+{
+    name:"纯牛奶",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:0,
+    servings:1,
+    ingredients:[{name:"纯牛奶",amount:"1杯"}],
+    steps:["可直接饮用或加热后饮用"]
+  },
+{
+    name:"少油煎蛋",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:5,
+    servings:1,
+    ingredients:[{name:"鸡蛋",amount:"1个"},{name:"油",amount:"少许"},{name:"盐",amount:"少许"}],
+    steps:["平底锅刷薄油","打入鸡蛋","小火煎至蛋白凝固","翻面煎1分钟","撒少许盐"]
+  },
+{
+    name:"全麦吐司",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:2,
+    servings:1,
+    ingredients:[{name:"全麦吐司",amount:"1片"}],
+    steps:["可直接食用或烤至微脆"]
+  },
+{
+    name:"黑椒香煎老豆腐",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:1,
+    ingredients:[{name:"老豆腐",amount:"1块"},{name:"黑胡椒",amount:"适量"},{name:"盐",amount:"少许"},{name:"油",amount:"少许"}],
+    steps:["豆腐切厚片","平底锅刷油，下豆腐","小火煎至两面金黄","撒盐和黑胡椒调味"]
+  },
+{
+    name:"清炒苋菜",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:5,
+    servings:1,
+    ingredients:[{name:"苋菜",amount:"一把"},{name:"蒜",amount:"2瓣"},{name:"盐",amount:"适量"}],
+    steps:["苋菜洗净","蒜切片","热锅爆香蒜","下苋菜大火快炒","加盐调味出锅"]
+  },
+{
+    name:"蒸紫薯",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:25,
+    servings:1,
+    ingredients:[{name:"紫薯",amount:"1个"}],
+    steps:["紫薯洗净","蒸锅水烧开","放入紫薯蒸20-25分钟","筷子能戳透即可"]
+  },
+{
+    name:"黄瓜",
+    category:"水果",
+    difficulty:"简单",
+    cook_time:0,
+    servings:1,
+    ingredients:[{name:"黄瓜",amount:"1根"}],
+    steps:["洗净直接食用"]
+  },
+{
+    name:"燕麦牛奶",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:5,
+    servings:1,
+    ingredients:[{name:"纯燕麦",amount:"30g"},{name:"牛奶",amount:"200ml"}],
+    steps:["燕麦放入碗中","牛奶加热后冲泡","搅拌均匀即可"]
+  },
+{
+    name:"油桃",
+    category:"水果",
+    difficulty:"简单",
+    cook_time:0,
+    servings:1,
+    ingredients:[{name:"油桃",amount:"半个"}],
+    steps:["洗净切块食用"]
+  },
+{
+    name:"清蒸鲈鱼",
+    category:"蒸菜",
+    difficulty:"中等",
+    cook_time:20,
+    servings:2,
+    ingredients:[{name:"鲈鱼",amount:"1条"},{name:"葱",amount:"2根"},{name:"姜",amount:"4片"},{name:"蒸鱼豉油",amount:"2勺"},{name:"料酒",amount:"1勺"}],
+    steps:["鲈鱼洗净，两面划几刀","抹料酒和盐，肚子里塞姜片","水开后蒸8-10分钟","倒掉蒸出来的水","铺葱丝，淋蒸鱼豉油","烧一勺热油浇在葱丝上"]
+  },
+{
+    name:"清炒长豆角",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:1,
+    ingredients:[{name:"长豆角",amount:"一把"},{name:"蒜",amount:"2瓣"},{name:"盐",amount:"适量"}],
+    steps:["长豆角掰段","热锅爆香蒜","下豆角翻炒","加少许水焖2分钟","加盐调味出锅"]
+  },
+{
+    name:"藜麦饭",
+    category:"主食",
+    difficulty:"简单",
+    cook_time:30,
+    servings:2,
+    ingredients:[{name:"藜麦",amount:"半杯"},{name:"大米",amount:"半杯"}],
+    steps:["藜麦提前浸泡","与大米一起放入电饭锅","加水，煮熟即可"]
+  },
+{
+    name:"鸡蛋羹",
+    category:"蒸菜",
+    difficulty:"简单",
+    cook_time:12,
+    servings:1,
+    ingredients:[{name:"鸡蛋",amount:"1个"},{name:"温水",amount:"100ml"},{name:"盐",amount:"少许"}],
+    steps:["鸡蛋打散加温水和盐","过滤到蒸碗中","盖保鲜膜扎孔","水开后蒸10分钟","淋少许生抽香油"]
+  },
+{
+    name:"蒸玉米",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:20,
+    servings:1,
+    ingredients:[{name:"鲜玉米",amount:"半根"}],
+    steps:["玉米洗净","蒸锅水烧开","放入玉米蒸15-20分钟"]
+  },
+{
+    name:"青椒千张丝",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:8,
+    servings:1,
+    ingredients:[{name:"千张",amount:"2张"},{name:"青椒",amount:"1个"},{name:"蒜",amount:"2瓣"},{name:"生抽",amount:"1勺"}],
+    steps:["千张切丝，青椒切丝","热锅爆香蒜","下千张丝翻炒","加青椒丝炒匀","加生抽调味出锅"]
+  },
+{
+    name:"蒜蓉丝瓜",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:8,
+    servings:1,
+    ingredients:[{name:"丝瓜",amount:"1根"},{name:"蒜",amount:"3瓣"},{name:"盐",amount:"适量"}],
+    steps:["丝瓜去皮切滚刀块","蒜切末","热锅爆香蒜末","下丝瓜翻炒","加少许水焖软","加盐调味"]
+  },
+{
+    name:"蒸红薯",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:25,
+    servings:1,
+    ingredients:[{name:"红薯",amount:"1个"}],
+    steps:["红薯洗净","蒸锅水烧开","放入红薯蒸20-25分钟"]
+  },
+{
+    name:"牛油果水煮蛋碎",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:10,
+    servings:1,
+    ingredients:[{name:"牛油果",amount:"半个"},{name:"水煮蛋",amount:"1个"},{name:"全麦吐司",amount:"1片"}],
+    steps:["牛油果捣成泥","水煮蛋切碎","混合后铺在吐司上"]
+  },
+{
+    name:"无糖黑咖啡",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:2,
+    servings:1,
+    ingredients:[{name:"黑咖啡",amount:"1杯"}],
+    steps:["用热水冲泡即可"]
+  },
+{
+    name:"番茄炖豆腐",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:1,
+    ingredients:[{name:"番茄",amount:"1个"},{name:"嫩豆腐",amount:"半块"},{name:"盐",amount:"适量"}],
+    steps:["番茄切块，豆腐切块","热锅炒番茄出汁","加豆腐块","加少许水焖5分钟","加盐调味"]
+  },
+{
+    name:"杂粮饭",
+    category:"主食",
+    difficulty:"简单",
+    cook_time:50,
+    servings:2,
+    ingredients:[{name:"杂粮米",amount:"1杯"},{name:"水",amount:"适量"}],
+    steps:["杂粮米提前浸泡","放入电饭锅加水","煮熟即可"]
+  },
+{
+    name:"煮毛豆",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:1,
+    ingredients:[{name:"毛豆",amount:"一小碗"},{name:"盐",amount:"适量"}],
+    steps:["毛豆洗净","锅中加水烧开","下毛豆煮5-8分钟","捞出撒盐即可"]
+  },
+{
+    name:"鲜虾嫩豆腐煲",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:20,
+    servings:1,
+    ingredients:[{name:"鲜虾",amount:"100g"},{name:"嫩豆腐",amount:"半块"},{name:"姜片",amount:"2片"},{name:"盐",amount:"适量"}],
+    steps:["虾洗净去虾线","豆腐切块","砂锅加水、姜片烧开","下豆腐煮5分钟","下虾煮至变色","加盐调味"]
+  },
+{
+    name:"凉拌番茄黄瓜",
+    category:"凉菜",
+    difficulty:"简单",
+    cook_time:5,
+    servings:1,
+    ingredients:[{name:"番茄",amount:"1个"},{name:"黄瓜",amount:"半根"},{name:"盐",amount:"少许"},{name:"醋",amount:"1勺"}],
+    steps:["番茄切块，黄瓜切片","加盐和醋拌匀即可"]
+  },
+{
+    name:"水蜜桃",
+    category:"水果",
+    difficulty:"简单",
+    cook_time:0,
+    servings:1,
+    ingredients:[{name:"水蜜桃",amount:"1个"}],
+    steps:["洗净切块食用"]
+  },
+{
+    name:"全麦馒头",
+    category:"早餐",
+    difficulty:"中等",
+    cook_time:30,
+    servings:1,
+    ingredients:[{name:"全麦面粉",amount:"适量"},{name:"酵母",amount:"少许"}],
+    steps:["面粉加酵母和成面团发酵","分成小剂子揉成馒头","上锅蒸15分钟"]
+  },
+{
+    name:"韭菜炒鸡蛋",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:8,
+    servings:1,
+    ingredients:[{name:"韭菜",amount:"一把"},{name:"鸡蛋",amount:"2个"},{name:"盐",amount:"适量"}],
+    steps:["韭菜切段","鸡蛋打散炒熟盛出","热锅炒韭菜","倒回鸡蛋，加盐炒匀"]
+  },
+{
+    name:"无糖豆浆",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:15,
+    servings:1,
+    ingredients:[{name:"黄豆",amount:"50g"},{name:"水",amount:"500ml"}],
+    steps:["黄豆提前浸泡","放入豆浆机加水","打好后过滤即可"]
+  },
+{
+    name:"茄子瘦肉片快炒",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:1,
+    ingredients:[{name:"茄子",amount:"1根"},{name:"瘦肉",amount:"100g"},{name:"蒜",amount:"2瓣"},{name:"生抽",amount:"1勺"}],
+    steps:["茄子切块，瘦肉切片","热锅炒肉片至变色盛出","下茄子炒软","倒回肉片，加蒜和生抽炒匀"]
+  },
+{
+    name:"蒜蓉生菜",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:5,
+    servings:1,
+    ingredients:[{name:"生菜",amount:"2棵"},{name:"蒜",amount:"3瓣"},{name:"蚝油",amount:"1勺"}],
+    steps:["生菜洗净焯水","蒜切末","热锅爆香蒜末","加蚝油和水调成汁","淋在生菜上"]
+  },
+{
+    name:"杏子",
+    category:"水果",
+    difficulty:"简单",
+    cook_time:0,
+    servings:1,
+    ingredients:[{name:"杏子",amount:"几颗"}],
+    steps:["洗净直接食用"]
+  }],excluded:false,ingredients:[{name:'小米',amount:'80g'},{name:'清水',amount:'1000ml'},{name:'枸杞',amount:'8粒(可选)'}],steps:['小米洗净，加清水大火烧开','转小火熬30分钟，中途搅动2-3次防止粘底','熬至粥变稠即可，可加枸杞']},
 {id:2,name:'白粥配酱菜',category:'早餐',difficulty:'简单',cook_time:40,servings:2,tags:['粥','清淡','素'],excluded:false,ingredients:[{name:'大米',amount:'80g'},{name:'清水',amount:'1200ml'},{name:'榨菜丝',amount:'适量(配粥)'}],steps:['大米洗净，加水大火烧开','转小火慢熬40分钟至米开花','配榨菜或酱瓜食用']},
 {id:3,name:'豆浆',category:'早餐',difficulty:'简单',cook_time:25,servings:2,tags:['饮品','素','养生'],excluded:false,ingredients:[{name:'黄豆',amount:'80g'},{name:'清水',amount:'800ml'},{name:'白糖',amount:'适量(可选)'}],steps:['黄豆提前浸泡6-8小时或一夜','将黄豆加清水放入豆浆机破壁机','按豆浆功能打好后过滤','加白糖调味即可']},
 {id:4,name:'番茄鸡蛋面',category:'早餐',difficulty:'简单',cook_time:15,servings:2,tags:['面食','快手','家常'],excluded:false,ingredients:[{name:'挂面',amount:'100g人'},{name:'番茄',amount:'1个'},{name:'鸡蛋',amount:'1个'},{name:'盐',amount:'少许'},{name:'葱花',amount:'适量'}],steps:['番茄切块，鸡蛋打散','锅中倒油炒鸡蛋至凝固盛出','锅中再加少许油，炒番茄至出汁','加清水烧开下面条','面条煮软后倒入鸡蛋，加盐调味，撒葱花']},
