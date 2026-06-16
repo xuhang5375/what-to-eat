@@ -958,18 +958,12 @@ async function aiGenerateRecipe() {
     return;
   }
   
-  // 联网搜索食谱
-  const sbUrl = localStorage.getItem('sb_url');
-  if (!sbUrl) {
-    if (confirm('本地暂无「' + input + '」的食谱。\n\n联网搜索需先配置 Supabase（设置页），是否现在打开设置页？')) {
-      switchTab('settings');
-    }
-    return;
-  }
+  // 联网搜索食谱（香哈网 Edge Function）
+  const EDGE_URL = 'https://infsqrfqksvqzlapvott.supabase.co/functions/v1/search-recipe';
   
   showToast('正在联网搜索「' + input + '」...');
   try {
-    const res = await fetch(sbUrl + '/functions/v1/search-recipe?keyword=' + encodeURIComponent(input));
+    const res = await fetch(EDGE_URL + '?keyword=' + encodeURIComponent(input));
     if (!res.ok) throw new Error('搜索失败');
     const data = await res.json();
     if (data.error) {
