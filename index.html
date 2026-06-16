@@ -947,59 +947,102 @@ function fillFormWithRecipe(r) {
   showToast('已自动填充「' + r.name + '」的食谱信息，确认后点击保存');
 }
 
-// 通过 CORS 代理抓取香哈网
+// 通过 Supabase Edge Function 联网搜索食谱
+async // 通过 TheMealDB API 联网搜索食谱（免费、无需key、支持CORS）
+// TheMealDB 27道中华料理离线缓存（供智能搜索使用）
+const MEALDB_CHINESE_MAP = {
+  '宫保鸡丁': 'Kung Pao Chicken',
+  '麻婆豆腐': 'Ma Po Tofu',
+  '糖醋里脊': 'Sweet and Sour Pork',
+  '蛋炒饭': 'Chicken Fried Rice',
+  '蛋花汤': 'Egg Drop Soup',
+  '酸辣汤': 'Hot and Sour Soup',
+  '西兰花炒牛肉': 'Beef and Broccoli Stir-Fry',
+  '左宗棠鸡': "General Tso's Chicken",
+  '牛肉捞面': 'Beef Lo Mein',
+  '鸡肉粥': 'Chicken Congee',
+  '馄饨': 'Wontons',
+  '芙蓉蛋': 'Egg Foo Young',
+  '虾仁肠粉': 'Shrimp Chow Fun',
+  '甜酸鸡': 'Sweet and Sour Chicken',
+  '宫保虾': 'Kung Po Prawns',
+  '虾皮白菜': 'Napa Cabbage with Dried Shrimp',
+  '黄瓜凉拌': 'Sesame Cucumber Salad',
+  '荷兰豆虾仁': 'Shrimp With Snow Peas',
+  '鱼香茄子': 'Sichuan Eggplant',
+  '星洲炒米粉': 'Singapore Noodles with Shrimp',
+  '四川牛肉': 'Szechuan Beef',
+  '陈皮鸡': 'Chinese Orange Chicken',
+  '凉拌豆腐': 'Silken Tofu with Sesame Soy Sauce',
+  '空气炸锅蛋卷': 'Air Fryer Egg Rolls',
+  '拉面配溏心蛋': 'Ramen Noodles with Boiled Egg',
+  '糖醋肉': 'Sweet and Sour Pork',
+  '番茄炒蛋': 'Chinese Tomato Egg Stir Fry',
+};
+
 async function searchXianghaOnline(keyword) {
-  const proxy = 'https://api.allorigins.win/raw?url=';
-  const searchUrl = 'https://www.xiangha.com/so/?q=caipu&s=' + encodeURIComponent(keyword);
-  const proxyUrl = proxy + encodeURIComponent(searchUrl);
-  
-  const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
-  if (!res.ok) throw new Error('搜索页抓取失败');
-  const html = await res.text();
-  
-  // 提取第一个食谱链接
-  const linkMatch = html.match(/<a[^>]*href="(\/caipu\/(\d+)\.html)"[^>]*>/);
-  if (!linkMatch) throw new Error('未找到相关食谱');
-  
-  const detailUrl = 'https://www.xiangha.com' + linkMatch[1];
-  const detailProxyUrl = proxy + encodeURIComponent(detailUrl);
-  
-  const res2 = await fetch(detailProxyUrl, { signal: AbortSignal.timeout(10000) });
-  if (!res2.ok) throw new Error('详情页抓取失败');
-  const html2 = await res2.text();
-  
-  // 解析食材
-  const ingredients = [];
-  const ingRegex = /<div\s+class="cell">[\s\S]*?<a[^>]*class="link"[^>]*>([^<]+?)[\s\S]*?<present[\s\S]*?<span>([^<]*)<\/span><\/present>/g;
-  let m;
-  while ((m = ingRegex.exec(html2)) !== null) {
-    ingredients.push({ name: m[1].trim(), amount: m[2].trim() });
+  const BASE = 'https://www.themealdb.com/api/json/v1/1';
+  const kw = keyword.toLowerCase();
+
+  // Step 1: 查离线中文映射 → 英文名 → TheMealDB API
+  const enName = MEALDB_CHINESE_MAP[keyword] || MEALDB_CHINESE_MAP[Object.keys(MEALDB_CHINESE_MAP).find(k => k.includes(keyword))];
+  if (enName) {
+    const res = await fetch(`${BASE}/search.php?s=${encodeURIComponent(enName)}`, { signal: AbortSignal.timeout(15000) });
+    const data = await res.json();
+    if (data.meals && data.meals[0]) return parseMealDB(data.meals[0]);
   }
-  
-  // 解析步骤
-  const steps = [];
-  const stepRegex = /<p><span\s+class="index">\d+\.<\/span>([\s\S]*?)<\/p>/g;
-  while ((m = stepRegex.exec(html2)) !== null) {
-    const step = m[1].replace(/<[^>]+>/g, '').trim();
-    if (step) steps.push(step);
+
+  // Step 2: 直接用中文名搜 TheMealDB
+  const res2 = await fetch(`${BASE}/search.php?s=${encodeURIComponent(keyword)}`, { signal: AbortSignal.timeout(15000) });
+  const data2 = await res2.json();
+  if (data2.meals && data2.meals.length > 0) {
+    const meal = data2.meals.find(m => m.strMeal.toLowerCase().includes(kw)) || data2.meals[0];
+    const detailRes = await fetch(`${BASE}/lookup.php?i=${meal.idMeal}`, { signal: AbortSignal.timeout(15000) });
+    const detailData = await detailRes.json();
+    if (detailData.meals && detailData.meals[0]) return parseMealDB(detailData.meals[0]);
   }
-  
-  if (ingredients.length === 0) throw new Error('未找到食材信息');
-  
-  const hasMeat = ingredients.some(i => /肉|鸡|鱼|虾|牛|猪|蛋|排骨|鸭/.test(i.name));
-  
-  return {
-    name: keyword,
-    category: hasMeat ? '午餐' : '素菜',
-    difficulty: steps.length > 8 ? '中等' : '简单',
-    cook_time: steps.length > 6 ? 30 : 20,
-    servings: 2,
-    ingredients: ingredients.map(i => i.name + ' ' + i.amount).join('\n'),
-    steps: steps.join('\n')
-  };
+
+  // Step 3: 搜中华料理列表做模糊匹配
+  const areaRes = await fetch(`${BASE}/filter.php?a=Chinese`, { signal: AbortSignal.timeout(15000) });
+  const areaData = await areaRes.json();
+  if (areaData.meals && areaData.meals.length > 0) {
+    const matched = areaData.meals.find(m => (m.strMeal || '').toLowerCase().includes(kw));
+    if (matched) {
+      const detailRes = await fetch(`${BASE}/lookup.php?i=${matched.idMeal}`, { signal: AbortSignal.timeout(15000) });
+      const detailData = await detailRes.json();
+      if (detailData.meals && detailData.meals[0]) return parseMealDB(detailData.meals[0]);
+    }
+  }
+
+  throw new Error('未找到相关食谱');
 }
 
-async function aiGenerateRecipe() {
+function parseMealDB(meal) {
+  const ingredients = [];
+  for (let i = 1; i <= 20; i++) {
+    const ing = meal[`strIngredient${i}`];
+    const meas = meal[`strMeasure${i}`];
+    if (ing && ing.trim()) {
+      ingredients.push((meas ? meas.trim() + ' ' : '') + ing.trim());
+    }
+  }
+  const raw = meal.strInstructions || '';
+  const steps = raw
+    .split(/?
+/)
+    .map(s => s.replace(/^[A-Z].s*/g, '').trim())
+    .filter(s => s.length > 5)
+    .map((s, i) => `${i + 1}. ${s}`);
+  return {
+    name: meal.strMeal || '',
+    category: meal.strCategory || '家常',
+    difficulty: '简单',
+    cook_time: 30,
+    servings: 2,
+    ingredients: ingredients.join('\n'),
+    steps: steps.join('\n')
+  };
+}async function aiGenerateRecipe() {
   const input = document.getElementById('aiInput').value.trim();
   if (!input) { showToast('请输入菜名'); return; }
   
@@ -1010,8 +1053,7 @@ async function aiGenerateRecipe() {
     return;
   }
   
-  // 联网搜索食谱（香哈网，通过 CORS 代理）
-  showToast('正在联网搜索「' + input + '」...');
+  // 联网搜索食谱（TheMealDB API）showToast('正在联网搜索「' + input + '」...');
   try {
     const data = await searchXianghaOnline(input);
     fillFormWithRecipe(data);
