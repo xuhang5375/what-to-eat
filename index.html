@@ -947,6 +947,58 @@ function fillFormWithRecipe(r) {
   showToast('已自动填充「' + r.name + '」的食谱信息，确认后点击保存');
 }
 
+// 通过 CORS 代理抓取香哈网
+async function searchXianghaOnline(keyword) {
+  const proxy = 'https://api.allorigins.win/raw?url=';
+  const searchUrl = 'https://www.xiangha.com/so/?q=caipu&s=' + encodeURIComponent(keyword);
+  const proxyUrl = proxy + encodeURIComponent(searchUrl);
+  
+  const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(10000) });
+  if (!res.ok) throw new Error('搜索页抓取失败');
+  const html = await res.text();
+  
+  // 提取第一个食谱链接
+  const linkMatch = html.match(/<a[^>]*href="(\/caipu\/(\d+)\.html)"[^>]*>/);
+  if (!linkMatch) throw new Error('未找到相关食谱');
+  
+  const detailUrl = 'https://www.xiangha.com' + linkMatch[1];
+  const detailProxyUrl = proxy + encodeURIComponent(detailUrl);
+  
+  const res2 = await fetch(detailProxyUrl, { signal: AbortSignal.timeout(10000) });
+  if (!res2.ok) throw new Error('详情页抓取失败');
+  const html2 = await res2.text();
+  
+  // 解析食材
+  const ingredients = [];
+  const ingRegex = /<div\s+class="cell">[\s\S]*?<a[^>]*class="link"[^>]*>([^<]+?)[\s\S]*?<present[\s\S]*?<span>([^<]*)<\/span><\/present>/g;
+  let m;
+  while ((m = ingRegex.exec(html2)) !== null) {
+    ingredients.push({ name: m[1].trim(), amount: m[2].trim() });
+  }
+  
+  // 解析步骤
+  const steps = [];
+  const stepRegex = /<p><span\s+class="index">\d+\.<\/span>([\s\S]*?)<\/p>/g;
+  while ((m = stepRegex.exec(html2)) !== null) {
+    const step = m[1].replace(/<[^>]+>/g, '').trim();
+    if (step) steps.push(step);
+  }
+  
+  if (ingredients.length === 0) throw new Error('未找到食材信息');
+  
+  const hasMeat = ingredients.some(i => /肉|鸡|鱼|虾|牛|猪|蛋|排骨|鸭/.test(i.name));
+  
+  return {
+    name: keyword,
+    category: hasMeat ? '午餐' : '素菜',
+    difficulty: steps.length > 8 ? '中等' : '简单',
+    cook_time: steps.length > 6 ? 30 : 20,
+    servings: 2,
+    ingredients: ingredients.map(i => i.name + ' ' + i.amount).join('\n'),
+    steps: steps.join('\n')
+  };
+}
+
 async function aiGenerateRecipe() {
   const input = document.getElementById('aiInput').value.trim();
   if (!input) { showToast('请输入菜名'); return; }
@@ -958,30 +1010,29 @@ async function aiGenerateRecipe() {
     return;
   }
   
-  // 联网搜索食谱（香哈网 Edge Function）
-  const EDGE_URL = 'https://infsqrfqksvqzlapvott.supabase.co/functions/v1/search-recipe';
-  
+  // 联网搜索食谱（香哈网，通过 CORS 代理）
   showToast('正在联网搜索「' + input + '」...');
   try {
-    const res = await fetch(EDGE_URL + '?keyword=' + encodeURIComponent(input));
-    if (!res.ok) throw new Error('搜索失败');
-    const data = await res.json();
-    if (data.error) {
-      showToast('搜索失败：' + data.error);
-      if (confirm('联网未找到「' + input + '」的食谱，是否用浏览器搜索？')) {
-        window.open('https://www.bing.com/search?q=' + encodeURIComponent(input + ' 家常菜做法'), '_blank');
-      }
-      return;
-    }
+    const data = await searchXianghaOnline(input);
     fillFormWithRecipe(data);
     document.getElementById('aiInput').value = '';
   } catch(e) {
-    showToast('联网搜索失败，请检查网络');
-    if (confirm('联网搜索出错，是否用浏览器搜索？')) {
-      window.open('https://www.bing.com/search?q=' + encodeURIComponent(input + ' 家常菜做法'), '_blank');
-    }
+    console.error('联网搜索失败：', e);
+    showToast('联网搜索失败，已为您生成基础模板');
+    // 降级：生成基础模板
+    fillFormWithRecipe({
+      name: input,
+      category: '午餐',
+      difficulty: '简单',
+      cook_time: 20,
+      servings: 2,
+      ingredients: '主料 适量\n辅料 少许',
+      steps: '1. 准备食材\n2. 处理食材\n3. 热锅下油\n4. 下食材翻炒\n5. 调味出锅'
+    });
+    document.getElementById('aiInput').value = '';
   }
 }
+
 
 // 启动
 init();
