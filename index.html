@@ -947,7 +947,7 @@ function fillFormWithRecipe(r) {
   showToast('已自动填充「' + r.name + '」的食谱信息，确认后点击保存');
 }
 
-function aiGenerateRecipe() {
+async function aiGenerateRecipe() {
   const input = document.getElementById('aiInput').value.trim();
   if (!input) { showToast('请输入菜名'); return; }
   
@@ -958,9 +958,34 @@ function aiGenerateRecipe() {
     return;
   }
   
-  if (confirm('本地暂无「' + input + '」的食谱，是否联网搜索？')) {
-    window.open('https://www.bing.com/search?q=' + encodeURIComponent(input + ' 家常菜做法'), '_blank');
-    showToast('搜索后可手动填写下方表单');
+  // 联网搜索食谱
+  const sbUrl = localStorage.getItem('sb_url');
+  if (!sbUrl) {
+    if (confirm('本地暂无「' + input + '」的食谱。\n\n联网搜索需先配置 Supabase（设置页），是否现在打开设置页？')) {
+      switchTab('settings');
+    }
+    return;
+  }
+  
+  showToast('正在联网搜索「' + input + '」...');
+  try {
+    const res = await fetch(sbUrl + '/functions/v1/search-recipe?keyword=' + encodeURIComponent(input));
+    if (!res.ok) throw new Error('搜索失败');
+    const data = await res.json();
+    if (data.error) {
+      showToast('搜索失败：' + data.error);
+      if (confirm('联网未找到「' + input + '」的食谱，是否用浏览器搜索？')) {
+        window.open('https://www.bing.com/search?q=' + encodeURIComponent(input + ' 家常菜做法'), '_blank');
+      }
+      return;
+    }
+    fillFormWithRecipe(data);
+    document.getElementById('aiInput').value = '';
+  } catch(e) {
+    showToast('联网搜索失败，请检查网络');
+    if (confirm('联网搜索出错，是否用浏览器搜索？')) {
+      window.open('https://www.bing.com/search?q=' + encodeURIComponent(input + ' 家常菜做法'), '_blank');
+    }
   }
 }
 
