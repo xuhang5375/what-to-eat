@@ -229,7 +229,7 @@ body{
         <input type="text" id="aiInput" placeholder="输入菜名，如：红烧肉" style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:8px 12px;border-radius:8px;font-size:.9rem;outline:none">
         <button onclick="aiGenerateRecipe()" class="btn btn-accent" style="padding:8px 14px;font-size:.85rem">生成</button>
       </div>
-      <p style="font-size:.75rem;color:var(--text2);margin-top:6px">示例：红烧肉、清蒸鱼、蒜蓉粉丝扇贝...</p>
+      <p style="font-size:.75rem;color:var(--text2);margin-top:6px">示例：红烧肉、清蒸鱼、蒜蓉粉丝扇贝... 本地不匹配时自动弹出联网搜索</p>
     </div>
     
     <div style="margin-bottom:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)">
@@ -308,8 +308,10 @@ body{
         <label>Anon Key</label>
         <input type="text" id="cfg_key" placeholder="eyJ...">
       </div>
-      <button class="btn btn-accent" style="width:100%;margin-bottom:8px" onclick="saveConfig()">保存并连接</button>
-      <p style="color:var(--text2);font-size:.78rem;margin-top:6px">在 Supabase SQL 编辑器执行建表 SQL 后再连接，连接成功后数据自动同步。</p>
+      <button class="btn btn-accent" style="width:100%;margin-bottom:8px" onclick="saveConfig()">保存配置</button>
+      <button class="btn btn-outline" style="width:100%;margin-bottom:8px" onclick="syncToSupabase()">☁️ 上传到云端</button>
+      <button class="btn btn-outline" style="width:100%;margin-bottom:8px" onclick="loadFromSupabase()">☁️ 从云端加载</button>
+      <p style="color:var(--text2);font-size:.78rem;margin-top:6px">在 Supabase SQL 编辑器执行建表 SQL 后再连接，配置保存后即可上传/下载食谱。</p>
     </div>
     <div class="config-section">
       <h3>数据管理</h3>
@@ -457,6 +459,7 @@ function init() {
   }
   addIngredientRow(); addIngredientRow();
   addStepRow(); addStepRow();
+  restoreConfigUI();
 }
 
 function loadRecipesFromStorage() {
@@ -810,14 +813,79 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ===== Supabase（可选）=====
+// ===== Supabase 联网同步（可选）=====
+async function loadFromSupabase() {
+  const url = localStorage.getItem('sb_url');
+  const key = localStorage.getItem('sb_key');
+  if (!url || !key) { showToast('请先在设置中配置 Supabase'); return; }
+  try {
+    const res = await fetch(url.replace(/\/+$/, '') + '/rest/v1/recipes?select=*&order=id.asc', {
+      headers: { 'apikey': key, 'Authorization': 'Bearer ' + key }
+    });
+    if (!res.ok) { showToast('拉取失败：' + res.status); return; }
+    const cloud = await res.json();
+    if (!cloud.length) { showToast('云端暂无食谱'); return; }
+    recipes.length = 0;
+    cloud.forEach(r => {
+      recipes.push({
+        id: r.id, name: r.name, category: r.category, difficulty: r.difficulty,
+        cook_time: r.cook_time, servings: r.servings,
+        ingredients: (typeof r.ingredients === 'string' ? JSON.parse(r.ingredients) : r.ingredients) || [],
+        steps: (typeof r.steps === 'string' ? JSON.parse(r.steps) : r.steps) || [],
+        tags: r.tags || [], excluded: r.excluded || false
+      });
+    });
+    saveToStorage(); renderList(); drawWheel();
+    showToast('已从云端加载 ' + cloud.length + ' 道食谱');
+  } catch(e) { showToast('连接失败：' + e.message); }
+}
+
+async function syncToSupabase() {
+  const url = localStorage.getItem('sb_url');
+  const key = localStorage.getItem('sb_key');
+  if (!url || !key) { showToast('请先在设置中配置 Supabase'); return; }
+  const base = url.replace(/\/+$/, '');
+  try {
+    // 先清空云端
+    await fetch(base + '/rest/v1/recipes', {
+      method: 'DELETE',
+      headers: { 'apikey': key, 'Authorization': 'Bearer ' + key }
+    });
+    // 分批上传（每批 50 条）
+    const list = getActiveRecipes();
+    for (let i = 0; i < list.length; i += 50) {
+      const batch = list.slice(i, i + 50).map(r => ({
+        id: r.id, name: r.name, category: r.category, difficulty: r.difficulty,
+        cook_time: r.cook_time, servings: r.servings,
+        ingredients: JSON.stringify(r.ingredients),
+        steps: JSON.stringify(r.steps),
+        tags: r.tags || [], excluded: r.excluded || false
+      }));
+      const res = await fetch(base + '/rest/v1/recipes', {
+        method: 'POST',
+        headers: { 'apikey': key, 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' },
+        body: JSON.stringify(batch)
+      });
+      if (!res.ok) { showToast('上传失败：' + res.status); return; }
+    }
+    showToast('已上传 ' + list.length + ' 道食谱到云端');
+  } catch(e) { showToast('同步失败：' + e.message); }
+}
+
 function saveConfig() {
   const url = document.getElementById('cfg_url').value.trim();
   const key = document.getElementById('cfg_key').value.trim();
   if (!url || !key) { showToast('请填写URL和Key'); return; }
   localStorage.setItem('sb_url', url);
   localStorage.setItem('sb_key', key);
-  showToast('配置已保存（Supabase联网功能开发中）');
+  showToast('配置已保存，可点击「上传到云端」或「从云端加载」进行同步');
+}
+
+function restoreConfigUI() {
+  const u = localStorage.getItem('sb_url');
+  const k = localStorage.getItem('sb_key');
+  if (u) document.getElementById('cfg_url').value = u;
+  if (k) document.getElementById('cfg_key').value = k;
 }
 
 // ===== AI生成菜谱（本地数据匹配+扩展）=====
@@ -866,7 +934,10 @@ function aiGenerateRecipe() {
     return;
   }
   
-  showToast('暂无此菜谱，请手动添加或稍后补充');
+  if (confirm('本地暂无「' + input + '」的食谱，是否联网搜索？')) {
+    window.open('https://www.bing.com/search?q=' + encodeURIComponent(input + ' 家常菜做法'), '_blank');
+    showToast('已打开浏览器搜索');
+  }
 }
 
 // 启动
