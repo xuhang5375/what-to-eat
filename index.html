@@ -414,7 +414,772 @@ const BUILTIN_RECIPES = [
 {id:28,name:'番茄菜花',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['素','清淡','家常'],excluded:false,ingredients:[{name:'菜花',amount:'300g'},{name:'番茄',amount:'1个(约150g)'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['菜花掰小朵焯水2分钟捞出','番茄切块','锅中少许油炒番茄出汁','放入菜花翻炒2分钟','加盐调味出锅']},
 {id:29,name:'清炒南瓜',category:'晚餐',difficulty:'简单',cook_time:15,servings:2,tags:['素','清淡','养生','家常'],excluded:false,ingredients:[{name:'南瓜',amount:'400g'},{name:'蒜',amount:'2瓣'},{name:'盐',amount:'少许'},{name:'食用油',amount:'1.5汤匙'}],steps:['南瓜去皮切薄片，蒜切片','锅中倒油爆香蒜片','放入南瓜片中火翻炒','加少许清水盖盖焖3分钟','至南瓜软糯后加盐调味出锅']},
 {id:30,name:'紫菜蛋花汤',category:'晚餐',difficulty:'简单',cook_time:10,servings:2,tags:['汤','清淡','快手','素'],excluded:false,ingredients:[{name:'紫菜',amount:'5g'},{name:'鸡蛋',amount:'1个'},{name:'盐',amount:'少许'},{name:'香油',amount:'几滴'},{name:'葱花',amount:'适量'}],steps:['锅中加水烧开','紫菜撕小块放入','水再次烧开后淋入蛋液形成蛋花','加盐调味，撒葱花，淋香油出锅']}
-];
+,
+{
+    name:"黄焖鸡",
+    category:"炖煮",
+    difficulty:"简单",
+    cook_time:40,
+    servings:2,
+    ingredients:[{name:"鸡腿",amount:"2个"},{name:"土豆",amount:"1个"},{name:"青椒",amount:"1个"},{name:"香菇",amount:"5朵"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"冰糖",amount:"少许"},{name:"姜片",amount:"3片"},{name:"蒜",amount:"3瓣"}],
+    steps:["鸡腿切块焯水去血沫","热锅冷油爆香姜蒜","下鸡块炒至微黄","加生抽老抽料酒冰糖翻炒上色","加开水没过鸡肉，大火烧开转中小火焖20分钟","加土豆块香菇继续焖10分钟","加青椒块翻炒均匀，大火收汁即可"]
+  },
+{
+    name:"红烧肉",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:60,
+    servings:3,
+    ingredients:[{name:"五花肉",amount:"500g"},{name:"冰糖",amount:"30g"},{name:"生抽",amount:"3勺"},{name:"老抽",amount:"1勺"},{name:"料酒",amount:"2勺"},{name:"八角",amount:"2个"},{name:"桂皮",amount:"1小块"},{name:"香叶",amount:"2片"},{name:"姜",amount:"4片"},{name:"葱",amount:"2段"}],
+    steps:["五花肉切3cm方块，冷水下锅焯水去血沫","捞出洗净沥干备用","锅中少许油，下冰糖小火炒糖色至枣红色","下五花肉快速翻炒上色","加料酒、生抽、老抽翻炒均匀","加热水没过肉，放八角桂皮香叶姜片葱段","大火烧开转小火慢炖45分钟","大火收汁，汤汁浓稠即可出锅"]
+  },
+{
+    name:"糖醋排骨",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:40,
+    servings:2,
+    ingredients:[{name:"排骨",amount:"500g"},{name:"白糖",amount:"3勺"},{name:"醋",amount:"4勺"},{name:"生抽",amount:"2勺"},{name:"料酒",amount:"2勺"},{name:"番茄酱",amount:"2勺"},{name:"白芝麻",amount:"少许"},{name:"姜片",amount:"3片"}],
+    steps:["排骨冷水下锅加姜片料酒焯水","捞出洗净沥干","热锅下排骨煎至两面金黄","调糖醋汁：白糖3勺+醋4勺+生抽2勺+番茄酱2勺+水半碗","倒入糖醋汁，加适量热水没过排骨","大火烧开转中小火焖25分钟","大火收汁，撒白芝麻即可"]
+  },
+{
+    name:"可乐鸡翅",
+    category:"炖煮",
+    difficulty:"简单",
+    cook_time:30,
+    servings:2,
+    ingredients:[{name:"鸡翅中",amount:"8个"},{name:"可乐",amount:"1罐"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"姜片",amount:"3片"},{name:"蒜",amount:"2瓣"}],
+    steps:["鸡翅两面划几刀方便入味","冷水下锅加姜片料酒焯水去腥","捞出沥干，热锅少油煎至两面金黄","倒入可乐没过鸡翅","加生抽老抽调味","大火烧开转中小火焖15分钟","大火收汁至浓稠，汤汁裹满鸡翅即可"]
+  },
+{
+    name:"宫保鸡丁",
+    category:"家常",
+    difficulty:"中等",
+    cook_time:25,
+    servings:2,
+    ingredients:[{name:"鸡胸肉",amount:"250g"},{name:"花生米",amount:"50g"},{name:"干辣椒",amount:"8个"},{name:"花椒",amount:"1小把"},{name:"黄瓜",amount:"半根"},{name:"胡萝卜",amount:"半根"},{name:"生抽",amount:"2勺"},{name:"醋",amount:"2勺"},{name:"白糖",amount:"1勺"},{name:"淀粉",amount:"1勺"},{name:"料酒",amount:"1勺"}],
+    steps:["鸡胸肉切丁，加料酒、淀粉、少许盐腌制10分钟","黄瓜胡萝卜切丁备用","调宫保汁：生抽2勺+醋2勺+白糖1勺+淀粉半勺+水2勺","花生米小火炒香备用","热锅凉油下花椒干辣椒爆香，捞出花椒","下鸡丁滑炒至变色盛出","留底油炒黄瓜胡萝卜丁","倒回鸡丁，淋宫保汁翻炒均匀","撒花生米快速翻炒出锅"]
+  },
+{
+    name:"鱼香肉丝",
+    category:"家常",
+    difficulty:"中等",
+    cook_time:20,
+    servings:2,
+    ingredients:[{name:"猪里脊",amount:"200g"},{name:"木耳",amount:"一把"},{name:"胡萝卜",amount:"半根"},{name:"青椒",amount:"1个"},{name:"豆瓣酱",amount:"1勺"},{name:"醋",amount:"2勺"},{name:"白糖",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"淀粉",amount:"1勺"},{name:"葱姜末",amount:"少许"}],
+    steps:["里脊切丝，加淀粉、料酒、少许盐腌制","木耳泡发切丝，胡萝卜青椒切丝","调鱼香汁：醋2勺+白糖2勺+生抽1勺+淀粉半勺+水2勺","热锅凉油下肉丝滑散盛出","留底油炒豆瓣酱出红油","下葱姜末爆香，加胡萝卜木耳青椒丝炒软","倒回肉丝，淋鱼香汁大火快炒","汤汁裹匀即可出锅"]
+  },
+{
+    name:"水煮鱼",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:35,
+    servings:3,
+    ingredients:[{name:"草鱼或巴沙鱼",amount:"500g"},{name:"豆芽",amount:"200g"},{name:"生菜",amount:"适量"},{name:"豆瓣酱",amount:"2勺"},{name:"干辣椒",amount:"15个"},{name:"花椒",amount:"1把"},{name:"蒜",amount:"5瓣"},{name:"姜",amount:"5片"},{name:"蛋清",amount:"1个"},{name:"淀粉",amount:"1勺"}],
+    steps:["鱼片加蛋清、淀粉、料酒、盐腌制15分钟","豆芽生菜焯水铺在碗底","热锅炒豆瓣酱出红油，加姜蒜爆香","加适量水烧开，调味","下鱼片煮2-3分钟至变白捞出铺在蔬菜上","撒干辣椒段和花椒","烧一勺热油浇在辣椒花椒上激香即可"]
+  },
+{
+    name:"麻婆豆腐",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:20,
+    servings:2,
+    ingredients:[{name:"嫩豆腐",amount:"1块"},{name:"肉末",amount:"100g"},{name:"豆瓣酱",amount:"1勺"},{name:"花椒粉",amount:"1勺"},{name:"辣椒面",amount:"1勺"},{name:"蒜",amount:"3瓣"},{name:"姜",amount:"2片"},{name:"小葱",amount:"2根"},{name:"生抽",amount:"1勺"},{name:"淀粉",amount:"1勺"}],
+    steps:["豆腐切小块，开水加盐焯一下去豆腥味","热锅凉油炒肉末至变色","加豆瓣酱炒出红油","加姜蒜末、辣椒面炒香","加水或高汤，下豆腐块","加生抽调味，中火煮3分钟","水淀粉勾芡，撒花椒粉和葱花即可"]
+  },
+{
+    name:"番茄炒蛋",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"番茄",amount:"2个"},{name:"鸡蛋",amount:"3个"},{name:"白糖",amount:"1勺"},{name:"盐",amount:"适量"},{name:"葱花",amount:"少许"}],
+    steps:["番茄切块，鸡蛋打散加少许盐","热锅多油，蛋液下锅快速炒散盛出","留底油炒番茄至出汁","加白糖提鲜","倒回鸡蛋翻炒均匀","撒葱花出锅"]
+  },
+{
+    name:"清蒸鱼",
+    category:"蒸菜",
+    difficulty:"简单",
+    cook_time:20,
+    servings:2,
+    ingredients:[{name:"鲈鱼或武昌鱼",amount:"1条"},{name:"葱",amount:"3根"},{name:"姜",amount:"5片"},{name:"蒸鱼豉油",amount:"3勺"},{name:"料酒",amount:"1勺"},{name:"红椒丝",amount:"少许"}],
+    steps:["鱼洗净，两面划几刀，抹料酒和少许盐","鱼肚子里塞姜片葱段","盘中放筷子架空，鱼放在上面","水开后上锅蒸8-10分钟","取出倒掉蒸出来的水","铺上葱丝红椒丝，淋蒸鱼豉油","烧一勺热油浇在葱丝上激香即可"]
+  },
+{
+    name:"酸辣土豆丝",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"土豆",amount:"2个"},{name:"干辣椒",amount:"5个"},{name:"花椒",amount:"少许"},{name:"醋",amount:"2勺"},{name:"蒜",amount:"2瓣"},{name:"葱",amount:"1根"},{name:"盐",amount:"适量"}],
+    steps:["土豆切细丝，清水浸泡去除淀粉","干辣椒剪段，蒜切片","热锅凉油下花椒爆香捞出","下干辣椒蒜片爆香","下土豆丝大火快炒1分钟","沿锅边淋醋，加盐调味","撒葱花快速翻炒均匀出锅"]
+  },
+{
+    name:"蒜蓉西兰花",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:8,
+    servings:2,
+    ingredients:[{name:"西兰花",amount:"1朵"},{name:"蒜",amount:"5瓣"},{name:"盐",amount:"适量"},{name:"蚝油",amount:"1勺"}],
+    steps:["西兰花切小朵，开水加盐焯1分钟捞出","蒜切末","热锅凉油爆香蒜末","下西兰花翻炒均匀","加蚝油和少许盐调味","大火快炒出锅"]
+  },
+{
+    name:"地三鲜",
+    category:"家常",
+    difficulty:"中等",
+    cook_time:25,
+    servings:3,
+    ingredients:[{name:"土豆",amount:"1个"},{name:"茄子",amount:"1个"},{name:"青椒",amount:"2个"},{name:"蒜",amount:"4瓣"},{name:"生抽",amount:"2勺"},{name:"蚝油",amount:"1勺"},{name:"白糖",amount:"1勺"},{name:"淀粉",amount:"适量"}],
+    steps:["土豆茄子切块，青椒掰块","土豆块裹薄淀粉，油锅炸至金黄捞出","茄子也炸至软糯捞出","调汁：生抽2勺+蚝油1勺+白糖1勺+淀粉半勺+水半碗","留底油爆香蒜末","下青椒翻炒，再下土豆茄子","倒入调汁大火翻炒均匀即可"]
+  },
+{
+    name:"家常豆腐",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"老豆腐",amount:"1块"},{name:"木耳",amount:"少许"},{name:"青椒",amount:"1个"},{name:"豆瓣酱",amount:"1勺"},{name:"生抽",amount:"1勺"},{name:"蚝油",amount:"1勺"},{name:"蒜",amount:"2瓣"}],
+    steps:["豆腐切块，煎至两面金黄盛出","木耳泡发，青椒切块","热锅炒豆瓣酱出红油","加蒜爆香，下木耳青椒炒软","下豆腐块，加生抽蚝油调味","加少许水焖2分钟，大火收汁"]
+  },
+{
+    name:"干煸四季豆",
+    category:"家常",
+    difficulty:"中等",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"四季豆",amount:"300g"},{name:"肉末",amount:"50g"},{name:"干辣椒",amount:"5个"},{name:"花椒",amount:"少许"},{name:"蒜",amount:"3瓣"},{name:"生抽",amount:"1勺"},{name:"盐",amount:"适量"}],
+    steps:["四季豆去筋掰段","油锅烧热，下四季豆炸至表皮起皱捞出","留少许油炒肉末至酥香","下干辣椒花椒蒜末爆香","下四季豆，加生抽和盐","大火翻炒均匀即可"]
+  },
+{
+    name:"拍黄瓜",
+    category:"凉菜",
+    difficulty:"简单",
+    cook_time:5,
+    servings:2,
+    ingredients:[{name:"黄瓜",amount:"2根"},{name:"蒜",amount:"3瓣"},{name:"醋",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"香油",amount:"1勺"},{name:"白糖",amount:"少许"},{name:"辣椒油",amount:"适量"}],
+    steps:["黄瓜洗净拍碎，切段","蒜切末","将蒜末、醋、生抽、香油、白糖、辣椒油调成料汁","淋在黄瓜上拌匀即可"]
+  },
+{
+    name:"虎皮青椒",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"青椒",amount:"4个"},{name:"蒜",amount:"3瓣"},{name:"醋",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"白糖",amount:"1勺"},{name:"盐",amount:"适量"}],
+    steps:["青椒去蒂去籽，保持完整","锅内不放油，下青椒小火煎至表皮起皱","盛出备用","热锅少许油爆香蒜末","下青椒，加醋、生抽、白糖和少许水","大火翻炒均匀即可"]
+  },
+{
+    name:"蚝油生菜",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:5,
+    servings:2,
+    ingredients:[{name:"生菜",amount:"2棵"},{name:"蚝油",amount:"2勺"},{name:"蒜",amount:"3瓣"},{name:"生抽",amount:"1勺"},{name:"淀粉",amount:"少许"}],
+    steps:["生菜洗净，开水焯30秒捞出装盘","蒜切末","热锅凉油爆香蒜末","加蚝油、生抽和少许水","水淀粉勾薄芡","淋在生菜上即可"]
+  },
+{
+    name:"小炒肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"五花肉",amount:"200g"},{name:"青椒",amount:"2个"},{name:"蒜",amount:"3瓣"},{name:"豆豉",amount:"1勺"},{name:"生抽",amount:"1勺"},{name:"老抽",amount:"少许"}],
+    steps:["五花肉切薄片，青椒切块","热锅少油下五花肉煸炒出油","下蒜和豆豉爆香","下青椒块大火翻炒","加生抽、老抽调味","翻炒均匀即可出锅"]
+  },
+{
+    name:"回锅肉",
+    category:"家常",
+    difficulty:"中等",
+    cook_time:25,
+    servings:3,
+    ingredients:[{name:"五花肉",amount:"300g"},{name:"青蒜",amount:"3根"},{name:"青椒",amount:"1个"},{name:"豆瓣酱",amount:"1勺"},{name:"甜面酱",amount:"1勺"},{name:"生抽",amount:"1勺"},{name:"姜片",amount:"3片"},{name:"料酒",amount:"1勺"}],
+    steps:["五花肉冷水下锅加姜片料酒煮至八成熟","捞出晾凉切薄片","青蒜切段，青椒切块","热锅少油下肉片煸炒出油至灯盏窝状","推到一边，下豆瓣酱甜面酱炒出红油","下青椒和青蒜翻炒","加生抽调味，大火快炒出锅"]
+  },
+{
+    name:"红烧茄子",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"茄子",amount:"2根"},{name:"蒜",amount:"4瓣"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"白糖",amount:"1勺"},{name:"醋",amount:"1勺"},{name:"淀粉",amount:"适量"}],
+    steps:["茄子切滚刀块，撒少许盐腌制10分钟挤掉水分","茄子块裹薄淀粉","热锅多油下茄子煎至金黄盛出","调红烧汁：生抽2勺+老抽1勺+白糖1勺+醋1勺+水半碗","留底油爆香蒜末","下茄子和红烧汁，大火翻炒均匀即可"]
+  },
+{
+    name:"辣子鸡",
+    category:"煎炸",
+    difficulty:"中等",
+    cook_time:30,
+    servings:3,
+    ingredients:[{name:"鸡腿",amount:"2个"},{name:"干辣椒",amount:"一大把"},{name:"花椒",amount:"1把"},{name:"姜",amount:"5片"},{name:"蒜",amount:"5瓣"},{name:"料酒",amount:"1勺"},{name:"生抽",amount:"1勺"},{name:"淀粉",amount:"2勺"}],
+    steps:["鸡腿去骨切块，加料酒、生抽、淀粉腌制15分钟","油温七成热下鸡块炸至金黄捞出","升高油温复炸一次更酥脆","留少许油下花椒干辣椒姜蒜爆香","下炸好的鸡块大火翻炒","撒白芝麻出锅"]
+  },
+{
+    name:"口水鸡",
+    category:"凉菜",
+    difficulty:"中等",
+    cook_time:30,
+    servings:3,
+    ingredients:[{name:"鸡腿",amount:"2个"},{name:"花生碎",amount:"适量"},{name:"辣椒油",amount:"2勺"},{name:"花椒油",amount:"1勺"},{name:"生抽",amount:"2勺"},{name:"醋",amount:"1勺"},{name:"白糖",amount:"少许"},{name:"蒜",amount:"3瓣"},{name:"姜",amount:"3片"},{name:"葱",amount:"2根"}],
+    steps:["鸡腿冷水下锅加姜片葱段料酒煮15分钟","捞出泡冰水，撕成条","调口水汁：辣椒油+花椒油+生抽+醋+白糖+蒜末+少许鸡汤","淋在鸡肉上","撒花生碎和葱花"]
+  },
+{
+    name:"白切鸡",
+    category:"家常",
+    difficulty:"中等",
+    cook_time:30,
+    servings:4,
+    ingredients:[{name:"三黄鸡",amount:"1只"},{name:"姜",amount:"1块"},{name:"葱",amount:"3根"},{name:"料酒",amount:"2勺"},{name:"姜葱蘸料",amount:"适量"}],
+    steps:["整鸡处理干净","大锅水加姜片葱段料酒烧开","提着鸡头将鸡身浸入水中烫3秒提起，重复三次","将整鸡放入水中，小火保持微沸状态浸煮15分钟","关火继续焖10分钟","捞出泡冰水至完全冷却","切块装盘，配姜葱蘸料食用"]
+  },
+{
+    name:"盐焗鸡",
+    category:"炖煮",
+    difficulty:"简单",
+    cook_time:40,
+    servings:4,
+    ingredients:[{name:"三黄鸡",amount:"1只"},{name:"盐焗鸡粉",amount:"1包"},{name:"姜片",amount:"5片"},{name:"葱段",amount:"3段"}],
+    steps:["鸡洗净沥干，用盐焗鸡粉内外涂抹均匀","腹中塞姜片葱段腌制2小时","电饭锅底部铺葱段姜片","放入整鸡，按煮饭键","跳闸后翻面再按一次煮饭键","跳闸后焖10分钟即可"]
+  },
+{
+    name:"酸菜鱼",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:35,
+    servings:3,
+    ingredients:[{name:"草鱼或巴沙鱼",amount:"500g"},{name:"酸菜",amount:"200g"},{name:"干辣椒",amount:"10个"},{name:"花椒",amount:"1把"},{name:"姜",amount:"5片"},{name:"蒜",amount:"5瓣"},{name:"蛋清",amount:"1个"},{name:"淀粉",amount:"1勺"},{name:"料酒",amount:"1勺"}],
+    steps:["鱼片加蛋清、淀粉、料酒、盐腌制","酸菜洗净切段","热锅炒酸菜至干香盛出","加水或高汤，下酸菜煮开","下鱼片煮至变白捞出","撒干辣椒和花椒","烧一勺热油浇上去激香"]
+  },
+{
+    name:"干锅花菜",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"花菜",amount:"半颗"},{name:"五花肉",amount:"100g"},{name:"干辣椒",amount:"5个"},{name:"蒜",amount:"3瓣"},{name:"生抽",amount:"1勺"},{name:"蚝油",amount:"1勺"}],
+    steps:["花菜掰小朵，开水焯1分钟","五花肉切薄片","热锅煸炒五花肉出油","下干辣椒和蒜爆香","下花菜大火翻炒","加生抽蚝油调味，炒至微焦即可"]
+  },
+{
+    name:"手撕包菜",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:8,
+    servings:2,
+    ingredients:[{name:"包菜",amount:"半颗"},{name:"干辣椒",amount:"5个"},{name:"蒜",amount:"3瓣"},{name:"醋",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"白糖",amount:"少许"}],
+    steps:["包菜手撕成片，洗净沥干","热锅凉油爆香干辣椒和蒜","下包菜大火快炒","沿锅边淋醋，加生抽和白糖","大火炒至包菜微软即可"]
+  },
+{
+    name:"蒜蓉空心菜",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:5,
+    servings:2,
+    ingredients:[{name:"空心菜",amount:"一把"},{name:"蒜",amount:"5瓣"},{name:"盐",amount:"适量"}],
+    steps:["空心菜洗净切段","蒜切末","热锅凉油爆香蒜末","下空心菜大火快炒","加盐调味，炒至断生即可"]
+  },
+{
+    name:"粉蒸肉",
+    category:"蒸菜",
+    difficulty:"中等",
+    cook_time:60,
+    servings:4,
+    ingredients:[{name:"五花肉",amount:"400g"},{name:"蒸肉粉",amount:"1包"},{name:"土豆",amount:"1个"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"豆瓣酱",amount:"1勺"}],
+    steps:["五花肉切厚片","加生抽、老抽、料酒、豆瓣酱腌制30分钟","土豆切片铺在蒸碗底部","肉片裹上蒸肉粉，码在土豆上","上锅大火蒸50分钟即可"]
+  },
+{
+    name:"梅菜扣肉",
+    category:"蒸菜",
+    difficulty:"较难",
+    cook_time:90,
+    servings:4,
+    ingredients:[{name:"五花肉",amount:"500g"},{name:"梅干菜",amount:"100g"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"白糖",amount:"1勺"},{name:"腐乳",amount:"1块"}],
+    steps:["五花肉整块煮至七成熟","肉皮抹老抽，下油锅炸至肉皮起皱","捞出泡冷水，切厚片","梅干菜泡发洗净切碎，炒香","肉片皮朝下码在碗中，淋调好的酱汁","铺上梅菜，上锅蒸1小时","倒扣在盘中即可"]
+  },
+{
+    name:"蚂蚁上树",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"粉丝",amount:"1把"},{name:"肉末",amount:"100g"},{name:"豆瓣酱",amount:"1勺"},{name:"姜",amount:"2片"},{name:"蒜",amount:"2瓣"},{name:"生抽",amount:"1勺"},{name:"小葱",amount:"2根"}],
+    steps:["粉丝提前泡软","热锅炒肉末至变色","下豆瓣酱、姜蒜末炒香","加适量水烧开","下粉丝翻炒均匀","加生抽调味，撒葱花出锅"]
+  },
+{
+    name:"京酱肉丝",
+    category:"家常",
+    difficulty:"中等",
+    cook_time:20,
+    servings:2,
+    ingredients:[{name:"猪里脊",amount:"200g"},{name:"甜面酱",amount:"2勺"},{name:"葱",amount:"2根"},{name:"黄瓜",amount:"半根"},{name:"生抽",amount:"1勺"},{name:"淀粉",amount:"1勺"},{name:"料酒",amount:"1勺"}],
+    steps:["里脊切丝，加淀粉、料酒腌制","葱丝铺盘，黄瓜切丝备用","甜面酱加生抽、白糖调匀","热锅凉油下肉丝滑散盛出","留底油炒甜面酱至冒泡","下肉丝翻炒均匀，盛在葱丝上"]
+  },
+{
+    name:"青椒肉丝",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"猪里脊",amount:"150g"},{name:"青椒",amount:"2个"},{name:"蒜",amount:"2瓣"},{name:"生抽",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"淀粉",amount:"1勺"}],
+    steps:["里脊切丝，加淀粉、料酒腌制","青椒切丝","热锅凉油下肉丝滑散盛出","留底油爆香蒜末","下青椒丝炒软","倒回肉丝，加生抽调味大火快炒"]
+  },
+{
+    name:"木须肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"鸡蛋",amount:"3个"},{name:"木耳",amount:"一把"},{name:"黄瓜",amount:"半根"},{name:"猪里脊",amount:"100g"},{name:"葱",amount:"1根"},{name:"生抽",amount:"1勺"}],
+    steps:["木耳泡发撕小朵，黄瓜切片，里脊切片","鸡蛋打散炒熟盛出","热锅炒肉片至变色","下木耳和黄瓜翻炒","倒回鸡蛋，加生抽调味","撒葱花出锅"]
+  },
+{
+    name:"东坡肉",
+    category:"炖煮",
+    difficulty:"较难",
+    cook_time:120,
+    servings:4,
+    ingredients:[{name:"五花肉",amount:"500g"},{name:"黄酒",amount:"300ml"},{name:"生抽",amount:"3勺"},{name:"老抽",amount:"2勺"},{name:"冰糖",amount:"50g"},{name:"姜",amount:"5片"},{name:"葱",amount:"3根"}],
+    steps:["五花肉切大块，焯水去血沫","砂锅底部铺姜片和葱段","肉皮朝上码在葱姜上","倒入黄酒、生抽、老抽，放冰糖","大火烧开转小火慢炖2小时","收汁至浓稠即可"]
+  },
+{
+    name:"四喜丸子",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:45,
+    servings:4,
+    ingredients:[{name:"猪肉馅",amount:"400g"},{name:"鸡蛋",amount:"1个"},{name:"淀粉",amount:"2勺"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"葱姜末",amount:"适量"}],
+    steps:["肉馅加鸡蛋、淀粉、葱姜末、料酒、生抽搅拌上劲","团成4个大丸子","油锅炸至表面金黄","锅中加水、生抽、老抽、冰糖","放入丸子，大火烧开转小火炖30分钟","大火收汁即可"]
+  },
+{
+    name:"红烧狮子头",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:50,
+    servings:4,
+    ingredients:[{name:"猪肉馅",amount:"400g"},{name:"荸荠",amount:"5个"},{name:"鸡蛋",amount:"1个"},{name:"淀粉",amount:"2勺"},{name:"青菜",amount:"适量"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"}],
+    steps:["荸荠切碎拌入肉馅","加鸡蛋、淀粉、葱姜末、盐搅拌上劲","团成大丸子，油炸定型","砂锅底部铺青菜","放入丸子，加生抽、老抽、水","大火烧开转小火炖40分钟"]
+  },
+{
+    name:"糖醋里脊",
+    category:"煎炸",
+    difficulty:"中等",
+    cook_time:20,
+    servings:2,
+    ingredients:[{name:"猪里脊",amount:"250g"},{name:"番茄酱",amount:"3勺"},{name:"白糖",amount:"3勺"},{name:"醋",amount:"2勺"},{name:"淀粉",amount:"适量"},{name:"鸡蛋",amount:"1个"}],
+    steps:["里脊切条，加蛋液和淀粉抓匀","油温六成热下里脊炸至金黄捞出","升高油温复炸一次","调糖醋汁：番茄酱+白糖+醋+水","小火熬糖醋汁至冒泡","下里脊快速翻炒均匀即可"]
+  },
+{
+    name:"锅包肉",
+    category:"煎炸",
+    difficulty:"中等",
+    cook_time:25,
+    servings:2,
+    ingredients:[{name:"猪里脊",amount:"300g"},{name:"土豆淀粉",amount:"适量"},{name:"白糖",amount:"3勺"},{name:"醋",amount:"3勺"},{name:"胡萝卜丝",amount:"少许"},{name:"葱丝",amount:"少许"}],
+    steps:["里脊切片，加土豆淀粉和水调成糊状裹匀","油温七成热下肉片炸至定型捞出","升高油温复炸至酥脆","调糖醋汁：白糖+醋+生抽","锅留底油下葱丝胡萝卜丝","倒入糖醋汁和肉片快速翻炒"]
+  },
+{
+    name:"排骨汤",
+    category:"汤品",
+    difficulty:"简单",
+    cook_time:90,
+    servings:4,
+    ingredients:[{name:"排骨",amount:"500g"},{name:"玉米",amount:"1根"},{name:"胡萝卜",amount:"1根"},{name:"姜",amount:"3片"},{name:"葱",amount:"2段"}],
+    steps:["排骨冷水下锅焯水去血沫","玉米胡萝卜切块","砂锅加水、排骨、姜片葱段","大火烧开转小火炖1小时","加玉米胡萝卜继续炖30分钟","加盐调味即可"]
+  },
+{
+    name:"冬瓜排骨汤",
+    category:"汤品",
+    difficulty:"简单",
+    cook_time:80,
+    servings:4,
+    ingredients:[{name:"排骨",amount:"400g"},{name:"冬瓜",amount:"300g"},{name:"姜",amount:"3片"},{name:"葱",amount:"2段"}],
+    steps:["排骨焯水去血沫","冬瓜去皮切块","砂锅加排骨、姜片、葱段和水","大火烧开转小火炖1小时","加冬瓜继续炖20分钟","加盐调味"]
+  },
+{
+    name:"鲫鱼汤",
+    category:"汤品",
+    difficulty:"中等",
+    cook_time:40,
+    servings:3,
+    ingredients:[{name:"鲫鱼",amount:"1条"},{name:"豆腐",amount:"1块"},{name:"姜",amount:"4片"},{name:"葱",amount:"2段"},{name:"料酒",amount:"1勺"}],
+    steps:["鲫鱼处理干净，两面划几刀","热锅凉油煎鱼至两面金黄","加开水没过鱼身","放姜片、葱段、料酒","大火煮开转中火炖20分钟","加豆腐块继续炖10分钟","加盐调味，撒葱花"]
+  },
+{
+    name:"西红柿鸡蛋汤",
+    category:"汤品",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"番茄",amount:"2个"},{name:"鸡蛋",amount:"2个"},{name:"葱",amount:"1根"},{name:"香油",amount:"少许"}],
+    steps:["番茄切块，鸡蛋打散","热锅少油炒番茄出汁","加水烧开","淋入蛋液形成蛋花","加盐调味，撒葱花和香油"]
+  },
+{
+    name:"紫菜蛋花汤",
+    category:"汤品",
+    difficulty:"简单",
+    cook_time:5,
+    servings:2,
+    ingredients:[{name:"紫菜",amount:"适量"},{name:"鸡蛋",amount:"1个"},{name:"虾皮",amount:"少许"},{name:"香油",amount:"少许"}],
+    steps:["紫菜撕小块放入碗中","锅中水烧开","淋蛋液成蛋花","倒入盛紫菜的碗中","加虾皮、香油、盐调味"]
+  },
+{
+    name:"皮蛋豆腐",
+    category:"凉菜",
+    difficulty:"简单",
+    cook_time:5,
+    servings:2,
+    ingredients:[{name:"嫩豆腐",amount:"1块"},{name:"皮蛋",amount:"2个"},{name:"蒜",amount:"2瓣"},{name:"生抽",amount:"2勺"},{name:"香油",amount:"1勺"},{name:"香菜",amount:"少许"}],
+    steps:["豆腐切块码盘","皮蛋切丁铺在豆腐上","蒜切末","调汁：生抽+香油+蒜末","淋在皮蛋豆腐上，撒香菜"]
+  },
+{
+    name:"凉拌木耳",
+    category:"凉菜",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"木耳",amount:"一把"},{name:"蒜",amount:"3瓣"},{name:"醋",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"香油",amount:"1勺"},{name:"辣椒油",amount:"适量"}],
+    steps:["木耳泡发，开水焯2分钟","过凉水沥干","蒜切末","将所有调料与木耳拌匀即可"]
+  },
+{
+    name:"凉拌黄瓜",
+    category:"凉菜",
+    difficulty:"简单",
+    cook_time:5,
+    servings:2,
+    ingredients:[{name:"黄瓜",amount:"2根"},{name:"蒜",amount:"3瓣"},{name:"醋",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"香油",amount:"1勺"},{name:"辣椒油",amount:"适量"}],
+    steps:["黄瓜拍碎切段","蒜切末","加所有调料拌匀即可"]
+  },
+{
+    name:"鸡蛋羹",
+    category:"蒸菜",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"鸡蛋",amount:"2个"},{name:"温水",amount:"适量"},{name:"盐",amount:"少许"},{name:"香油",amount:"少许"},{name:"生抽",amount:"1勺"}],
+    steps:["鸡蛋打散，加1.5倍温水","加盐搅匀，过滤掉泡沫","盖上保鲜膜扎几个小孔","开水上锅蒸8-10分钟","淋香油和生抽，撒葱花"]
+  },
+{
+    name:"蒸蛋羹",
+    category:"蒸菜",
+    difficulty:"简单",
+    cook_time:12,
+    servings:1,
+    ingredients:[{name:"鸡蛋",amount:"2个"},{name:"温水",amount:"150ml"},{name:"盐",amount:"少许"},{name:"葱花",amount:"少许"}],
+    steps:["鸡蛋打散，加温水和盐搅匀","过滤到蒸碗中","盖上保鲜膜，扎小孔","水开后蒸10分钟","撒葱花，淋少许生抽"]
+  },
+{
+    name:"肉末蒸蛋",
+    category:"蒸菜",
+    difficulty:"简单",
+    cook_time:20,
+    servings:2,
+    ingredients:[{name:"鸡蛋",amount:"2个"},{name:"肉末",amount:"50g"},{name:"生抽",amount:"1勺"},{name:"料酒",amount:"少许"}],
+    steps:["鸡蛋打散加温水蒸成蛋羹","热锅炒肉末至变色","加生抽和料酒调味","将肉末铺在蒸蛋上即可"]
+  },
+{
+    name:"蒸水蛋",
+    category:"蒸菜",
+    difficulty:"简单",
+    cook_time:10,
+    servings:1,
+    ingredients:[{name:"鸡蛋",amount:"1个"},{name:"温水",amount:"80ml"},{name:"盐",amount:"少许"}],
+    steps:["鸡蛋打散加盐和温水","过滤到碗中","盖保鲜膜扎孔","开水蒸8分钟","淋生抽香油"]
+  },
+{
+    name:"葱油拌面",
+    category:"主食",
+    difficulty:"简单",
+    cook_time:15,
+    servings:1,
+    ingredients:[{name:"面条",amount:"200g"},{name:"小葱",amount:"一把"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"白糖",amount:"1勺"}],
+    steps:["小葱切段，小火炸至焦黄酥脆","调汁：生抽+老抽+白糖","面条煮熟捞出","淋上葱油和料汁","拌匀即可"]
+  },
+{
+    name:"蛋炒饭",
+    category:"主食",
+    difficulty:"简单",
+    cook_time:10,
+    servings:1,
+    ingredients:[{name:"米饭",amount:"1碗"},{name:"鸡蛋",amount:"2个"},{name:"葱",amount:"1根"},{name:"盐",amount:"适量"}],
+    steps:["鸡蛋打散，葱切末","热锅多油，下蛋液快速炒散","下米饭大火翻炒至粒粒分明","加盐调味，撒葱花"]
+  },
+{
+    name:"扬州炒饭",
+    category:"主食",
+    difficulty:"中等",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"米饭",amount:"2碗"},{name:"鸡蛋",amount:"2个"},{name:"虾仁",amount:"50g"},{name:"火腿",amount:"30g"},{name:"青豆",amount:"少许"},{name:"胡萝卜",amount:"少许"}],
+    steps:["火腿胡萝卜切丁","虾仁焯水","鸡蛋炒散盛出","炒火腿丁胡萝卜丁青豆","下米饭翻炒均匀","加虾仁和鸡蛋，调味出锅"]
+  },
+{
+    name:"番茄鸡蛋面",
+    category:"主食",
+    difficulty:"简单",
+    cook_time:15,
+    servings:1,
+    ingredients:[{name:"面条",amount:"200g"},{name:"番茄",amount:"1个"},{name:"鸡蛋",amount:"1个"},{name:"葱",amount:"1根"}],
+    steps:["番茄切块，鸡蛋炒散盛出","炒番茄出汁，加水烧开","下面条煮熟","倒回鸡蛋，加盐调味","撒葱花"]
+  },
+{
+    name:"酸辣汤",
+    category:"汤品",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"豆腐",amount:"半块"},{name:"木耳",amount:"少许"},{name:"鸡蛋",amount:"1个"},{name:"醋",amount:"2勺"},{name:"白胡椒粉",amount:"适量"},{name:"淀粉",amount:"1勺"}],
+    steps:["豆腐木耳切丝","锅中加水烧开，下豆腐木耳","加醋、生抽、白胡椒粉","水淀粉勾芡","淋蛋液成蛋花","撒香菜即可"]
+  },
+{
+    name:"酸辣粉",
+    category:"主食",
+    difficulty:"简单",
+    cook_time:15,
+    servings:1,
+    ingredients:[{name:"红薯粉",amount:"1把"},{name:"花生",amount:"适量"},{name:"榨菜",amount:"少许"},{name:"醋",amount:"3勺"},{name:"辣椒油",amount:"2勺"},{name:"生抽",amount:"1勺"}],
+    steps:["红薯粉提前泡软","调料汁：醋+辣椒油+生抽+蒜泥","粉条煮熟捞出放入碗中","加煮粉的汤","撒花生碎、榨菜、葱花"]
+  },
+{
+    name:"鱼头豆腐汤",
+    category:"汤品",
+    difficulty:"中等",
+    cook_time:40,
+    servings:3,
+    ingredients:[{name:"鱼头",amount:"1个"},{name:"豆腐",amount:"1块"},{name:"姜",amount:"5片"},{name:"葱",amount:"2段"},{name:"料酒",amount:"1勺"}],
+    steps:["鱼头洗净对半切开","热锅少油煎鱼头至两面金黄","加开水、姜片、葱段、料酒","大火煮开转中火炖20分钟","加豆腐块继续炖10分钟","加盐调味，撒葱花"]
+  },
+{
+    name:"土豆烧牛肉",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:60,
+    servings:4,
+    ingredients:[{name:"牛肉",amount:"400g"},{name:"土豆",amount:"2个"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"八角",amount:"2个"},{name:"姜",amount:"4片"}],
+    steps:["牛肉切块焯水","土豆切滚刀块","热锅炒牛肉，加生抽老抽上色","加水、八角、姜片","大火烧开转小火炖40分钟","加土豆继续炖20分钟","大火收汁"]
+  },
+{
+    name:"萝卜炖牛腩",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:90,
+    servings:4,
+    ingredients:[{name:"牛腩",amount:"500g"},{name:"白萝卜",amount:"1根"},{name:"姜",amount:"5片"},{name:"八角",amount:"2个"},{name:"料酒",amount:"2勺"}],
+    steps:["牛腩切块焯水","萝卜切块","砂锅加牛腩、姜片、八角、料酒和水","大火烧开转小火炖1小时","加萝卜继续炖30分钟","加盐调味"]
+  },
+{
+    name:"香菇炖鸡",
+    category:"炖煮",
+    difficulty:"简单",
+    cook_time:50,
+    servings:3,
+    ingredients:[{name:"鸡肉",amount:"500g"},{name:"香菇",amount:"8朵"},{name:"姜",amount:"4片"},{name:"料酒",amount:"1勺"},{name:"生抽",amount:"1勺"}],
+    steps:["鸡肉切块焯水","香菇泡发","热锅炒鸡块至微黄","加姜片、料酒、生抽","加水没过鸡块","大火烧开转小火炖30分钟","加香菇继续炖15分钟"]
+  },
+{
+    name:"啤酒鸭",
+    category:"炖煮",
+    difficulty:"中等",
+    cook_time:60,
+    servings:4,
+    ingredients:[{name:"鸭肉",amount:"500g"},{name:"啤酒",amount:"1罐"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"姜",amount:"5片"},{name:"蒜",amount:"5瓣"},{name:"八角",amount:"2个"}],
+    steps:["鸭肉切块焯水","热锅炒鸭肉至出油","下姜蒜、八角爆香","加生抽老抽翻炒上色","倒入啤酒没过鸭肉","大火烧开转小火炖40分钟","大火收汁"]
+  },
+{
+    name:"红烧鸡翅",
+    category:"炖煮",
+    difficulty:"简单",
+    cook_time:25,
+    servings:2,
+    ingredients:[{name:"鸡翅中",amount:"8个"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"白糖",amount:"1勺"},{name:"姜",amount:"3片"}],
+    steps:["鸡翅两面划几刀","热锅少油煎至两面金黄","加姜片、料酒、生抽、老抽、白糖","加水没过鸡翅","大火烧开转中火焖15分钟","大火收汁即可"]
+  },
+{
+    name:"孜然羊肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"羊肉片",amount:"250g"},{name:"洋葱",amount:"半个"},{name:"孜然粉",amount:"2勺"},{name:"辣椒面",amount:"1勺"},{name:"盐",amount:"适量"}],
+    steps:["洋葱切丝","热锅大火炒羊肉片至变色盛出","留底油炒洋葱丝","倒回羊肉，撒孜然粉和辣椒面","大火快炒，加盐调味"]
+  },
+{
+    name:"葱爆羊肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"羊肉片",amount:"250g"},{name:"大葱",amount:"2根"},{name:"生抽",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"醋",amount:"少许"}],
+    steps:["大葱斜切大片","热锅大火炒羊肉片至变色","下葱段大火翻炒","加生抽、料酒、少许醋","快炒出锅"]
+  },
+{
+    name:"葱爆牛肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"牛里脊",amount:"200g"},{name:"大葱",amount:"2根"},{name:"生抽",amount:"1勺"},{name:"料酒",amount:"1勺"},{name:"淀粉",amount:"1勺"}],
+    steps:["牛肉切片加淀粉腌制","大葱斜切大片","热锅凉油滑炒牛肉片至变色盛出","留底油炒香葱段","倒回牛肉，加生抽料酒快炒"]
+  },
+{
+    name:"青椒牛肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"牛里脊",amount:"200g"},{name:"青椒",amount:"2个"},{name:"蒜",amount:"2瓣"},{name:"生抽",amount:"1勺"},{name:"淀粉",amount:"1勺"}],
+    steps:["牛肉切丝加淀粉腌制","青椒切丝","热锅凉油滑炒牛肉丝盛出","留底油爆香蒜末","下青椒丝炒软","倒回牛肉，加生抽快炒"]
+  },
+{
+    name:"黑椒牛柳",
+    category:"家常",
+    difficulty:"中等",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"牛里脊",amount:"200g"},{name:"洋葱",amount:"半个"},{name:"青椒",amount:"1个"},{name:"黑椒酱",amount:"2勺"},{name:"淀粉",amount:"1勺"}],
+    steps:["牛肉切条加淀粉腌制","洋葱青椒切条","热锅滑炒牛柳至变色盛出","炒洋葱青椒","倒回牛柳，加黑椒酱翻炒均匀"]
+  },
+{
+    name:"蚝油牛肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"牛里脊",amount:"200g"},{name:"蚝油",amount:"2勺"},{name:"生抽",amount:"1勺"},{name:"淀粉",amount:"1勺"},{name:"青椒",amount:"1个"}],
+    steps:["牛肉切片加淀粉腌制","青椒切块","热锅滑炒牛肉片至变色盛出","炒青椒块","倒回牛肉，加蚝油生抽快炒"]
+  },
+{
+    name:"蒜苔炒肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"五花肉",amount:"150g"},{name:"蒜苔",amount:"一把"},{name:"生抽",amount:"1勺"},{name:"盐",amount:"适量"}],
+    steps:["五花肉切丝","蒜苔切段","热锅煸炒肉丝出油","下蒜苔大火翻炒","加生抽和盐调味"]
+  },
+{
+    name:"豆角炒肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:15,
+    servings:2,
+    ingredients:[{name:"五花肉",amount:"150g"},{name:"豆角",amount:"200g"},{name:"蒜",amount:"2瓣"},{name:"生抽",amount:"1勺"}],
+    steps:["豆角掰段，焯水至断生","五花肉切片","热锅煸炒肉片出油","下蒜爆香","下豆角翻炒，加生抽调味"]
+  },
+{
+    name:"芹菜炒肉",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"猪肉",amount:"150g"},{name:"芹菜",amount:"一把"},{name:"蒜",amount:"2瓣"},{name:"生抽",amount:"1勺"}],
+    steps:["猪肉切丝","芹菜切段","热锅炒肉丝至变色","下蒜爆香","下芹菜大火翻炒","加生抽调味"]
+  },
+{
+    name:"韭菜炒鸡蛋",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:8,
+    servings:2,
+    ingredients:[{name:"韭菜",amount:"一把"},{name:"鸡蛋",amount:"3个"},{name:"盐",amount:"适量"}],
+    steps:["韭菜切段","鸡蛋打散炒熟盛出","热锅炒韭菜至断生","倒回鸡蛋，加盐翻炒均匀"]
+  },
+{
+    name:"韭黄炒蛋",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:8,
+    servings:2,
+    ingredients:[{name:"韭黄",amount:"一把"},{name:"鸡蛋",amount:"3个"},{name:"盐",amount:"适量"}],
+    steps:["韭黄切段","鸡蛋打散炒熟盛出","热锅炒韭黄至软","倒回鸡蛋，加盐调味"]
+  },
+{
+    name:"红烧日本豆腐",
+    category:"家常",
+    difficulty:"简单",
+    cook_time:10,
+    servings:2,
+    ingredients:[{name:"日本豆腐",amount:"2条"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"少许"},{name:"白糖",amount:"1勺"},{name:"淀粉",amount:"适量"}],
+    steps:["日本豆腐切厚片裹淀粉","煎至两面金黄","调红烧汁：生抽+老抽+白糖+水","倒入锅中大火收汁"]
+  },
+{
+    name:"干炸丸子",
+    category:"煎炸",
+    difficulty:"中等",
+    cook_time:30,
+    servings:4,
+    ingredients:[{name:"猪肉馅",amount:"300g"},{name:"鸡蛋",amount:"1个"},{name:"淀粉",amount:"2勺"},{name:"葱姜末",amount:"适量"},{name:"料酒",amount:"1勺"}],
+    steps:["肉馅加鸡蛋、淀粉、葱姜末、料酒、盐搅拌上劲","团成小丸子","油温六成热下丸子炸至金黄","升高油温复炸一次至酥脆"]
+  },
+{
+    name:"炸酱面",
+    category:"主食",
+    difficulty:"中等",
+    cook_time:30,
+    servings:2,
+    ingredients:[{name:"面条",amount:"300g"},{name:"五花肉",amount:"200g"},{name:"黄豆酱",amount:"3勺"},{name:"甜面酱",amount:"2勺"},{name:"黄瓜",amount:"半根"}],
+    steps:["五花肉切丁","热锅煸炒肉丁出油","下黄豆酱和甜面酱炒香","加适量水小火熬10分钟","黄瓜切丝","面条煮熟，浇炸酱，配黄瓜丝"]
+  },
+{
+    name:"油泼面",
+    category:"主食",
+    difficulty:"简单",
+    cook_time:20,
+    servings:1,
+    ingredients:[{name:"宽面条",amount:"200g"},{name:"辣椒面",amount:"2勺"},{name:"蒜",amount:"3瓣"},{name:"生抽",amount:"2勺"},{name:"醋",amount:"1勺"}],
+    steps:["面条煮熟捞出","码上蒜末、辣椒面","淋上烧滚的热油","加生抽、醋、盐","拌匀即可"]
+  },
+{
+    name:"肉夹馍",
+    category:"主食",
+    difficulty:"中等",
+    cook_time:90,
+    servings:4,
+    ingredients:[{name:"五花肉",amount:"500g"},{name:"面粉",amount:"300g"},{name:"酵母",amount:"3g"},{name:"生抽",amount:"2勺"},{name:"老抽",amount:"1勺"},{name:"八角",amount:"2个"}],
+    steps:["五花肉加生抽老抽八角炖1小时至软烂","剁碎备用","面粉加酵母揉成面团，发30分钟","分成小剂子擀成饼，烙熟","饼切开，夹入肉馅"]
+  },
+{
+    name:"煎饺",
+    category:"主食",
+    difficulty:"中等",
+    cook_time:20,
+    servings:2,
+    ingredients:[{name:"速冻饺子",amount:"10个"},{name:"油",amount:"适量"},{name:"水",amount:"适量"}],
+    steps:["平底锅刷油，码入饺子","小火煎至底部微黄","加小半碗水，盖盖焖煮至水干","继续煎至底部酥脆金黄"]
+  },
+{
+    name:"鸡蛋灌饼",
+    category:"早餐",
+    difficulty:"中等",
+    cook_time:15,
+    servings:1,
+    ingredients:[{name:"面粉",amount:"100g"},{name:"鸡蛋",amount:"1个"},{name:"葱花",amount:"少许"},{name:"生菜",amount:"2片"}],
+    steps:["面粉加水和成软面团醒20分钟","擀成薄饼","平底锅烙至鼓起","挑开饼皮倒入蛋液","翻面烙熟，夹生菜"]
+  },
+{
+    name:"韭菜盒子",
+    category:"早餐",
+    difficulty:"中等",
+    cook_time:30,
+    servings:4,
+    ingredients:[{name:"面粉",amount:"200g"},{name:"韭菜",amount:"一把"},{name:"鸡蛋",amount:"2个"},{name:"虾皮",amount:"少许"}],
+    steps:["面粉加热水和成烫面","韭菜切碎，鸡蛋炒散","韭菜、鸡蛋、虾皮加油盐拌匀成馅","面团分剂子擀皮，包馅成半月形","平底锅煎至两面金黄"]
+  },
+{
+    name:"小米粥",
+    category:"早餐",
+    difficulty:"简单",
+    cook_time:30,
+    servings:2,
+    ingredients:[{name:"小米",amount:"半碗"},{name:"水",amount:"适量"}],
+    steps:["小米洗净","加水大火烧开","转小火熬30分钟至粘稠","期间偶尔搅拌防糊底"]
+  },
+{
+    name:"皮蛋瘦肉粥",
+    category:"早餐",
+    difficulty:"中等",
+    cook_time:45,
+    servings:2,
+    ingredients:[{name:"大米",amount:"半碗"},{name:"皮蛋",amount:"1个"},{name:"瘦肉",amount:"50g"},{name:"姜",amount:"2片"}],
+    steps:["大米洗净浸泡30分钟","瘦肉切丝用盐淀粉腌制","皮蛋切丁","大米加水熬煮成粥","加肉丝、皮蛋、姜丝煮5分钟","加盐调味撒葱花"]
+  }];
 
 // ===== 本周定制食谱（清淡健康餐，2人份）=====
 const WEEKLY_RECIPES = [
