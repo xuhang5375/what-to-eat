@@ -1136,14 +1136,14 @@ function parseMealDB(meal) {
     const ing = meal[`strIngredient${i}`];
     const meas = meal[`strMeasure${i}`];
     if (ing && ing.trim()) {
-      ingredients.push((meas ? meas.trim() + ' ' : '') + ing.trim());
+      ingredients.push({ name: ing.trim(), amount: meas ? meas.trim() : '' });
     }
   }
   if (ingredients.length === 0) {
-    ingredients.push('(联网数据未提供食材，请手动补充)');
+    ingredients.push({ name: '(联网数据未提供食材，请手动补充)', amount: '' });
   }
   const raw = meal.strInstructions || '';
-  const steps = raw
+  const stepsArr = raw
     .split(/\r?\n/)
     .map(s => s.replace(/^[A-Z].*/g, '').trim())
     .filter(s => s.length > 5)
@@ -1154,8 +1154,8 @@ function parseMealDB(meal) {
     difficulty: '简单',
     cook_time: 30,
     servings: 2,
-    ingredients: ingredients.join('\n'),
-    steps: steps.join('\n')
+    ingredients: ingredients,
+    steps: stepsArr
   };
 }
 
