@@ -449,8 +449,10 @@ const WEEKLY_RECIPES = [
 
 // ===== 初始化 =====
 function init() {
-  // 首次使用自动加载内置食谱 + 本周定制食谱
-  if (!localStorage.getItem('recipes_init')) {
+  // 强制从内置食谱初始化（如果本地食谱少于50条或首次使用）
+  const stored = localStorage.getItem('recipes');
+  const parsed = stored ? JSON.parse(stored) : [];
+  if (!localStorage.getItem('recipes_init') || parsed.length < 50) {
     recipes = JSON.parse(JSON.stringify([...BUILTIN_RECIPES, ...WEEKLY_RECIPES]));
     saveToStorage();
     localStorage.setItem('recipes_init', '1');
@@ -947,8 +949,7 @@ function fillFormWithRecipe(r) {
   showToast('已自动填充「' + r.name + '」的食谱信息，确认后点击保存');
 }
 
-// 通过 Supabase Edge Function 联网搜索食谱
-async // 通过 TheMealDB API 联网搜索食谱（免费、无需key、支持CORS）
+// 通过 TheMealDB API 联网搜索食谱（免费、无需key、支持CORS）
 // TheMealDB 27道中华料理离线缓存（供智能搜索使用）
 const MEALDB_CHINESE_MAP = {
   '宫保鸡丁': 'Kung Pao Chicken',
@@ -1170,7 +1171,8 @@ async function aiGenerateRecipe() {
     return;
   }
   
-  // 联网搜索食谱（TheMealDB API）showToast('正在联网搜索「' + input + '」...');
+  // 联网搜索食谱（TheMealDB API）
+  showToast('正在联网搜索「' + input + '」...');
   try {
     const data = await searchXianghaOnline(input);
     fillFormWithRecipe(data);
@@ -1185,8 +1187,8 @@ async function aiGenerateRecipe() {
       difficulty: '简单',
       cook_time: 20,
       servings: 2,
-      ingredients: '主料 适量\n辅料 少许',
-      steps: '1. 准备食材\n2. 处理食材\n3. 热锅下油\n4. 下食材翻炒\n5. 调味出锅'
+      ingredients: [{name:'主料',amount:'适量'},{name:'辅料',amount:'少许'}],
+      steps: ['1. 准备食材','2. 处理食材','3. 热锅下油','4. 下食材翻炒','5. 调味出锅']
     });
     document.getElementById('aiInput').value = '';
   }
