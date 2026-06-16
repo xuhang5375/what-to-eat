@@ -731,18 +731,18 @@ function saveRecipe() {
   switchPage('list', document.querySelectorAll('.nav-item')[1]);
 }
 
-function addIngredientRow() {
+function addIngredientRow(name, amount) {
   const div = document.createElement('div');
   div.className = 'ingredient-row';
-  div.innerHTML = '<input type="text" class="ig-name" placeholder="食材名" style="flex:2"> <input type="text" class="ig-amount" placeholder="用量（如：2个、半勺）" style="flex:1"> <button class="remove-ig" onclick="this.parentElement.remove()">✕</button>';
+  div.innerHTML = '<input type="text" class="ig-name" placeholder="食材名" style="flex:2"' + (name ? ' value="' + name.replace(/"/g,'&quot;') + '"' : '') + '> <input type="text" class="ig-amount" placeholder="用量（如：2个、半勺）" style="flex:1"' + (amount ? ' value="' + amount.replace(/"/g,'&quot;') + '"' : '') + '> <button class="remove-ig" onclick="this.parentElement.remove()">✕</button>';
   document.getElementById('ingredientsList').appendChild(div);
 }
 
-function addStepRow() {
+function addStepRow(text) {
   const div = document.createElement('div');
   div.className = 'step-row';
   const n = document.querySelectorAll('.step-row').length + 1;
-  div.innerHTML = '<div class="step-num">' + n + '</div><input type="text" placeholder="步骤' + n + '...">';
+  div.innerHTML = '<div class="step-num">' + n + '</div><input type="text" placeholder="步骤' + n + '..."' + (text ? ' value="' + text.replace(/"/g,'&quot;') + '"' : '') + '>';
   document.getElementById('stepsList').appendChild(div);
   renumberSteps();
 }
@@ -907,36 +907,60 @@ function findSimilarRecipe(name) {
   return null;
 }
 
+function findRecipeInAll(name) {
+  const n = name.replace(/[\uff08\uff09\(\)].*[\uff09\)]/g,'').trim();
+  // 1. Search RECIPE_DATABASE (detailed recipes)
+  for (const key in RECIPE_DATABASE) {
+    const val = RECIPE_DATABASE[key];
+    if (!val) continue;
+    if (key.includes(n) || n.includes(key) || key === n) return {name:key,...val};
+  }
+  // 2. Search BUILTIN_RECIPES
+  for (const r of BUILTIN_RECIPES) {
+    if (r.name.includes(n) || n.includes(r.name) || r.name === n) return r;
+  }
+  // 3. Search current recipes
+  for (const r of recipes) {
+    if (r.name.includes(n) || n.includes(r.name) || r.name === n) return r;
+  }
+  // 4. Fuzzy: partial match any word
+  const words = n.split(/\s+/);
+  for (const r of BUILTIN_RECIPES) {
+    if (words.some(w => r.name.includes(w))) return r;
+  }
+  return null;
+}
+
+function fillFormWithRecipe(r) {
+  document.getElementById('f_name').value = r.name;
+  document.getElementById('f_category').value = r.category || '午餐';
+  document.getElementById('f_difficulty').value = r.difficulty || '简单';
+  document.getElementById('f_time').value = r.cook_time || 30;
+  // Clear and fill ingredients
+  document.getElementById('ingredientsList').innerHTML = '';
+  (r.ingredients || []).forEach(ing => addIngredientRow(ing.name, ing.amount));
+  if (!(r.ingredients && r.ingredients.length)) { addIngredientRow(); addIngredientRow(); }
+  // Clear and fill steps
+  document.getElementById('stepsList').innerHTML = '';
+  (r.steps || []).forEach(step => addStepRow(step));
+  if (!(r.steps && r.steps.length)) { addStepRow(); addStepRow(); }
+  showToast('已自动填充「' + r.name + '」的食谱信息，确认后点击保存');
+}
+
 function aiGenerateRecipe() {
   const input = document.getElementById('aiInput').value.trim();
   if (!input) { showToast('请输入菜名'); return; }
   
-  const found = findSimilarRecipe(input);
+  const found = findRecipeInAll(input);
   if (found) {
-    const maxId = recipes.reduce((m, r) => Math.max(m, r.id || 0), 0);
-    const recipe = {
-      id: maxId + 1,
-      name: input,
-      category: found.category || '午餐',
-      difficulty: found.difficulty || '中等',
-      cook_time: found.cook_time || 30,
-      servings: 2,
-      ingredients: found.ingredients || [],
-      steps: found.steps || [],
-      tags: found.tags || [],
-      excluded: false
-    };
-    recipes.unshift(recipe);
-    saveToStorage();
-    showToast('已添加「' + input + '」！');
+    fillFormWithRecipe(found);
     document.getElementById('aiInput').value = '';
-    renderList(); drawWheel();
     return;
   }
   
   if (confirm('本地暂无「' + input + '」的食谱，是否联网搜索？')) {
     window.open('https://www.bing.com/search?q=' + encodeURIComponent(input + ' 家常菜做法'), '_blank');
-    showToast('已打开浏览器搜索');
+    showToast('搜索后可手动填写下方表单');
   }
 }
 
